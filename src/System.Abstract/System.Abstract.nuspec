@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="utf-8"?>
+<package>
+  <metadata>
+    <id>System.Abstract</id>
+    <version>0.5.0</version>
+    <title>AutomaEx</title>
+    <authors>Contoso</authors>
+    <owners>Contoso</owners>
+    <licenseUrl>http://www.opensource.org/licenses/mit-license.php</licenseUrl>
+    <requireLicenseAcceptance>false</requireLicenseAcceptance>
+    <description>This package contains abstractions to provide standard Interfaces, or Abstracts, for common services typicality re-implemented in various Projects/Assemblies. Utilizing a standards based Type allows services to flow between otherwise disconnected Assemblies.</description>
+    <releaseNotes></releaseNotes>
+    <copyright>Copyright 2010</copyright>
+    <tags>abstract nosql interface ioc di aggregateroot servicebus servicelocator bclex</tags>
+    <language>en-US</language>
+  </metadata>
+  <files>
+    <file src="_build\3.5\System.Abstract.dll" target="lib\net35" />
+    <file src="_build\3.5\System.Abstract.xml" target="lib\net35" />
+    <file src="_build\4.0\System.Abstract.dll" target="lib\net40" />
+    <file src="_build\4.0\System.Abstract.xml" target="lib\net40" />
+    <file src="_build\4.5\System.Abstract.dll" target="lib\net45" />
+    <file src="_build\4.5\System.Abstract.xml" target="lib\net45" />
+    <file src="System.Abstract\**\*.cs" target="src\System.Abstract" />
+  </files>
+</package>

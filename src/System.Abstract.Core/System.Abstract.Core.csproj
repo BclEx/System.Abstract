@@ -1,0 +1,263 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProductVersion>9.0.30729</ProductVersion>
+    <SchemaVersion>2.0</SchemaVersion>
+    <ProjectGuid>{67854C97-9DDA-44F3-B32B-20AAA69CEA99}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>System</RootNamespace>
+    <AssemblyName>System.Abstract</AssemblyName>
+    <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+    <SignAssembly>true</SignAssembly>
+    <TargetFrameworkProfile />
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>TRACE;DEBUG;COREINTERNAL</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
+    <AssemblyOriginatorKeyFile>BclEx.snk</AssemblyOriginatorKeyFile>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE;COREINTERNAL</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
+    <DocumentationFile>bin\Release\System.Abstract.XML</DocumentationFile>
+    <AssemblyOriginatorKeyFile>BclEx.snk</AssemblyOriginatorKeyFile>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="System" />
+    <Reference Include="System.configuration" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.Xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="+Polyfill\CoreExtensions+Lazy.cs" />
+    <Compile Include="+Polyfill\ExceptionExtensions.cs" />
+    <Compile Include="+Polyfill\Lazy.cs" />
+    <Compile Include="+Polyfill\Reflection\AssemblyExtensions.cs" />
+    <Compile Include="+Polyfill\Runtime\Collections\HashHelpers.cs" />
+    <Compile Include="+Polyfill\Runtime\CompilerServices\ConditionalWeakTable.cs" />
+    <Compile Include="+Polyfill\Runtime\CompilerServices\DependentHandle.cs" />
+    <Compile Include="+Polyfill\SR.cs" />
+    <Compile Include="+Polyfill\System_LazyDebugView.cs" />
+    <Compile Include="+Polyfill\Threading\LazyThreadSafetyMode.cs" />
+    <Compile Include="IServiceWrapper.cs" />
+    <Compile Include="AbstractExtensions.cs" />
+    <Compile Include="ServiceBus\IPublishingServiceBus.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="ServiceBus\IServiceBus.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="ServiceBus\IServiceBusCallback.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="ServiceBus\IServiceBusEndpoint.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="ServiceBus\IServiceBusHostRuntime.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="ServiceBus\IServiceMessageHandler.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="ServiceBus\LiteralServiceBusEndpoint.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="ServiceBus\AbstractExtensions.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="ServiceBus\ServiceBus.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="ServiceBus\ServiceBusManager.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="ServiceBus\ServiceBusManagerLogger.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="ServiceBus\ServiceBusMessageException.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="ServiceCache\AbstractExtensions.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="ServiceCache\CacheEntryRemovedCallback.cs" />
+    <Compile Include="ServiceCache\CacheEntryUpdateCallback.cs" />
+    <Compile Include="ServiceCache\CacheItemBuilder.cs" />
+    <Compile Include="ServiceCache\CacheItemDependency.cs" />
+    <Compile Include="ServiceCache\CacheItemHeader.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="ServiceCache\CacheItemPolicy.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="ServiceCache\CacheItemPriority.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="ServiceCache\IDistributedServiceCache.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="ServiceCache\IServiceCache.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="ServiceCache\ITouchableCacheItem.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="ServiceCache\ServiceCache.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="ServiceCache\ServiceCacheByDispatcher.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="ServiceCache\ServiceCacheForeignRegistration.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="ServiceCache\ServiceCacheManager.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="ServiceCache\ServiceCacheManagerLogger.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="ServiceCache\ServiceCacheNamespaceBehaviorWrapper.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="ServiceCache\ServiceCacheOptions.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="ServiceCache\ServiceCacheRegistrar.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="ServiceCache\ServiceCacheRegistration.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="ServiceCache\ServiceCacheSettings.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="ServiceLocator\AbstractExtensions.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="ServiceLocator\IgnoreServiceLocatorAttribute.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="ServiceLocator\IIgnoreServiceLocator.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="ServiceLocator\IServiceLocator.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="ServiceLocator\IServiceLocatorInterceptor.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="ServiceLocator\IServiceRegistrant.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="ServiceLocator\IServiceRegistrar.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="ServiceLocator\IServiceRegistrarBehaviorAccessor.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="ServiceLocator\ServiceDependencyAttribute.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="ServiceLocator\ServiceInjectionConstructorAttribute.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="ServiceLocator\ServiceInjectionMethodAttribute.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="ServiceLocator\ServiceLocator.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="ServiceLocator\ServiceLocatorManager.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="ServiceLocator\ServiceLocatorManagerLogger.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="ServiceLocator\ServiceLocatorNamespaceBehaviorWrapper.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="ServiceLocator\ServiceLocatorResolutionException.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="ServiceLocator\ServiceRegistrarLifetime.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="ServiceLocator\ServiceRegistrarNamespaceBehaviorWrapper.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="ServiceLocator\ServiceRegistration.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="ServiceLog\IServiceLog.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="ServiceLog\AbstractExtensions.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="ServiceLog\ServiceLogLevel.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="ServiceLog\ServiceLogManager.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="ServiceLog\ServiceLogManagerLogger.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="ServiceManagerBase.cs" />
+    <Compile Include="ServiceManagerLoggerBase.cs" />
+    <Compile Include="Local.Designer.cs">
+      <DependentUpon>Local.resx</DependentUpon>
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+    </Compile>
+    <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="ServiceMap\AbstractExtensions.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="ServiceMap\IServiceMap.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="ServiceMap\ServiceMapManager.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="ServiceMap\ServiceMapManagerLogger.cs">
+      <SubType>Code</SubType>
+    </Compile>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="BclEx.snk" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Local.resx">
+      <Generator>ResXFileCodeGenerator</Generator>
+      <LastGenOutput>Local.Designer.cs</LastGenOutput>
+    </EmbeddedResource>
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="ServiceCache\NewFolder1\" />
+  </ItemGroup>
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+</Project>
