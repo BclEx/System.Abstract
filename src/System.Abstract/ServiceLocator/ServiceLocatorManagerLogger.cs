@@ -58,7 +58,7 @@ namespace System.Abstract
         {
             if (Log != null)
                 Log.Information(@"
-Debugger set for ServiceLocatorManagerLogger. please set the following Flags to get greater detail:
+Logger set for ServiceLocatorManagerLogger. please set the following Flags to get greater detail:
  * ByIServiceRegistration - Verbose IServiceRegistration scan
  * ByNamingConvention - Verbose NamingConvention scan
  * ByTypeMatch - Verbose TypeMatch scan

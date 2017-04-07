@@ -24,9 +24,9 @@ THE SOFTWARE.
 */
 #endregion
 using System.Collections.Generic;
-using System.Runtime.CompilerServices;
 using System.Diagnostics;
 using System.Reflection;
+using System.Runtime.CompilerServices;
 using System.Text;
 using System.Threading;
 
@@ -364,9 +364,9 @@ namespace System.Abstract
         /// </summary>
         protected class SetupDescriptor : ISetupDescriptor
         {
-            private List<TServiceSetupAction> _actions = new List<TServiceSetupAction>();
-            private ServiceRegistration _registration;
-            private Action<ISetupDescriptor> _postAction;
+            List<TServiceSetupAction> _actions = new List<TServiceSetupAction>();
+            ServiceRegistration _registration;
+            Action<ISetupDescriptor> _postAction;
 
             /// <summary>
             /// Initializes a new instance of the <see cref="ServiceManagerBase&lt;TIService, TServiceSetupAction, TDebuggerFlags&gt;.SetupDescriptor"/> class.

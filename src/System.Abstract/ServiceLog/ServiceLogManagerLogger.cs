@@ -46,7 +46,7 @@ namespace System.Abstract
         {
             if (Log != null)
                 Log.Information(@"
-Debugger set for ServiceLogManagerLogger. please set the following Flags to get greater detail:
+Logger set for ServiceLogManagerLogger. please set the following Flags to get greater detail:
 ");
         }
     }

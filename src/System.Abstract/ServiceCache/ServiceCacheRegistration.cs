@@ -74,7 +74,7 @@ namespace System.Abstract
     /// </summary>
     public class ServiceCacheRegistration : IServiceCacheRegistration
     {
-        private Dictionary<Type, List<HandlerAction>> _handlers = new Dictionary<Type, List<HandlerAction>>();
+        Dictionary<Type, List<HandlerAction>> _handlers = new Dictionary<Type, List<HandlerAction>>();
 
         internal struct HandlerAction
         {
@@ -116,8 +116,8 @@ namespace System.Abstract
         /// </summary>
         public struct HandlerInfo
         {
-            private static MethodInfo _consumerInvokeInternalInfo = typeof(HandlerInfo).GetMethod("ConsumerInvokeInternal", BindingFlags.NonPublic | BindingFlags.Instance | BindingFlags.DeclaredOnly);
-            private static MethodInfo _queryInvokeInternalInfo = typeof(HandlerInfo).GetMethod("QueryInvokeInternal", BindingFlags.NonPublic | BindingFlags.Instance | BindingFlags.DeclaredOnly);
+            static MethodInfo _consumerInvokeInternalInfo = typeof(HandlerInfo).GetMethod("ConsumerInvokeInternal", BindingFlags.NonPublic | BindingFlags.Instance | BindingFlags.DeclaredOnly);
+            static MethodInfo _queryInvokeInternalInfo = typeof(HandlerInfo).GetMethod("QueryInvokeInternal", BindingFlags.NonPublic | BindingFlags.Instance | BindingFlags.DeclaredOnly);
 
             internal HandlerAction Action { get; set; }
 

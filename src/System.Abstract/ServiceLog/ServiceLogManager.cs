@@ -36,7 +36,7 @@ namespace System.Abstract
         /// <summary>
         /// EmptyServiceLog
         /// </summary>
-        internal class EmptyServiceLog : IServiceLog
+        public class EmptyServiceLog : IServiceLog
         {
             /// <summary>
             /// Gets the service object of the specified type.
