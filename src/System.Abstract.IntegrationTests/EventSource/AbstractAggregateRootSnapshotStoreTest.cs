@@ -18,5 +18,10 @@ namespace System.Abstract.IntegationTests
 		public void CreateMessage_Should_Return_Valid_Instance()
 		{
 		}
+
+        [TestMethod]
+        public void ATest()
+        {
+        }
 	}
 }
