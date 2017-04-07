@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="utf-8"?>
+<package>
+  <metadata>
+    <id>Unity.Abstract</id>
+    <version>0.5.0</version>
+    <title>Unity.Abstract</title>
+    <authors>Contoso</authors>
+    <owners>Contoso</owners>
+    <licenseUrl>http://www.opensource.org/licenses/mit-license.php</licenseUrl>
+    <requireLicenseAcceptance>false</requireLicenseAcceptance>
+    <description>This package contains a Unity implementation of the abstract ServiceLocator.</description>
+    <releaseNotes></releaseNotes>
+    <copyright>Copyright 2010</copyright>
+    <tags>unity servicelocator ioc di bclex</tags>
+    <language>en-US</language>
+    <dependencies>
+      <group>
+        <dependency id="System.Abstract" version="0.5.0" />
+      </group>
+      <group targetFramework="net35">
+        <dependency id="Unity" version="[2.1.505.2]" />
+      </group>
+      <group targetFramework="net40">
+        <dependency id="Unity" version="[2.1.505.2]" />
+      </group>
+      <group targetFramework="net45">
+        <dependency id="Unity" version="4.0.1" />
+      </group>
+    </dependencies>
+  </metadata>
+  <files>
+    <file src="_build\3.5\Microsoft.Practices.Unity.Abstract.dll" target="lib\net35" />
+    <file src="_build\4.0\Microsoft.Practices.Unity.Abstract.dll" target="lib\net40" />
+    <file src="_build\4.5\Microsoft.Practices.Unity.Abstract.dll" target="lib\net45" />
+    <file src="Microsoft.Practices.Unity.Abstract\**\*.cs" target="src\Microsoft.Practices.Unity.Abstract" />
+  </files>
+</package>

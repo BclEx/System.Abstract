@@ -7,7 +7,7 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "System.Abstract.Core", "Sys
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "System.Abstract.Tests", "System.Abstract.Tests\System.Abstract.Tests.csproj", "{5EBF06FF-F644-4EBC-A6A0-03EDC8973692}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "System.Abstract.IntegrationTests", "System.Abstract.IntegrationTests\System.Abstract.IntegrationTests.csproj", "{BFBF7C47-475A-4F74-81F6-4B775F521422}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "System.Abstract.AbstractTests", "System.Abstract.AbstractTests\System.Abstract.AbstractTests.csproj", "{BFBF7C47-475A-4F74-81F6-4B775F521422}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

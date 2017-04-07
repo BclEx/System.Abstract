@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="utf-8"?>
+<package>
+  <metadata>
+    <id>Castle.Windsor.Abstract</id>
+    <version>0.5.0</version>
+    <title>Castle.Windsor.Abstract</title>
+    <authors>Contoso</authors>
+    <owners>Contoso</owners>
+    <licenseUrl>http://www.opensource.org/licenses/mit-license.php</licenseUrl>
+    <requireLicenseAcceptance>false</requireLicenseAcceptance>
+    <description>This package contains a Castle Windsor implementation of the abstract ServiceLocator.</description>
+    <releaseNotes></releaseNotes>
+    <copyright>Copyright 2010</copyright>
+    <tags>castle windsor servicelocator ioc di bclex</tags>
+    <language>en-US</language>
+    <dependencies>
+      <group>
+        <dependency id="System.Abstract" version="0.5.0" />
+        <dependency id="Castle.Core" version="3.3.0" />
+        <dependency id="Castle.Windsor" version="3.4.0" />
+      </group>
+    </dependencies>
+  </metadata>
+  <files>
+    <file src="_build\3.5\Castle.Windsor.Abstract.dll" target="lib\net35" />
+    <file src="_build\4.0\Castle.Windsor.Abstract.dll" target="lib\net40" />
+    <file src="_build\4.5\Castle.Windsor.Abstract.dll" target="lib\net45" />
+    <file src="CastleWindsor.Abstract\**\*.cs" target="src\CastleWindsor.Abstract" />
+  </files>
+</package>

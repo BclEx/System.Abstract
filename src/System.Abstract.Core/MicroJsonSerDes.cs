@@ -33,6 +33,19 @@ namespace System.Abstract
     /// </summary>
     public class MicroJsonSerDes : ISerDes
     {
+        /// <summary>
+        /// Deserializes the specified type.
+        /// </summary>
+        /// <typeparam name="T"></typeparam>
+        /// <param name="type">The type.</param>
+        /// <param name="s">The s.</param>
+        /// <returns></returns>
+        /// <exception cref="System.ArgumentNullException">
+        /// type
+        /// or
+        /// s
+        /// </exception>
+        /// <exception cref="System.NotImplementedException"></exception>
         public T Des<T>(Type type, Stream s)
             where T : class
         {
@@ -43,6 +56,19 @@ namespace System.Abstract
             throw new NotImplementedException();
         }
 
+        /// <summary>
+        /// Deserializes the specified type.
+        /// </summary>
+        /// <typeparam name="T"></typeparam>
+        /// <param name="type">The type.</param>
+        /// <param name="s">The s.</param>
+        /// <returns></returns>
+        /// <exception cref="System.ArgumentNullException">
+        /// type
+        /// or
+        /// s
+        /// </exception>
+        /// <exception cref="System.NotImplementedException"></exception>
         public IEnumerable<T> DesMany<T>(Type type, Stream s)
             where T : class
         {
@@ -53,6 +79,21 @@ namespace System.Abstract
             throw new NotImplementedException();
         }
 
+        /// <summary>
+        /// Serializes the specified type.
+        /// </summary>
+        /// <typeparam name="T"></typeparam>
+        /// <param name="type">The type.</param>
+        /// <param name="s">The s.</param>
+        /// <param name="graph">The graph.</param>
+        /// <exception cref="System.ArgumentNullException">
+        /// type
+        /// or
+        /// s
+        /// or
+        /// graph
+        /// </exception>
+        /// <exception cref="System.NotImplementedException"></exception>
         public void Ser<T>(Type type, Stream s, T graph)
             where T : class
         {
@@ -65,6 +106,21 @@ namespace System.Abstract
             throw new NotImplementedException();;
         }
 
+        /// <summary>
+        /// Sers the many.
+        /// </summary>
+        /// <typeparam name="T"></typeparam>
+        /// <param name="type">The type.</param>
+        /// <param name="s">The s.</param>
+        /// <param name="graphs">The graphs.</param>
+        /// <exception cref="System.ArgumentNullException">
+        /// type
+        /// or
+        /// s
+        /// or
+        /// graphs
+        /// </exception>
+        /// <exception cref="System.NotImplementedException"></exception>
         public void SerMany<T>(Type type, Stream s, IEnumerable<T> graphs)
             where T : class
         {

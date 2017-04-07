@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="utf-8"?>
+<package>
+  <metadata>
+    <id>Autofac.Abstract</id>
+    <version>0.5.0</version>
+    <title>Autofac.Abstract</title>
+    <authors>Contoso</authors>
+    <owners>Contoso</owners>
+    <licenseUrl>http://www.opensource.org/licenses/mit-license.php</licenseUrl>
+    <requireLicenseAcceptance>false</requireLicenseAcceptance>
+    <description>This package contains an Autofac implementation of the abstract ServiceLocator.</description>
+    <releaseNotes></releaseNotes>
+    <copyright>Copyright 2010</copyright>
+    <tags>autofac servicelocator ioc di bclex</tags>
+    <language>en-US</language>
+    <dependencies>
+      <group>
+        <dependency id="System.Abstract" version="0.5.0" />
+      </group>
+      <group targetFramework="net35">
+        <dependency id="Autofac" version="[2.6.3.862]" />
+      </group>
+      <group targetFramework="net40">
+        <dependency id="Autofac" version="[3.5.2]" />
+      </group>
+      <group targetFramework="net45">
+        <dependency id="Autofac" version="4.5.0" />
+      </group>
+    </dependencies>
+  </metadata>
+  <files>
+    <file src="_build\3.5\Autofac.Abstract.dll" target="lib\net35" />
+    <file src="_build\4.0\Autofac.Abstract.dll" target="lib\net40" />
+    <file src="_build\4.5\Autofac.Abstract.dll" target="lib\net45" />
+    <file src="Autofac.Abstract\**\*.cs" target="src\Autofac.Abstract" />
+  </files>
+</package>

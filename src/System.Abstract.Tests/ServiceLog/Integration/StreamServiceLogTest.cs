@@ -1,9 +1,11 @@
 ﻿using Contoso.Abstract;
+using Microsoft.VisualStudio.TestTools.UnitTesting;
 using System.Abstract.IntegationTests.ServiceLog;
 using System.IO;
 
 namespace System.Abstract.Tests.ServiceLog.Integration
 {
+    [TestClass]
     public class StreamServiceLogTest : AbstractServiceLogTest
     {
         public StreamServiceLogTest()

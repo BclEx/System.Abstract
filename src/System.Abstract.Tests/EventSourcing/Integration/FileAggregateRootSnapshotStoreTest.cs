@@ -9,5 +9,8 @@ namespace System.Abstract.Tests.EventSourcing.Integration
     public class FileAggregateRootSnapshotStoreTest : AbstractAggregateRootSnapshotStoreTest
     {
         protected override IAggregateRootSnapshotStore CreateAggregateRootSnapshotStore() { return new FileAggregateRootSnapshotStore(); }
+
+        [TestMethod, TestCategory("File")]
+        public override void CreateMessage_Should_Return_Valid_Instance() { base.CreateMessage_Should_Return_Valid_Instance(); }
     }
 }

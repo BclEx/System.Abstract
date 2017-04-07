@@ -37,6 +37,18 @@ namespace System.Abstract
     {
         readonly BinaryFormatter _binaryFormatter = new BinaryFormatter();
 
+        /// <summary>
+        /// Deserializes the specified type.
+        /// </summary>
+        /// <typeparam name="T"></typeparam>
+        /// <param name="type">The type.</param>
+        /// <param name="s">The s.</param>
+        /// <returns></returns>
+        /// <exception cref="System.ArgumentNullException">
+        /// type
+        /// or
+        /// s
+        /// </exception>
         public T Des<T>(Type type, Stream s)
             where T : class
         {
@@ -47,6 +59,18 @@ namespace System.Abstract
             return (_binaryFormatter.Deserialize(s) as T);
         }
 
+        /// <summary>
+        /// Deserializes the specified type.
+        /// </summary>
+        /// <typeparam name="T"></typeparam>
+        /// <param name="type">The type.</param>
+        /// <param name="s">The s.</param>
+        /// <returns></returns>
+        /// <exception cref="System.ArgumentNullException">
+        /// type
+        /// or
+        /// s
+        /// </exception>
         public IEnumerable<T> DesMany<T>(Type type, Stream s)
             where T : class
         {
@@ -60,6 +84,20 @@ namespace System.Abstract
             return graphs.Cast<T>();
         }
 
+        /// <summary>
+        /// Serializes the specified type.
+        /// </summary>
+        /// <typeparam name="T"></typeparam>
+        /// <param name="type">The type.</param>
+        /// <param name="s">The s.</param>
+        /// <param name="graph">The graph.</param>
+        /// <exception cref="System.ArgumentNullException">
+        /// type
+        /// or
+        /// s
+        /// or
+        /// graph
+        /// </exception>
         public void Ser<T>(Type type, Stream s, T graph)
             where T : class
         {
@@ -72,6 +110,20 @@ namespace System.Abstract
             _binaryFormatter.Serialize(s, graph);
         }
 
+        /// <summary>
+        /// Sers the many.
+        /// </summary>
+        /// <typeparam name="T"></typeparam>
+        /// <param name="type">The type.</param>
+        /// <param name="s">The s.</param>
+        /// <param name="graphs">The graphs.</param>
+        /// <exception cref="System.ArgumentNullException">
+        /// type
+        /// or
+        /// s
+        /// or
+        /// graphs
+        /// </exception>
         public void SerMany<T>(Type type, Stream s, IEnumerable<T> graphs)
             where T : class
         {

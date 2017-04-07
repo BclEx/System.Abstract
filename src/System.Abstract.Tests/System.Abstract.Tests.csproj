@@ -92,9 +92,9 @@
       <Project>{67854c97-9dda-44f3-b32b-20aaa69cea99}</Project>
       <Name>System.Abstract.Core</Name>
     </ProjectReference>
-    <ProjectReference Include="..\System.Abstract.IntegrationTests\System.Abstract.IntegrationTests.csproj">
+    <ProjectReference Include="..\System.Abstract.AbstractTests\System.Abstract.AbstractTests.csproj">
       <Project>{bfbf7c47-475a-4f74-81f6-4b775f521422}</Project>
-      <Name>System.Abstract.IntegationTests</Name>
+      <Name>System.Abstract.AbstractTests</Name>
     </ProjectReference>
     <ProjectReference Include="..\System.Abstract\System.Abstract.csproj">
       <Project>{a44e9d89-bff2-41a4-aadc-3c2bdfdaeeb1}</Project>
