@@ -1,7 +1,7 @@
 #region Foreign-License
 // .Net40 Polyfill
 #endregion
-#if POLY35
+#if NET35
 using System.Runtime.InteropServices;
 using System.Security;
 using System.Collections;

@@ -45,7 +45,7 @@ namespace System
         /// </returns>
         public static bool IsCritical(this Exception exception)
         {
-#if !POLY35
+#if !NET35
             return (exception is AccessViolationException || exception is NullReferenceException || exception is StackOverflowException || exception is OutOfMemoryException || exception is ThreadAbortException);
 #else
             return (exception is AccessViolationException || exception is NullReferenceException || exception is StackOverflowException || exception is OutOfMemoryException || exception is ExecutionEngineException || exception is ThreadAbortException);

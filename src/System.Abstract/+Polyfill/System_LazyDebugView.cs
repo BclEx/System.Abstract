@@ -1,7 +1,7 @@
 #region Foreign-License
 // .Net40 Kludge
 #endregion
-#if POLY35
+#if NET35
 using System.Threading;
 
 namespace System

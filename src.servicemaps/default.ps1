@@ -3,7 +3,7 @@ properties {
   $parent_dir = resolve-path ..
   $build_dir = "$base_dir\_build"
   $tools_dir = "$parent_dir\tools"
-  $sln_file = "$base_dir\ServiceLocators.sln"
+  $sln_file = "$base_dir\ServiceMaps.sln"
   $run_tests = $false
 }
 Framework "4.0"
