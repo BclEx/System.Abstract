@@ -66,7 +66,17 @@
     <Compile Include="CastleWindsorServiceRegistrarTest.cs" />
     <Compile Include="AutofacServiceLocatorTest.cs" />
     <Compile Include="AutofacServiceRegistrarTest.cs" />
+    <Compile Include="HiroServiceLocatorTest.cs" />
+    <Compile Include="MunqServiceLocatorTest.cs" />
+    <Compile Include="NinjectServiceLocatorTest.cs" />
+    <Compile Include="SpringServiceLocatorTest.cs" />
+    <Compile Include="StructureMapServiceLocatorTest.cs" />
     <Compile Include="UnityServiceLocatorTest.cs" />
+    <Compile Include="HiroServiceRegistrarTest.cs" />
+    <Compile Include="MunqServiceRegistrarTest.cs" />
+    <Compile Include="NinjectServiceRegistrarTest.cs" />
+    <Compile Include="SpringServiceRegistrarTest.cs" />
+    <Compile Include="StructureMapServiceRegistrarTest.cs" />
     <Compile Include="UnityServiceRegistrarTest.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
@@ -78,6 +88,26 @@
     <ProjectReference Include="..\Castle.Windsor.Abstract\Castle.Windsor.Abstract.csproj">
       <Project>{c03a8167-f65e-4271-978c-e72914c9c311}</Project>
       <Name>Castle.Windsor.Abstract</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Hiro.Abstract\Hiro.Abstract.csproj">
+      <Project>{60e87e13-151e-40a4-a896-d1c3e2b4dee7}</Project>
+      <Name>Hiro.Abstract</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Munq.Abstract\Munq.Abstract.csproj">
+      <Project>{492a084b-b89a-49d1-b52a-285d69730a6c}</Project>
+      <Name>Munq.Abstract</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Ninject.Abstract\Ninject.Abstract.csproj">
+      <Project>{03a4ae50-0401-4ddb-96e8-b90a5d64fa93}</Project>
+      <Name>Ninject.Abstract</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Spring.Abstract\Spring.Abstract.csproj">
+      <Project>{08d54c60-5744-423f-a700-9abe13c62b20}</Project>
+      <Name>Spring.Abstract</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\StructureMap.Abstract\StructureMap.Abstract.csproj">
+      <Project>{48dc2445-a460-4b42-b175-10b0924b248c}</Project>
+      <Name>StructureMap.Abstract</Name>
     </ProjectReference>
     <ProjectReference Include="..\Unity.Abstract\Unity.Abstract.csproj">
       <Project>{21fce5ea-3c6d-43d7-9984-1278307ab77e}</Project>
