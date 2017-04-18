@@ -46,9 +46,9 @@ namespace Autofac.Abstract
     [Serializable]
     public class AutofacServiceLocator : IAutofacServiceLocator, IDisposable, ServiceLocatorManager.ISetupRegistration
     {
-        private IContainer _container;
-        private AutofacServiceRegistrar _registrar;
-        private Func<IContainer> _containerBuilder;
+        IContainer _container;
+        AutofacServiceRegistrar _registrar;
+        readonly Func<IContainer> _containerBuilder;
 
         static AutofacServiceLocator() { ServiceLocatorManager.EnsureRegistration(); }
         /// <summary>
@@ -94,7 +94,7 @@ namespace Autofac.Abstract
                 var container = _container;
                 _container = null;
                 _registrar = null;
-                _containerBuilder = null;
+                //_containerBuilder = null;
                 // prevent cyclical dispose
                 if (container != null)
                     container.Dispose();

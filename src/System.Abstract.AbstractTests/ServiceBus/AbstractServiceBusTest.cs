@@ -13,14 +13,14 @@ namespace System.Abstract.IntegationTests.ServiceBus
             Bus = CreateServiceBus();
         }
 
-        [TestMethod, TestCategory("Integration")]
+        [TestMethod]
         public virtual void CreateMessage_Should_Return_Valid_Instance()
         {
             var message = Bus.CreateMessage<TestMessage>(null);
             Assert.IsNotNull(message);
         }
 
-        [TestMethod, TestCategory("Integration")]
+        [TestMethod]
         public virtual void CreateMessage_With_Action_Should_Return_Valid_Instance()
         {
             var message = Bus.CreateMessage<TestMessage>(x => x.Body = "APPLY");
@@ -28,7 +28,7 @@ namespace System.Abstract.IntegationTests.ServiceBus
             Assert.AreEqual(message.Body, "APPLY");
         }
 
-        [TestMethod, TestCategory("Integration")]
+        [TestMethod]
         public virtual void Send_Should_Return_Valid_Instance()
         {
         }

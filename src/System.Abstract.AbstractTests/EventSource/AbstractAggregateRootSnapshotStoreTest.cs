@@ -14,7 +14,7 @@ namespace System.Abstract.IntegationTests
 			AggregateRootSnapshotStore = CreateAggregateRootSnapshotStore();
 		}
 
-        [TestMethod, TestCategory("Integration")]
+        [TestMethod]
 		public virtual void CreateMessage_Should_Return_Valid_Instance()
 		{
 		}

@@ -6,7 +6,7 @@ namespace System.Abstract.Tests.ServiceLocator
     [TestClass]
     public class ServiceLocatorResolutionExceptionTest
     {
-        [TestMethod, ExpectedException(typeof(ServiceLocatorResolutionException), "provider")]
+        [TestMethod, TestCategory("Core: ServiceLocator"), ExpectedException(typeof(ServiceLocatorResolutionException), "provider")]
         public void Create_Instance_With_Type()
         {
             var exception = new ServiceLocatorResolutionException(typeof(string));
@@ -15,7 +15,7 @@ namespace System.Abstract.Tests.ServiceLocator
             throw exception;
         }
 
-        [TestMethod, ExpectedException(typeof(ServiceLocatorResolutionException), "provider")]
+        [TestMethod, TestCategory("Core: ServiceLocator"), ExpectedException(typeof(ServiceLocatorResolutionException), "provider")]
         public void Create_Instance_With_Type_And_InnerException()
         {
             var operationException = new InvalidOperationException();

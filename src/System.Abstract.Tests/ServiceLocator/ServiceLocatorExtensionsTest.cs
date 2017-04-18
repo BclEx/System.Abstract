@@ -8,7 +8,7 @@ namespace System.Abstract.Tests.ServiceLocator
     [TestClass]
     public class ServiceLocatorExtensionsTest
     {
-        [TestMethod]
+        [TestMethod, TestCategory("Core: ServiceLocator")]
         public void GetServiceLocatorGeneric_Returns_Generic()
         {
             var serviceLocator = new StubIServiceLocator();
@@ -17,7 +17,7 @@ namespace System.Abstract.Tests.ServiceLocator
             Assert.IsTrue(typeof(IServiceLocator).IsAssignableFrom(resolvedServiceLocator.GetType()));
         }
 
-        [TestMethod]
+        [TestMethod, TestCategory("Core: ServiceLocator")]
         public void ResolveGeneric_With_ServiceType_Returns_Generic()
         {
             var testServiceType = typeof(TestService);
@@ -29,7 +29,7 @@ namespace System.Abstract.Tests.ServiceLocator
             Assert.AreSame(testServiceType, serviceLocator.Resolve<TestService>(testServiceType).GetType());
         }
 
-        [TestMethod]
+        [TestMethod, TestCategory("Core: ServiceLocator")]
         public void ResolveGeneric_With_ServiceType_And_Name_Returns_Generic()
         {
             var testServiceType = typeof(TestService);
@@ -41,7 +41,7 @@ namespace System.Abstract.Tests.ServiceLocator
             Assert.AreSame(testServiceType, serviceLocator.Resolve<TestService>(testServiceType, "name").GetType());
         }
 
-        [TestMethod]
+        [TestMethod, TestCategory("Core: ServiceLocator")]
         public void ResolveAll_With_ServiceType_Returns_Collection()
         {
             var testServiceType = typeof(TestService);

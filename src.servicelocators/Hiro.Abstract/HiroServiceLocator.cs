@@ -27,9 +27,9 @@ using System;
 using System.Linq;
 using System.Abstract;
 using System.Collections.Generic;
-using Hiro;
 using Hiro.Containers;
-namespace Contoso.Abstract
+
+namespace Hiro.Abstract
 {
     /// <summary>
     /// IHiroServiceLocator
@@ -52,9 +52,9 @@ namespace Contoso.Abstract
     [Serializable]
     public class HiroServiceLocator : IHiroServiceLocator, IDisposable, ServiceLocatorManager.ISetupRegistration
     {
-        private IMicroContainer _container;
-        private HiroServiceRegistrar _registrar;
-        private Func<IMicroContainer> _containerBuilder;
+        IMicroContainer _container;
+        HiroServiceRegistrar _registrar;
+        Func<IMicroContainer> _containerBuilder;
 
         static HiroServiceLocator() { ServiceLocatorManager.EnsureRegistration(); }
         /// <summary>

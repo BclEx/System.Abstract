@@ -10,7 +10,7 @@ namespace System.Abstract.Tests.EventSourcing.Integration
     {
 		protected override IEventStore CreateEventStore() { return new FileEventStore(); }
 
-        [TestMethod, TestCategory("File")]
+        [TestMethod, TestCategory("EventSource: File")]
         public override void CreateMessage_Should_Return_Valid_Instance() { base.CreateMessage_Should_Return_Valid_Instance(); }
     }
 }

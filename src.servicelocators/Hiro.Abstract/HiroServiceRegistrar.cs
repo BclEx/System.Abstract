@@ -27,9 +27,9 @@ using System;
 using System.Linq;
 using System.Abstract;
 using System.Collections.Generic;
-using Hiro;
 using Hiro.Containers;
-namespace Contoso.Abstract
+
+namespace Hiro.Abstract
 {
     /// <summary>
     /// IHiroServiceRegistrar
@@ -41,9 +41,9 @@ namespace Contoso.Abstract
     /// </summary>
     public class HiroServiceRegistrar : IHiroServiceRegistrar, IDisposable, ICloneable, IServiceRegistrarBehaviorAccessor
     {
-        private HiroServiceLocator _parent;
-        private DependencyMap _builder;
-        private IMicroContainer _container;
+        readonly HiroServiceLocator _parent;
+        readonly DependencyMap _builder;
+        IMicroContainer _container;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="HiroServiceRegistrar"/> class.

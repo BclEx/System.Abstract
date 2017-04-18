@@ -6,11 +6,11 @@ using System.Security;
 // General Information about an assembly is controlled through the following 
 // set of attributes. Change these attribute values to modify the information
 // associated with an assembly.
-[assembly: AssemblyTitle("Contoso.Abstract.Ninject")]
+[assembly: AssemblyTitle("Ninject.Abstract")]
 [assembly: AssemblyDescription("This package contains a Ninject implementation of the abstract ServiceLocator.")]
 [assembly: AssemblyConfiguration("")]
 [assembly: AssemblyCompany("Contoso")]
-[assembly: AssemblyProduct("BclEx-Abstract.Ninject")]
+[assembly: AssemblyProduct("Ninject.Abstract")]
 [assembly: AssemblyCopyright("Copyright © Contoso 2010")]
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]

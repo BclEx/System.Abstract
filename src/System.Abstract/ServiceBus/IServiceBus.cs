@@ -50,6 +50,6 @@ namespace System.Abstract
         /// Replies the specified messages.
         /// </summary>
         /// <param name="messages">The messages.</param>
-		void Reply(params object[] messages);
+        void Reply(params object[] messages);
     }
 }

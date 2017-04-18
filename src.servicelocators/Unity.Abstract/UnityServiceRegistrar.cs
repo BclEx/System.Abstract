@@ -46,8 +46,8 @@ namespace Microsoft.Practices.Unity.Abstract
     /// </summary>
     internal sealed class UnityServiceRegistrar : IUnityServiceRegistrar, IDisposable, ICloneable, IServiceRegistrarBehaviorAccessor
     {
-        UnityServiceLocator _parent;
-        IUnityContainer _container;
+        readonly UnityServiceLocator _parent;
+        readonly IUnityContainer _container;
 
         public UnityServiceRegistrar(UnityServiceLocator parent, IUnityContainer container)
         {

@@ -3,7 +3,7 @@ properties {
   $parent_dir = resolve-path ..
   $build_dir = "$base_dir\_build"
   $tools_dir = "$parent_dir\tools"
-  $sln_file = "$base_dir\ServiceLocator.sln"
+  $sln_file = "$base_dir\ServiceLocators.sln"
   $run_tests = $false
 }
 Framework "4.0"
@@ -19,7 +19,7 @@ task Init -depends Clean {
 }
 
 task Compile -depends Init {
-	msbuild $sln_file /target:Rebuild /p:"OutDir=$build_dir\3.5;Configuration=Debug;TargetFrameworkVersion=v3.5" /p:"DefineConstants=POLY35" /m
+	msbuild $sln_file /target:Rebuild /p:"OutDir=$build_dir\3.5;Configuration=Debug;TargetFrameworkVersion=v3.5;DefineConstants=NET35" /m
 	msbuild $sln_file /target:Rebuild /p:"OutDir=$build_dir\4.0;Configuration=Debug;TargetFrameworkVersion=v4.0" /m
 	msbuild $sln_file /target:Rebuild /p:"OutDir=$build_dir\4.5;Configuration=Debug;TargetFrameworkVersion=v4.5;TargetFrameworkProfile=" /m
 }
@@ -27,7 +27,7 @@ task Compile -depends Init {
 task Test -depends Compile -precondition { return $run_tests } {
 }
 
-task Dependency {
+task Dependency -precondition { return $false } {
 	$package_files = @(Get-ChildItem $base_dir -include *packages.config -recurse)
 	foreach ($package in $package_files)
 	{

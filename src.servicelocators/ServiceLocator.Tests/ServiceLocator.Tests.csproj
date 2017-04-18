@@ -62,12 +62,24 @@
     </Otherwise>
   </Choose>
   <ItemGroup>
+    <Compile Include="CastleWindsorServiceLocatorTest.cs" />
+    <Compile Include="CastleWindsorServiceRegistrarTest.cs" />
+    <Compile Include="AutofacServiceLocatorTest.cs" />
+    <Compile Include="AutofacServiceRegistrarTest.cs" />
     <Compile Include="UnityServiceLocatorTest.cs" />
     <Compile Include="UnityServiceRegistrarTest.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\Unity-Abstract\Unity.Abstract.csproj">
+    <ProjectReference Include="..\Autofac.Abstract\Autofac.Abstract.csproj">
+      <Project>{3ab44594-75f2-4d20-8450-f3fa9d4de763}</Project>
+      <Name>Autofac.Abstract</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Castle.Windsor.Abstract\Castle.Windsor.Abstract.csproj">
+      <Project>{c03a8167-f65e-4271-978c-e72914c9c311}</Project>
+      <Name>Castle.Windsor.Abstract</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Unity.Abstract\Unity.Abstract.csproj">
       <Project>{21fce5ea-3c6d-43d7-9984-1278307ab77e}</Project>
       <Name>Unity.Abstract</Name>
     </ProjectReference>

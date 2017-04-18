@@ -10,11 +10,11 @@ namespace System.Abstract.Tests.ServiceLocator.Integration
         protected override IServiceLocator CreateServiceLocator() { return new MicroServiceLocator(); }
 
         #region Enumerate
-        
-        [TestMethod, TestCategory("Micro")]
+
+        [TestMethod, TestCategory("ServiceLocator: Micro")]
         public override void HasRegistered() { base.HasRegistered(); }
 
-        [TestMethod, TestCategory("Micro")]
+        [TestMethod, TestCategory("ServiceLocator: Micro")]
         public override void GetRegistrationsFor() { base.GetRegistrationsFor(); }
 
         #endregion
@@ -23,49 +23,49 @@ namespace System.Abstract.Tests.ServiceLocator.Integration
         #endregion
 
         #region Register Implementation
-        
-        [TestMethod, TestCategory("Micro")]
+
+        [TestMethod, TestCategory("ServiceLocator: Micro")]
         public override void Register_With_Specified_Type_Should_Return_Same_Type() { base.Register_With_Specified_Type_Should_Return_Same_Type(); }
-        
-        [TestMethod, TestCategory("Micro")]
+
+        [TestMethod, TestCategory("ServiceLocator: Micro")]
         public override void Register_With_Implementation_Type_Should_Return_Same_Type() { base.Register_With_Implementation_Type_Should_Return_Same_Type(); }
-        
-        [TestMethod, TestCategory("Micro")]
+
+        [TestMethod, TestCategory("ServiceLocator: Micro")]
         public override void Register_With_Keyed_Type_Should_Return_Same_Type() { base.Register_With_Keyed_Type_Should_Return_Same_Type(); }
-        
-        [TestMethod, TestCategory("Micro")]
+
+        [TestMethod, TestCategory("ServiceLocator: Micro")]
         public override void Register_With_Specified_Service_And_Type_Should_Return_Same_Type() { base.Register_With_Specified_Service_And_Type_Should_Return_Same_Type(); }
-        
-        [TestMethod, TestCategory("Micro")]
+
+        [TestMethod, TestCategory("ServiceLocator: Micro")]
         public override void Register_With_Specified_Service_Should_Return_Same_Type() { base.Register_With_Specified_Service_Should_Return_Same_Type(); }
         
         #endregion
 
         #region Register Instance
 
-        [TestMethod, TestCategory("Micro")]
+        [TestMethod, TestCategory("ServiceLocator: Micro")]
         public override void RegisterInstance_Generic_Should_Return_Same_Object() { }
 
-        [TestMethod, TestCategory("Micro")]
+        [TestMethod, TestCategory("ServiceLocator: Micro")]
         public override void RegisterInstance_GenericNamed_Should_Return_Same_Object() { }
 
-        [TestMethod, TestCategory("Micro")]
+        [TestMethod, TestCategory("ServiceLocator: Micro")]
         public override void RegisterInstance_Should_Return_Same_Object() { }
-        
-        [TestMethod, TestCategory("Micro")]
+
+        [TestMethod, TestCategory("ServiceLocator: Micro")]
         public override void RegisterInstance_Named_Should_Return_Same_Object() { }
 
-        [TestMethod, TestCategory("Micro")]
+        [TestMethod, TestCategory("ServiceLocator: Micro")]
         public override void RegisterInstance_Should_Return_Same_Object_For_Same_Type() { }
 
         #endregion
 
         #region Register Method
 
-        [TestMethod, TestCategory("Micro")]
+        [TestMethod, TestCategory("ServiceLocator: Micro")]
         public override void Register_Generic_With_FactoryMethod_Should_Return_Result_From_Factory() { }
 
-        [TestMethod, TestCategory("Micro")]
+        [TestMethod, TestCategory("ServiceLocator: Micro")]
         public override void Register_With_FactoryMethod_Should_Return_Result_From_Factory() { }
 
         #endregion

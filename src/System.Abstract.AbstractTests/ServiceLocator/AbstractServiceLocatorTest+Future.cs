@@ -13,7 +13,7 @@ namespace System.Abstract.IntegationTests.ServiceLocator
             //Registrar.Register<ITestNamedService, TestNamedService2>(typeof(TestNamedService2).FullName);
         }
 
-        [TestMethod, TestCategory("Integration")]
+        [TestMethod]
         public virtual void Future_Registration_Resolve_Should_Return_Valid_Instance()
         {
             var serviceType = typeof(TestServiceFuture);
@@ -35,7 +35,7 @@ namespace System.Abstract.IntegationTests.ServiceLocator
             Assert.AreSame(futureServiceType, futureServiceN.GetType());
         }
 
-        [TestMethod, TestCategory("Integration")]
+        [TestMethod]
         public virtual void Future_Registration_Ask_For_Named_Instance()
         {
             RegisterForFutureTests();
@@ -53,7 +53,7 @@ namespace System.Abstract.IntegationTests.ServiceLocator
             Assert.AreSame(serviceN2.GetType(), serviceType2);
         }
 
-        [TestMethod, TestCategory("Integration")]
+        [TestMethod]
         public virtual void Future_Registration_ResolveAll_Should_Return_All_Registered_Services()
         {
             RegisterForFutureTests();

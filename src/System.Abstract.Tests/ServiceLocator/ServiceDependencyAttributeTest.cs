@@ -22,21 +22,21 @@ namespace System.Abstract.Tests.ServiceLocator
         //    public void Method([ServiceDependency, ServiceDependency] string dependency) { }
         //}
 
-        //[TestMethod, ExpectedException(typeof(ServiceLocatorResolutionException))]
+        //[TestMethod, TestCategory("Core: ServiceLocator"), ExpectedException(typeof(ServiceLocatorResolutionException))]
         //public void Resolve_Property_With_Two_Attributes_Should_Throw()
         //{
         //    var property = typeof(TestServiceDependencyWithTwoAttributes).GetProperty("Dependency");
         //    ServiceDependencyAttribute.GetServiceDependencies(property);
         //}
 
-        //[TestMethod, ExpectedException(typeof(ServiceLocatorResolutionException))]
+        //[TestMethod, TestCategory("Core: ServiceLocator"), ExpectedException(typeof(ServiceLocatorResolutionException))]
         //public void Resolve_Parameter_With_Two_Attributes_Should_Throw()
         //{
         //    var parameter = typeof(TestServiceDependencyWithTwoAttributes).GetMethod("DependencyMethod").GetParameters()[0];
         //    ServiceDependencyAttribute.GetServiceDependencies(parameter);
         //}
 
-        [TestMethod]
+        [TestMethod, TestCategory("Core: ServiceLocator")]
         public void Resolve_With_No_Dependency()
         {
             var property = typeof(TestServiceDependency).GetProperty("NoDependency");
@@ -50,7 +50,7 @@ namespace System.Abstract.Tests.ServiceLocator
             Assert.IsTrue(parameterDependencies.Count() == 0);
         }
 
-        [TestMethod]
+        [TestMethod, TestCategory("Core: ServiceLocator")]
         public void Resolve_With_Dependency()
         {
             var property = typeof(TestServiceDependency).GetProperty("Dependency");

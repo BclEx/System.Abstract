@@ -1,21 +1,22 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <Project ToolsVersion="4.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <PropertyGroup>
-    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
-    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <Configuration Condition="'$(Configuration)' == ''">Debug</Configuration>
+    <Platform Condition="'$(Platform)' == ''">AnyCPU</Platform>
     <ProductVersion>8.0.30703</ProductVersion>
     <SchemaVersion>2.0</SchemaVersion>
     <ProjectGuid>{60E87E13-151E-40A4-A896-D1C3E2B4DEE7}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>Contoso.Abstract</RootNamespace>
-    <AssemblyName>Contoso.Abstract.Hiro</AssemblyName>
+    <RootNamespace>Hiro.Abstract</RootNamespace>
+    <AssemblyName>Hiro.Abstract</AssemblyName>
     <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
-    <SignAssembly>true</SignAssembly>
+    <SignAssembly Condition="'$(TargetFrameworkVersion)'=='v3.5'">true</SignAssembly>
     <NoWarn>1685</NoWarn>
+    <TargetFrameworkProfile />
   </PropertyGroup>
-  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Debug|AnyCPU'">
     <DebugSymbols>true</DebugSymbols>
     <DebugType>full</DebugType>
     <Optimize>false</Optimize>
@@ -24,18 +25,23 @@
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
     <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
-    <DocumentationFile>bin\Debug\Contoso.Abstract.Hiro.XML</DocumentationFile>
+    <DocumentationFile>bin\Debug\Hiro.Abstract.xml</DocumentationFile>
     <AssemblyOriginatorKeyFile>BclEx.snk</AssemblyOriginatorKeyFile>
+    <Prefer32Bit>false</Prefer32Bit>
   </PropertyGroup>
-  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Release|AnyCPU'">
     <DebugType>pdbonly</DebugType>
     <Optimize>true</Optimize>
     <OutputPath>bin\Release\</OutputPath>
     <DefineConstants>TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
-    <DocumentationFile>bin\Release\Contoso.Abstract.Hiro.XML</DocumentationFile>
+    <DocumentationFile>bin\Release\Hiro.Abstract.xml</DocumentationFile>
     <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
+    <AssemblyOriginatorKeyFile>BclEx.snk</AssemblyOriginatorKeyFile>
+    <Prefer32Bit>false</Prefer32Bit>
+  </PropertyGroup>
+  <PropertyGroup>
     <AssemblyOriginatorKeyFile>BclEx.snk</AssemblyOriginatorKeyFile>
   </PropertyGroup>
   <ItemGroup>
@@ -44,12 +50,12 @@
   <Choose>
     <When Condition="'$(TargetFrameworkVersion)'=='v3.5'">
       <ItemGroup>
-    <Reference Include="Hiro">
-      <HintPath>..\packages\Hiro.1.0.3\lib\Hiro.dll</HintPath>
-    </Reference>
-    <Reference Include="Hiro.Containers">
-      <HintPath>..\packages\Hiro.1.0.3\lib\Hiro.Containers.dll</HintPath>
-    </Reference>
+        <Reference Include="Hiro">
+          <HintPath>..\packages\Hiro.1.0.3\lib\net35\Hiro.dll</HintPath>
+        </Reference>
+        <Reference Include="Hiro.Containers">
+          <HintPath>..\packages\Hiro.1.0.3\lib\net35\Hiro.Containers.dll</HintPath>
+        </Reference>
         <Reference Include="System.Abstract">
           <HintPath>..\packages\System.Abstract.0.5.0\lib\net35\System.Abstract.dll</HintPath>
           <Private>True</Private>
@@ -58,9 +64,12 @@
     </When>
     <When Condition="'$(TargetFrameworkVersion)'=='v4.0'">
       <ItemGroup>
-    <Reference Include="Hiro">
-      <HintPath>..\packages\Hiro.1.0.5.17956\lib\Hiro.dll</HintPath>
-    </Reference>
+        <Reference Include="Hiro">
+          <HintPath>..\packages\Hiro.1.0.5.17956\lib\net40\Hiro.dll</HintPath>
+        </Reference>
+        <Reference Include="Hiro.Containers">
+          <HintPath>..\packages\Hiro.Containers.1.0.2.29326\lib\net20\Hiro.Containers.dll</HintPath>
+        </Reference>
         <Reference Include="System.Abstract">
           <HintPath>..\packages\System.Abstract.0.5.0\lib\net40\System.Abstract.dll</HintPath>
           <Private>True</Private>
@@ -69,9 +78,12 @@
     </When>
     <Otherwise>
       <ItemGroup>
-    <Reference Include="Hiro">
-      <HintPath>..\packages\Hiro.1.0.5.17956\lib\net40\Hiro.dll</HintPath>
-    </Reference>
+        <Reference Include="Hiro">
+          <HintPath>..\packages\Hiro.1.0.5.17956\lib\net45\Hiro.dll</HintPath>
+        </Reference>
+        <Reference Include="Hiro.Containers">
+          <HintPath>..\packages\Hiro.Containers.1.0.2.29326\lib\net20\Hiro.Containers.dll</HintPath>
+        </Reference>
         <Reference Include="System.Abstract">
           <HintPath>..\packages\System.Abstract.0.5.0\lib\net45\System.Abstract.dll</HintPath>
           <Private>True</Private>
@@ -86,6 +98,7 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="BclEx.snk" />
+    <None Include="Hiro.Abstract.nuspec" />
     <None Include="packages.config" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

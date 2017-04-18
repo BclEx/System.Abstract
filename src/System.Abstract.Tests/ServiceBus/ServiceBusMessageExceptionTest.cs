@@ -6,7 +6,7 @@ namespace System.Abstract.Tests.ServiceBus
     [TestClass]
     public class ServiceBusMessageExceptionTest
     {
-        [TestMethod, ExpectedException(typeof(ServiceBusMessageException), "provider")]
+        [TestMethod, TestCategory("Core: ServiceBus"), ExpectedException(typeof(ServiceBusMessageException), "provider")]
         public void Create_Instance_With_Type()
         {
             var exception = new ServiceBusMessageException(typeof(string));
@@ -15,7 +15,7 @@ namespace System.Abstract.Tests.ServiceBus
             throw exception;
         }
 
-        [TestMethod, ExpectedException(typeof(ServiceBusMessageException), "provider")]
+        [TestMethod, TestCategory("Core: ServiceBus"), ExpectedException(typeof(ServiceBusMessageException), "provider")]
         public void Create_Instance_With_Type_And_InnerException()
         {
             var operationException = new InvalidOperationException();

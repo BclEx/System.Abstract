@@ -42,9 +42,9 @@ namespace Autofac.Abstract
     /// </summary>
     public class AutofacServiceRegistrar : IAutofacServiceRegistrar, IDisposable, ICloneable, IServiceRegistrarBehaviorAccessor
     {
-        private AutofacServiceLocator _parent;
-        private ContainerBuilder _builder;
-        private IContainer _container;
+        readonly AutofacServiceLocator _parent;
+        ContainerBuilder _builder;
+        IContainer _container;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="AutofacServiceRegistrar"/> class.

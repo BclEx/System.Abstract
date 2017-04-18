@@ -8,7 +8,7 @@ namespace System.Abstract.Tests.ServiceBus
     [TestClass]
     public class ServiceBusExtensionsTest
     {
-        [TestMethod]
+        [TestMethod, TestCategory("Core: ServiceBus")]
         public void SendGeneric_With_Destination_And_MessageBuilder_Sends()
         {
             var verify = false;
@@ -24,7 +24,7 @@ namespace System.Abstract.Tests.ServiceBus
             Assert.IsTrue(verify);
         }
 
-        [TestMethod]
+        [TestMethod, TestCategory("Core: ServiceBus")]
         public void SendGeneric_With_MessageBuilder_Sends()
         {
             var verify = false;
@@ -40,7 +40,7 @@ namespace System.Abstract.Tests.ServiceBus
             Assert.IsTrue(verify);
         }
 
-        [TestMethod]
+        [TestMethod, TestCategory("Core: ServiceBus")]
         public void SendGeneric_With_StringDestination_And_MessageBuilder_Sends()
         {
             var verify = false;
@@ -56,7 +56,7 @@ namespace System.Abstract.Tests.ServiceBus
             Assert.IsTrue(verify);
         }
 
-        [TestMethod]
+        [TestMethod, TestCategory("Core: ServiceBus")]
         public void Send_With_Message_Sends()
         {
             var verify = false;
@@ -71,7 +71,7 @@ namespace System.Abstract.Tests.ServiceBus
             Assert.IsTrue(verify);
         }
 
-        [TestMethod]
+        [TestMethod, TestCategory("Core: ServiceBus")]
         public void Send_With_StringDestination_And_Message_Sends()
         {
             var verify = false;

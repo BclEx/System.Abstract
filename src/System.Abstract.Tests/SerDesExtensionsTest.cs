@@ -8,7 +8,7 @@ namespace System.Abstract.Tests
     [TestClass]
     public class SerDesExtensionsTest
     {
-        [TestMethod]
+        [TestMethod, TestCategory("Core")]
         public void Des_Returns_Value()
         {
             var serDes = new Fakes.StubISerDes();
@@ -19,7 +19,7 @@ namespace System.Abstract.Tests
             Assert.AreEqual("test", serDes.DesBase64<string>(typeof(SerDesExtensionsTest), Convert.ToBase64String(new byte[] { 1, 2, 3 })));
         }
 
-        [TestMethod]
+        [TestMethod, TestCategory("Core")]
         public void Ser_Returns_Value()
         {
             var base64 = Convert.ToBase64String(new byte[] { 1, 2, 3 });

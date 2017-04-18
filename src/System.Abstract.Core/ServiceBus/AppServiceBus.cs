@@ -65,7 +65,7 @@ namespace Contoso.Abstract
     /// </example>
     public class AppServiceBus : Collection<AppServiceBusRegistration>, IAppServiceBus, ServiceBusManager.ISetupRegistration
     {
-        readonly IAppServiceMessageHandlerFactory _messageHandlerFactory;
+        readonly Func<Type, IServiceMessageHandler<object>> _messageHandlerFactory;
         readonly Func<IServiceLocator> _locator;
 
         static AppServiceBus() { ServiceBusManager.EnsureRegistration(); }
@@ -73,19 +73,19 @@ namespace Contoso.Abstract
         /// Initializes a new instance of the <see cref="AppServiceBus"/> class.
         /// </summary>
         public AppServiceBus()
-            : this(null, () => ServiceLocatorManager.Current) { }
+            : this(t => (IServiceMessageHandler<object>)Activator.CreateInstance(t), () => ServiceLocatorManager.Current) { }
         /// <summary>
         /// Initializes a new instance of the <see cref="AppServiceBus"/> class.
         /// </summary>
         /// <param name="messageHandlerFactory">The message handler factory.</param>
-        public AppServiceBus(IAppServiceMessageHandlerFactory messageHandlerFactory)
+        public AppServiceBus(Func<Type, IServiceMessageHandler<object>> messageHandlerFactory)
             : this(messageHandlerFactory, () => ServiceLocatorManager.Current) { }
         /// <summary>
         /// Initializes a new instance of the <see cref="AppServiceBus"/> class.
         /// </summary>
         /// <param name="messageHandlerFactory">The message handler factory.</param>
         /// <param name="locator">The locator.</param>
-        public AppServiceBus(IAppServiceMessageHandlerFactory messageHandlerFactory, Func<IServiceLocator> locator)
+        public AppServiceBus(Func<Type, IServiceMessageHandler<object>> messageHandlerFactory, Func<IServiceLocator> locator)
         {
             if (messageHandlerFactory == null)
                 throw new ArgumentNullException("messageHandlerFactory");
@@ -167,7 +167,7 @@ namespace Contoso.Abstract
 
         private void HandleTheMessage(Type type, object message)
         {
-            _messageHandlerFactory.Create<object>(type)
+            _messageHandlerFactory(type)
                 .Handle(message);
         }
 

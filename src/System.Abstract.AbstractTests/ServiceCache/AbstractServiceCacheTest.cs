@@ -13,14 +13,14 @@ namespace System.Abstract.IntegationTests.ServiceCache
 			Cache = CreateServiceCache();
 		}
 
-        //[TestMethod, TestCategory("Integration")]
+        //[TestMethod]
 		//public void CreateMessage_Should_Return_Valid_Instance()
 		//{
 		//    var message = Bus.CreateMessage<TestMessage>(null);
 		//    Assert.IsNotNull(message);
 		//}
 
-        //[TestMethod, TestCategory("Integration")]
+        //[TestMethod]
 		//public void CreateMessage_With_Action_Should_Return_Valid_Instance()
 		//{
 		//    var message = Bus.CreateMessage<TestMessage>(x => x.Body = "APPLY");
@@ -29,7 +29,7 @@ namespace System.Abstract.IntegationTests.ServiceCache
 		//}
 
 
-        //[TestMethod, TestCategory("Integration")]
+        //[TestMethod]
 		//public void Send_Should_Return_Valid_Instance()
 		//{
 		//}

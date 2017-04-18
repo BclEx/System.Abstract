@@ -51,7 +51,6 @@
     <Compile Include="ServiceBus\AppServiceBus.cs" />
     <Compile Include="ServiceBus\AppServiceBusRegistration.cs" />
     <Compile Include="ServiceBus\IAppServiceMessageHandler.cs" />
-    <Compile Include="ServiceBus\IAppServiceMessageHandlerFactory.cs" />
     <Compile Include="ServiceCache\EmptyServiceCache.cs" />
     <Compile Include="ServiceCache\StaticServiceCache.cs" />
     <Compile Include="ServiceCache\SystemServiceCache.cs" />
