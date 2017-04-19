@@ -23,6 +23,7 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 THE SOFTWARE.
 */
 #endregion
+#if !NET45
 using StructureMap.Interceptors;
 using System;
 using System.Abstract;
@@ -56,3 +57,4 @@ namespace StructureMap.Abstract
         }
     }
 }
+#endif

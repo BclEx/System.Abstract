@@ -119,7 +119,7 @@ namespace Contoso.Abstract
             where TMessage : class
         {
             var message = _locator().Resolve<TMessage>();
-            if (messageBuilder == null)
+            if (messageBuilder != null)
                 messageBuilder(message);
             return message;
         }

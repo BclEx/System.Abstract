@@ -32,7 +32,7 @@ namespace System.Abstract
     public abstract class ServiceManagerLoggerBase<TLoggerFlags>
         where TLoggerFlags : struct
     {
-        private IServiceLog _log = null;
+        IServiceLog _log = null;
 
         static ServiceManagerLoggerBase() { ServiceLogManager.EnsureRegistration(); }
 

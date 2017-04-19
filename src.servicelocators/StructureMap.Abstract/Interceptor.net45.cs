@@ -1,4 +1,4 @@
-﻿#region License
+#region License
 /*
 The MIT License
 
@@ -23,27 +23,37 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 THE SOFTWARE.
 */
 #endregion
+#if NET45
 using System;
 using System.Abstract;
 
-namespace Contoso.Abstract
+namespace StructureMap.Abstract
 {
     /// <summary>
-    /// MicroRegistrar
+    /// Interceptor
     /// </summary>
-    public static class MicroRegistrar
-    {
-        static MicroRegistrar()
-        {
-            ServiceBusManager.DefaultServiceProvider = () => new AppServiceBus();
-            ServiceCacheManager.DefaultServiceProvider = () => new StaticServiceCache();
-            ServiceLocatorManager.DefaultServiceProvider = () => new MicroServiceLocator();
-            ServiceLogManager.DefaultServiceProvider = () => new ConsoleServiceLog("Default");
-        }
+    //internal class Interceptor : TypeInterceptor
+    //{
+    //    readonly IServiceLocatorInterceptor _interceptor;
+    //    readonly IContainer _container;
 
-        /// <summary>
-        /// Registers this instance.
-        /// </summary>
-        public static void Register() { }
-    }
+    //    public Interceptor(IServiceLocatorInterceptor interceptor, IContainer container)
+    //    {
+    //        _interceptor = interceptor;
+    //        _container = container;
+    //    }
+
+    //    public object Process(object target, IContext context)
+    //    {
+    //        var type = target.GetType();
+    //        _interceptor.ItemCreated(type, _container.Model.For(type).Lifecycle == "Transient");
+    //        return target;
+    //    }
+
+    //    public bool MatchesType(Type type)
+    //    {
+    //        return _interceptor.Match(type);
+    //    }
+    //}
 }
+#endif

@@ -38,8 +38,8 @@ namespace System.Abstract
     public abstract partial class ServiceManagerBase<TIService, TServiceSetupAction, TServiceManagerLogger>
         where TIService : class
     {
-        private static readonly ConditionalWeakTable<Lazy<TIService>, ISetupDescriptor> _setupDescriptors = new ConditionalWeakTable<Lazy<TIService>, ISetupDescriptor>();
-        private static readonly object _lock = new object();
+        static readonly ConditionalWeakTable<Lazy<TIService>, ISetupDescriptor> _setupDescriptors = new ConditionalWeakTable<Lazy<TIService>, ISetupDescriptor>();
+        static readonly object _lock = new object();
 
         // Force "precise" initialization
         static ServiceManagerBase() { }
@@ -239,12 +239,12 @@ namespace System.Abstract
         private static TIService ApplySetup(Lazy<TIService> service, TIService newInstance)
         {
             if (service == null)
-                throw new ArgumentNullException("service");
+                throw new ArgumentNullException("ApplySetup: service");
             if (newInstance == null)
-                throw new NullReferenceException("instance");
+                throw new NullReferenceException("ApplySetup: newInstance");
             var registration = Registration;
             if (registration == null)
-                throw new NullReferenceException("Registration");
+                throw new NullReferenceException("ApplySetup: Registration");
             var onSetup = registration.OnSetup;
             if (onSetup == null)
                 return newInstance;

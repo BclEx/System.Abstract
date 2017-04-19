@@ -7,6 +7,11 @@ namespace System.Abstract.Tests.ServiceBus.Integration
     [TestClass]
     public class AppServiceBusTest : AbstractServiceBusTest
     {
+        static AppServiceBusTest()
+        {
+            ServiceLocatorManager.SetProvider(() => new MicroServiceLocator());
+        }
+
         protected override IServiceBus CreateServiceBus() { return new AppServiceBus(); }
 
         [TestMethod, TestCategory("ServiceBus: AppService")]
