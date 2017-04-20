@@ -46,10 +46,6 @@
   <Choose>
     <When Condition="'$(TargetFrameworkVersion)'=='v3.5'">
       <ItemGroup>
-        <Reference Include="Munq.IocContainer">
-          <SpecificVersion>False</SpecificVersion>
-          <HintPath>..\packages\Munq.IocContainer.3.1.6\Lib\Munq.IocContainer.dll</HintPath>
-        </Reference>
         <Reference Include="System.Abstract">
           <HintPath>..\packages\System.Abstract.1.0.0\lib\net35\System.Abstract.dll</HintPath>
           <Private>True</Private>
