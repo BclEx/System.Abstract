@@ -1,5 +1,8 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <Project ToolsVersion="4.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup Label="UserMacros">
+    <NETVER Condition="'$(NETVER)'==''">v4.0</NETVER>
+  </PropertyGroup>
   <PropertyGroup>
     <Configuration Condition="'$(Configuration)' == ''">Debug</Configuration>
     <Platform Condition="'$(Platform)' == ''">AnyCPU</Platform>
@@ -10,7 +13,7 @@
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <RootNamespace>Autofac.Abstract</RootNamespace>
     <AssemblyName>Autofac.Abstract</AssemblyName>
-    <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
+    <TargetFrameworkVersion>$(NETVER)</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <SignAssembly>true</SignAssembly>
   </PropertyGroup>
@@ -51,7 +54,7 @@
           <HintPath>..\packages\Autofac.2.6.3.862\lib\net35\Autofac.Configuration.dll</HintPath>
         </Reference>
         <Reference Include="System.Abstract">
-          <HintPath>..\packages\System.Abstract.0.5.0\lib\net35\System.Abstract.dll</HintPath>
+          <HintPath>..\packages\System.Abstract.1.0.0\lib\net35\System.Abstract.dll</HintPath>
           <Private>True</Private>
         </Reference>
       </ItemGroup>
@@ -63,7 +66,7 @@
           <HintPath>..\packages\Autofac.2.6.3.862\lib\net35\Autofac.dll</HintPath>
         </Reference>
         <Reference Include="System.Abstract">
-          <HintPath>..\packages\System.Abstract.0.5.0\lib\net40\System.Abstract.dll</HintPath>
+          <HintPath>..\packages\System.Abstract.1.0.0\lib\net40\System.Abstract.dll</HintPath>
           <Private>True</Private>
         </Reference>
       </ItemGroup>
@@ -75,7 +78,7 @@
           <HintPath>..\packages\Autofac.4.5.0\lib\net45\Autofac.dll</HintPath>
         </Reference>
         <Reference Include="System.Abstract">
-          <HintPath>..\packages\System.Abstract.0.5.0\lib\net45\System.Abstract.dll</HintPath>
+          <HintPath>..\packages\System.Abstract.1.0.0\lib\net45\System.Abstract.dll</HintPath>
           <Private>True</Private>
         </Reference>
       </ItemGroup>

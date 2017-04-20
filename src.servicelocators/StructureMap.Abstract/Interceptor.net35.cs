@@ -23,7 +23,8 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 THE SOFTWARE.
 */
 #endregion
-#if NET45
+#if NET35
+using StructureMap.Interceptors;
 using System;
 using System.Abstract;
 
@@ -32,28 +33,28 @@ namespace StructureMap.Abstract
     /// <summary>
     /// Interceptor
     /// </summary>
-    //internal class Interceptor : TypeInterceptor
-    //{
-    //    readonly IServiceLocatorInterceptor _interceptor;
-    //    readonly IContainer _container;
+    internal class Interceptor : TypeInterceptor
+    {
+        readonly IServiceLocatorInterceptor _interceptor;
+        readonly IContainer _container;
 
-    //    public Interceptor(IServiceLocatorInterceptor interceptor, IContainer container)
-    //    {
-    //        _interceptor = interceptor;
-    //        _container = container;
-    //    }
+        public Interceptor(IServiceLocatorInterceptor interceptor, IContainer container)
+        {
+            _interceptor = interceptor;
+            _container = container;
+        }
 
-    //    public object Process(object target, IContext context)
-    //    {
-    //        var type = target.GetType();
-    //        _interceptor.ItemCreated(type, _container.Model.For(type).Lifecycle == "Transient");
-    //        return target;
-    //    }
+        public object Process(object target, IContext context)
+        {
+            var type = target.GetType();
+            _interceptor.ItemCreated(type, _container.Model.For(type).Lifecycle == "Transient");
+            return target;
+        }
 
-    //    public bool MatchesType(Type type)
-    //    {
-    //        return _interceptor.Match(type);
-    //    }
-    //}
+        public bool MatchesType(Type type)
+        {
+            return _interceptor.Match(type);
+        }
+    }
 }
 #endif

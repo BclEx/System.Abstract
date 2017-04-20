@@ -23,7 +23,7 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 THE SOFTWARE.
 */
 #endregion
-#if NET45
+#if NET35
 using StructureMap.Configuration.DSL;
 using StructureMap.Configuration.DSL.Expressions;
 using StructureMap.Pipeline;
@@ -123,8 +123,8 @@ namespace StructureMap.Abstract
         public IEnumerable<ServiceRegistration> GetRegistrationsFor(Type serviceType)
         {
             return _container.Model.AllInstances
-                .Where(x => serviceType.IsAssignableFrom(x.Instance.GetType()))
-                .Select(x => new ServiceRegistration { ServiceType = x.PluginType, ImplementationType = x.Instance.GetType(), Name = x.Description });
+                .Where(x => serviceType.IsAssignableFrom(x.ConcreteType))
+                .Select(x => new ServiceRegistration { ServiceType = x.PluginType, ImplementationType = x.ConcreteType, Name = x.Description });
         }
         /// <summary>
         /// Gets the registrations.
@@ -134,7 +134,7 @@ namespace StructureMap.Abstract
             get
             {
                 return _container.Model.AllInstances
-                    .Select(x => new ServiceRegistration { ServiceType = x.PluginType, ImplementationType = x.Instance.GetType(), Name = x.Description });
+                    .Select(x => new ServiceRegistration { ServiceType = x.PluginType, ImplementationType = x.ConcreteType, Name = x.Description });
             }
         }
 
@@ -147,13 +147,13 @@ namespace StructureMap.Abstract
         /// Registers the specified service type.
         /// </summary>
         /// <param name="serviceType">Type of the service.</param>
-        public void Register(Type serviceType) { SetLifetime(new GenericFamilyExpression(serviceType, null, this)).Use((Instance)new ConfiguredInstance(serviceType)); HasPendingRegistrations = true; }
+        public void Register(Type serviceType) { SetLifetime(new GenericFamilyExpression(serviceType, this)).Use((Instance)new ConfiguredInstance(serviceType)); HasPendingRegistrations = true; }
         /// <summary>
         /// Registers the specified service type.
         /// </summary>
         /// <param name="serviceType">Type of the service.</param>
         /// <param name="name">The name.</param>
-        public void Register(Type serviceType, string name) { SetLifetime(new GenericFamilyExpression(serviceType, null, this)).Use((Instance)new ConfiguredInstance(serviceType) { Name = name }); HasPendingRegistrations = true; }
+        public void Register(Type serviceType, string name) { SetLifetime(new GenericFamilyExpression(serviceType, this)).Use((Instance)new ConfiguredInstance(serviceType) { Name = name }); HasPendingRegistrations = true; }
 
         // register implementation
         /// <summary>
@@ -163,7 +163,7 @@ namespace StructureMap.Abstract
         /// <typeparam name="TImplementation">The type of the implementation.</typeparam>
         public void Register<TService, TImplementation>()
             where TService : class
-            where TImplementation : class, TService { SetLifetime(new GenericFamilyExpression(typeof(TService), null, this)).Use((Instance)new ConfiguredInstance(typeof(TImplementation))); HasPendingRegistrations = true; }
+            where TImplementation : class, TService { SetLifetime(new GenericFamilyExpression(typeof(TService), this)).Use((Instance)new ConfiguredInstance(typeof(TImplementation))); HasPendingRegistrations = true; }
         /// <summary>
         /// Registers the specified name.
         /// </summary>
@@ -172,14 +172,14 @@ namespace StructureMap.Abstract
         /// <param name="name">The name.</param>
         public void Register<TService, TImplementation>(string name)
             where TService : class
-            where TImplementation : class, TService { SetLifetime(new GenericFamilyExpression(typeof(TService), null, this)).Use((Instance)new ConfiguredInstance(typeof(TImplementation)) { Name = name }); HasPendingRegistrations = true; }
+            where TImplementation : class, TService { SetLifetime(new GenericFamilyExpression(typeof(TService), this)).Use((Instance)new ConfiguredInstance(typeof(TImplementation)) { Name = name }); HasPendingRegistrations = true; }
         /// <summary>
         /// Registers the specified implementation type.
         /// </summary>
         /// <typeparam name="TService">The type of the service.</typeparam>
         /// <param name="implementationType">Type of the implementation.</param>
         public void Register<TService>(Type implementationType)
-            where TService : class { SetLifetime(new GenericFamilyExpression(typeof(TService), null, this)).Use((Instance)new ConfiguredInstance(implementationType)); HasPendingRegistrations = true; }
+            where TService : class { SetLifetime(new GenericFamilyExpression(typeof(TService), this)).Use((Instance)new ConfiguredInstance(implementationType)); HasPendingRegistrations = true; }
         /// <summary>
         /// Registers the specified implementation type.
         /// </summary>
@@ -187,20 +187,20 @@ namespace StructureMap.Abstract
         /// <param name="implementationType">Type of the implementation.</param>
         /// <param name="name">The name.</param>
         public void Register<TService>(Type implementationType, string name)
-            where TService : class { SetLifetime(new GenericFamilyExpression(typeof(TService), null, this)).Use((Instance)new ConfiguredInstance(implementationType) { Name = name }); HasPendingRegistrations = true; }
+            where TService : class { SetLifetime(new GenericFamilyExpression(typeof(TService), this)).Use((Instance)new ConfiguredInstance(implementationType) { Name = name }); HasPendingRegistrations = true; }
         /// <summary>
         /// Registers the specified service type.
         /// </summary>
         /// <param name="serviceType">Type of the service.</param>
         /// <param name="implementationType">Type of the implementation.</param>
-        public void Register(Type serviceType, Type implementationType) { SetLifetime(new GenericFamilyExpression(serviceType, null, this)).Use((Instance)new ConfiguredInstance(implementationType)); HasPendingRegistrations = true; }
+        public void Register(Type serviceType, Type implementationType) { SetLifetime(new GenericFamilyExpression(serviceType, this)).Use((Instance)new ConfiguredInstance(implementationType)); HasPendingRegistrations = true; }
         /// <summary>
         /// Registers the specified service type.
         /// </summary>
         /// <param name="serviceType">Type of the service.</param>
         /// <param name="implementationType">Type of the implementation.</param>
         /// <param name="name">The name.</param>
-        public void Register(Type serviceType, Type implementationType, string name) { SetLifetime(new GenericFamilyExpression(serviceType, null, this)).Use((Instance)new ConfiguredInstance(implementationType) { Name = name }); HasPendingRegistrations = true; }
+        public void Register(Type serviceType, Type implementationType, string name) { SetLifetime(new GenericFamilyExpression(serviceType, this)).Use((Instance)new ConfiguredInstance(implementationType) { Name = name }); HasPendingRegistrations = true; }
 
         // register instance
         /// <summary>
@@ -209,7 +209,7 @@ namespace StructureMap.Abstract
         /// <typeparam name="TService">The type of the service.</typeparam>
         /// <param name="instance">The instance.</param>
         public void RegisterInstance<TService>(TService instance)
-            where TService : class { EnsureTransientLifestyle(); new GenericFamilyExpression(typeof(TService), null, this).Use((Instance)new ObjectInstance(instance)); HasPendingRegistrations = true; }
+            where TService : class { EnsureTransientLifestyle(); new GenericFamilyExpression(typeof(TService), this).Use((Instance)new ObjectInstance(instance)); HasPendingRegistrations = true; }
         /// <summary>
         /// Registers the instance.
         /// </summary>
@@ -217,20 +217,20 @@ namespace StructureMap.Abstract
         /// <param name="instance">The instance.</param>
         /// <param name="name">The name.</param>
         public void RegisterInstance<TService>(TService instance, string name)
-            where TService : class { EnsureTransientLifestyle(); new GenericFamilyExpression(typeof(TService), null, this).Use((Instance)new ObjectInstance(instance) { Name = name }); HasPendingRegistrations = true; }
+            where TService : class { EnsureTransientLifestyle(); new GenericFamilyExpression(typeof(TService), this).Use((Instance)new ObjectInstance(instance) { Name = name }); HasPendingRegistrations = true; }
         /// <summary>
         /// Registers the instance.
         /// </summary>
         /// <param name="serviceType">Type of the service.</param>
         /// <param name="instance">The instance.</param>
-        public void RegisterInstance(Type serviceType, object instance) { EnsureTransientLifestyle(); new GenericFamilyExpression(serviceType, null, this).Use((Instance)new ObjectInstance(instance)); HasPendingRegistrations = true; }
+        public void RegisterInstance(Type serviceType, object instance) { EnsureTransientLifestyle(); new GenericFamilyExpression(serviceType, this).Use((Instance)new ObjectInstance(instance)); HasPendingRegistrations = true; }
         /// <summary>
         /// Registers the instance.
         /// </summary>
         /// <param name="serviceType">Type of the service.</param>
         /// <param name="instance">The instance.</param>
         /// <param name="name">The name.</param>
-        public void RegisterInstance(Type serviceType, object instance, string name) { EnsureTransientLifestyle(); new GenericFamilyExpression(serviceType, null, this).Use((Instance)new ObjectInstance(instance) { Name = name }); HasPendingRegistrations = true; }
+        public void RegisterInstance(Type serviceType, object instance, string name) { EnsureTransientLifestyle(); new GenericFamilyExpression(serviceType, this).Use((Instance)new ObjectInstance(instance) { Name = name }); HasPendingRegistrations = true; }
 
         // register method
         /// <summary>
@@ -239,7 +239,7 @@ namespace StructureMap.Abstract
         /// <typeparam name="TService">The type of the service.</typeparam>
         /// <param name="factoryMethod">The factory method.</param>
         public void Register<TService>(Func<IServiceLocator, TService> factoryMethod)
-            where TService : class { SetLifetime(new GenericFamilyExpression(typeof(TService), null, this)).Use((Instance)new LambdaInstance<object>(x => factoryMethod(_parent))); HasPendingRegistrations = true; }
+            where TService : class { SetLifetime(new GenericFamilyExpression(typeof(TService), this)).Use((Instance)new LambdaInstance<object>(x => factoryMethod(_parent))); HasPendingRegistrations = true; }
         /// <summary>
         /// Registers the specified factory method.
         /// </summary>
@@ -247,20 +247,20 @@ namespace StructureMap.Abstract
         /// <param name="factoryMethod">The factory method.</param>
         /// <param name="name">The name.</param>
         public void Register<TService>(Func<IServiceLocator, TService> factoryMethod, string name)
-            where TService : class { SetLifetime(new GenericFamilyExpression(typeof(TService), null, this)).Use((Instance)new LambdaInstance<object>(x => factoryMethod(_parent)) { Name = name }); HasPendingRegistrations = true; }
+            where TService : class { SetLifetime(new GenericFamilyExpression(typeof(TService), this)).Use((Instance)new LambdaInstance<object>(x => factoryMethod(_parent)) { Name = name }); HasPendingRegistrations = true; }
         /// <summary>
         /// Registers the specified service type.
         /// </summary>
         /// <param name="serviceType">Type of the service.</param>
         /// <param name="factoryMethod">The factory method.</param>
-        public void Register(Type serviceType, Func<IServiceLocator, object> factoryMethod) { SetLifetime(new GenericFamilyExpression(serviceType, null, this)).Use((Instance)new LambdaInstance<object>(x => factoryMethod(_parent))); HasPendingRegistrations = true; }
+        public void Register(Type serviceType, Func<IServiceLocator, object> factoryMethod) { SetLifetime(new GenericFamilyExpression(serviceType, this)).Use((Instance)new LambdaInstance<object>(x => factoryMethod(_parent))); HasPendingRegistrations = true; }
         /// <summary>
         /// Registers the specified service type.
         /// </summary>
         /// <param name="serviceType">Type of the service.</param>
         /// <param name="factoryMethod">The factory method.</param>
         /// <param name="name">The name.</param>
-        public void Register(Type serviceType, Func<IServiceLocator, object> factoryMethod, string name) { SetLifetime(new GenericFamilyExpression(serviceType, null, this)).Use((Instance)new LambdaInstance<object>(x => factoryMethod(_parent)) { Name = name }); HasPendingRegistrations = true; }
+        public void Register(Type serviceType, Func<IServiceLocator, object> factoryMethod, string name) { SetLifetime(new GenericFamilyExpression(serviceType, this)).Use((Instance)new LambdaInstance<object>(x => factoryMethod(_parent)) { Name = name }); HasPendingRegistrations = true; }
 
         // interceptor
         /// <summary>
@@ -269,7 +269,7 @@ namespace StructureMap.Abstract
         /// <param name="interceptor">The interceptor.</param>
         public void RegisterInterceptor(IServiceLocatorInterceptor interceptor)
         {
-            //_container.Configure(x => x.Policies.Interceptors(new Interceptor(interceptor, _container)));
+            _container.Configure(x => x.RegisterInterceptor(new Interceptor(interceptor, _container)));
         }
 
         #region Domain extents
@@ -307,10 +307,10 @@ namespace StructureMap.Abstract
         {
             switch (LifetimeForRegisters)
             {
-                case ServiceRegistrarLifetime.Transient: return e; // e.LifecycleIs(Lifecycles.Transient);
-                case ServiceRegistrarLifetime.Singleton: return e.LifecycleIs(Lifecycles.Singleton);
-                case ServiceRegistrarLifetime.Thread: return e.LifecycleIs(Lifecycles.ThreadLocal);
-                case ServiceRegistrarLifetime.Request: return e.LifecycleIs(Lifecycles.Container);
+                case ServiceRegistrarLifetime.Transient: return e; // e.LifecycleIs(InstanceScope.Transient);
+                case ServiceRegistrarLifetime.Singleton: return e.LifecycleIs(InstanceScope.Singleton);
+                case ServiceRegistrarLifetime.Thread: return e.LifecycleIs(InstanceScope.ThreadLocal);
+                case ServiceRegistrarLifetime.Request: return e.LifecycleIs(InstanceScope.PerRequest);
                 default: throw new NotSupportedException();
             }
         }

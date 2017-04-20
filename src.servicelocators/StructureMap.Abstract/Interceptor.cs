@@ -23,17 +23,19 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 THE SOFTWARE.
 */
 #endregion
-#if !NET45
-using StructureMap.Interceptors;
+#if !NET35
+using StructureMap.Building.Interception;
+using StructureMap.Pipeline;
 using System;
 using System.Abstract;
+using System.Collections.Generic;
 
 namespace StructureMap.Abstract
 {
     /// <summary>
     /// Interceptor
     /// </summary>
-    internal class Interceptor : TypeInterceptor
+    internal class Interceptor : IInterceptorPolicy
     {
         readonly IServiceLocatorInterceptor _interceptor;
         readonly IContainer _container;
@@ -44,16 +46,19 @@ namespace StructureMap.Abstract
             _container = container;
         }
 
-        public object Process(object target, IContext context)
+        public IEnumerable<IInterceptor> DetermineInterceptors(Type pluginType, Instance instance)
         {
-            var type = target.GetType();
-            _interceptor.ItemCreated(type, _container.Model.For(type).Lifecycle == "Transient");
-            return target;
+            if (_interceptor.Match(pluginType))
+            {
+                var type = instance.GetType();
+                _interceptor.ItemCreated(type, _container.Model.For(type).Lifecycle == Lifecycles.Transient);
+            }
+            return null;
         }
 
-        public bool MatchesType(Type type)
+        public string Description
         {
-            return _interceptor.Match(type);
+            get { return "ServiceLocatorInterceptor"; }
         }
     }
 }
