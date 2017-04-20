@@ -2,7 +2,7 @@
 <package>
   <metadata>
     <id>Unity.Abstract</id>
-    <version>0.5.0</version>
+    <version>1.0.0</version>
     <title>Unity.Abstract</title>
     <authors>Contoso</authors>
     <owners>Contoso</owners>
@@ -32,6 +32,6 @@
     <file src="_build\3.5\Microsoft.Practices.Unity.Abstract.dll" target="lib\net35" />
     <file src="_build\4.0\Microsoft.Practices.Unity.Abstract.dll" target="lib\net40" />
     <file src="_build\4.5\Microsoft.Practices.Unity.Abstract.dll" target="lib\net45" />
-    <file src="Microsoft.Practices.Unity.Abstract\**\*.cs" target="src\Microsoft.Practices.Unity.Abstract" />
+    <file src="Unity.Abstract\**\*.cs" target="src\Unity.Abstract" />
   </files>
 </package>

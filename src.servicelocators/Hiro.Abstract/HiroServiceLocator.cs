@@ -28,6 +28,7 @@ using System.Linq;
 using System.Abstract;
 using System.Collections.Generic;
 using Hiro.Containers;
+using System.Reflection;
 
 namespace Hiro.Abstract
 {
@@ -112,7 +113,7 @@ namespace Hiro.Abstract
         /// </summary>
         /// <returns></returns>
         public IServiceLocator CreateChild(object tag) { throw new NotSupportedException(); }
-        
+
         /// <summary>
         /// Gets the underlying container.
         /// </summary>
@@ -140,6 +141,7 @@ namespace Hiro.Abstract
             where TService : class
         {
             try { return (Builder.Contains(typeof(TService)) ? Container.GetInstance<TService>() : Activator.CreateInstance<TService>()); }
+            catch (ReflectionTypeLoadException) { throw; }
             catch (Exception ex) { throw new ServiceLocatorResolutionException(typeof(TService), ex); }
         }
         /// <summary>
@@ -154,6 +156,7 @@ namespace Hiro.Abstract
             if (!Builder.Contains(typeof(TService), name))
                 throw new ServiceLocatorResolutionException(typeof(TService), string.Format("Unregistered '{0}'", name));
             try { return Container.GetInstance<TService>(name); }
+            catch (ReflectionTypeLoadException e) { throw; }
             catch (Exception ex) { throw new ServiceLocatorResolutionException(typeof(TService), ex); }
         }
         /// <summary>
@@ -164,6 +167,7 @@ namespace Hiro.Abstract
         public object Resolve(Type serviceType)
         {
             try { return (Builder.Contains(serviceType) ? Container.GetInstance(serviceType, null) : Activator.CreateInstance(serviceType)); }
+            catch (ReflectionTypeLoadException) { throw; }
             catch (Exception ex) { throw new ServiceLocatorResolutionException(serviceType, ex); }
         }
         /// <summary>
@@ -177,6 +181,7 @@ namespace Hiro.Abstract
             if (!Builder.Contains(serviceType, name))
                 throw new ServiceLocatorResolutionException(serviceType, string.Format("Unregistered '{0}'", name));
             try { return Container.GetInstance(serviceType, name); }
+            catch (ReflectionTypeLoadException) { throw; }
             catch (Exception ex) { throw new ServiceLocatorResolutionException(serviceType, ex); }
         }
         //
@@ -189,6 +194,7 @@ namespace Hiro.Abstract
             where TService : class
         {
             try { return new List<TService>(Container.GetAllInstances(typeof(TService)).Cast<TService>()); }
+            catch (ReflectionTypeLoadException) { throw; }
             catch (Exception ex) { throw new ServiceLocatorResolutionException(typeof(TService), ex); }
         }
         /// <summary>
@@ -199,6 +205,7 @@ namespace Hiro.Abstract
         public IEnumerable<object> ResolveAll(Type serviceType)
         {
             try { return new List<object>(Container.GetAllInstances(serviceType)); }
+            catch (ReflectionTypeLoadException) { throw; }
             catch (Exception ex) { throw new ServiceLocatorResolutionException(serviceType, ex); }
         }
 

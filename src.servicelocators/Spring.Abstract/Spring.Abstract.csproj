@@ -45,6 +45,12 @@
         <Reference Include="Spring.Core">
           <HintPath>..\packages\Spring.Core.2.0.1\lib\net35\Spring.Core.dll</HintPath>
         </Reference>
+        <Reference Include="Common.Logging">
+          <HintPath>..\packages\Common.Logging.3.3.1\lib\net35\Common.Logging.dll</HintPath>
+        </Reference>
+        <Reference Include="Common.Logging.Core">
+          <HintPath>..\packages\Common.Logging.Core.3.3.1\lib\net35\Common.Logging.Core.dll</HintPath>
+        </Reference>
         <Reference Include="System.Abstract">
           <HintPath>..\packages\System.Abstract.1.0.0\lib\net35\System.Abstract.dll</HintPath>
           <Private>True</Private>
@@ -56,6 +62,12 @@
         <Reference Include="Spring.Core">
           <HintPath>..\packages\Spring.Core.2.0.1\lib\net40\Spring.Core.dll</HintPath>
         </Reference>
+        <Reference Include="Common.Logging">
+          <HintPath>..\packages\Common.Logging.3.3.1\lib\net40\Common.Logging.dll</HintPath>
+        </Reference>
+        <Reference Include="Common.Logging.Core">
+          <HintPath>..\packages\Common.Logging.Core.3.3.1\lib\net40\Common.Logging.Core.dll</HintPath>
+        </Reference>
         <Reference Include="System.Abstract">
           <HintPath>..\packages\System.Abstract.1.0.0\lib\net40\System.Abstract.dll</HintPath>
           <Private>True</Private>
@@ -66,6 +78,12 @@
       <ItemGroup>
         <Reference Include="Spring.Core">
           <HintPath>..\packages\Spring.Core.2.0.1\lib\net40\Spring.Core.dll</HintPath>
+        </Reference>
+        <Reference Include="Common.Logging">
+          <HintPath>..\packages\Common.Logging.3.3.1\lib\net40\Common.Logging.dll</HintPath>
+        </Reference>
+        <Reference Include="Common.Logging.Core">
+          <HintPath>..\packages\Common.Logging.Core.3.3.1\lib\net40\Common.Logging.Core.dll</HintPath>
         </Reference>
         <Reference Include="System.Abstract">
           <HintPath>..\packages\System.Abstract.1.0.0\lib\net45\System.Abstract.dll</HintPath>
@@ -81,6 +99,7 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
+    <None Include="App.config" />
     <None Include="BclEx.snk" />
     <None Include="packages.config" />
     <None Include="Spring.Abstract.nuspec" />

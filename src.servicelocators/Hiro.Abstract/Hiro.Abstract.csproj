@@ -27,7 +27,7 @@
     <DefineConstants>DEBUG;TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
-    <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
+    <TreatWarningsAsErrors>false</TreatWarningsAsErrors>
     <DocumentationFile>bin\Debug\Hiro.Abstract.xml</DocumentationFile>
     <AssemblyOriginatorKeyFile>BclEx.snk</AssemblyOriginatorKeyFile>
     <Prefer32Bit>false</Prefer32Bit>
@@ -73,9 +73,6 @@
         <Reference Include="Hiro.Containers">
           <HintPath>..\packages\Hiro.Containers.1.0.2.29326\lib\net20\Hiro.Containers.dll</HintPath>
         </Reference>
-        <Reference Include="Mono.Cecil">
-          <HintPath>..\packages\Mono.Cecil.0.9.6.4\lib\net40\Mono.Cecil.dll</HintPath>
-        </Reference>
         <Reference Include="System.Abstract">
           <HintPath>..\packages\System.Abstract.1.0.0\lib\net40\System.Abstract.dll</HintPath>
           <Private>True</Private>
@@ -90,9 +87,6 @@
         <Reference Include="Hiro.Containers">
           <HintPath>..\packages\Hiro.Containers.1.0.2.29326\lib\net20\Hiro.Containers.dll</HintPath>
         </Reference>
-        <Reference Include="Mono.Cecil">
-          <HintPath>..\packages\Mono.Cecil.0.9.6.4\lib\net45\Mono.Cecil.dll</HintPath>
-        </Reference>
         <Reference Include="System.Abstract">
           <HintPath>..\packages\System.Abstract.1.0.0\lib\net45\System.Abstract.dll</HintPath>
           <Private>True</Private>
@@ -106,6 +100,9 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
+    <None Include="App.config">
+      <SubType>Designer</SubType>
+    </None>
     <None Include="BclEx.snk" />
     <None Include="Hiro.Abstract.nuspec" />
     <None Include="packages.config" />
