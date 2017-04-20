@@ -24,7 +24,9 @@ THE SOFTWARE.
 */
 #endregion
 using Spring.Context.Support;
+using Spring.Objects.Factory;
 using System;
+using System.Linq;
 using System.Abstract;
 using System.Collections.Generic;
 
@@ -122,6 +124,14 @@ namespace Spring.Abstract
             get { return _registrar; }
         }
 
+        // Creates default object when not registered
+        private object CreateObject(Type serviceType)
+        {
+            var serviceTypeConstructor = serviceType.GetConstructor(new Type[0]);
+            var args = serviceTypeConstructor.GetParameters().Select(x => (object)Resolve(x.ParameterType)).ToArray();
+            return Activator.CreateInstance(serviceType, args);
+        }
+
         // resolve
         /// <summary>
         /// Resolves this instance.
@@ -133,6 +143,7 @@ namespace Spring.Abstract
         {
             var serviceType = typeof(TService);
             try { return (TService)_container.GetObject(GetName(serviceType), serviceType); }
+            catch (NoSuchObjectDefinitionException) { return (TService)CreateObject(serviceType); }
             catch (Exception ex) { throw new ServiceLocatorResolutionException(typeof(TService), ex); }
         }
 
@@ -159,6 +170,7 @@ namespace Spring.Abstract
         public object Resolve(Type serviceType)
         {
             try { return _container.GetObject(GetName(serviceType), serviceType); }
+            catch (NoSuchObjectDefinitionException) { return CreateObject(serviceType); }
             catch (Exception ex) { throw new ServiceLocatorResolutionException(serviceType, ex); }
         }
         /// <summary>

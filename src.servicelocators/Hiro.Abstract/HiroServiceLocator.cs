@@ -156,7 +156,7 @@ namespace Hiro.Abstract
             if (!Builder.Contains(typeof(TService), name))
                 throw new ServiceLocatorResolutionException(typeof(TService), string.Format("Unregistered '{0}'", name));
             try { return Container.GetInstance<TService>(name); }
-            catch (ReflectionTypeLoadException e) { throw; }
+            catch (ReflectionTypeLoadException) { throw; }
             catch (Exception ex) { throw new ServiceLocatorResolutionException(typeof(TService), ex); }
         }
         /// <summary>

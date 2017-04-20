@@ -94,7 +94,7 @@ namespace Spring.Abstract
         /// <returns></returns>
         public IEnumerable<ServiceRegistration> GetRegistrationsFor(Type serviceType)
         {
-            return _container.GetObjectsOfType(serviceType).Cast<DictionaryEntry>()
+            return _container.GetObjectsOfType(serviceType)
                 .Select(x =>
                 {
                     var objectName = (string)x.Key;
@@ -109,7 +109,7 @@ namespace Spring.Abstract
         {
             get
             {
-                return _container.GetObjectsOfType(typeof(object)).Cast<DictionaryEntry>()
+                return _container.GetObjectsOfType(typeof(object))
                     .Select(x =>
                     {
                         var objectName = (string)x.Key;
