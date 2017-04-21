@@ -1,8 +1,9 @@
 ﻿using Common.Logging.Abstract;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
-using System.Abstract.IntegationTests.ServiceLog;
+using System.Abstract;
+using System.Abstract.AbstractTests.ServiceLog;
 
-namespace System.Abstract.Tests.ServiceLocator.Integration
+namespace ServiceLog.Tests
 {
     [TestClass]
     public class CommonLoggingServiceLogTest : AbstractServiceLogTest

@@ -1,7 +1,7 @@
 ﻿using System;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using System.Abstract.Fakes;
-using System.Abstract.IntegationTests.ServiceBus;
+using System.Abstract.AbstractTests.ServiceBus;
 
 namespace System.Abstract.Tests.ServiceBus
 {

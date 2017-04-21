@@ -123,44 +123,22 @@ namespace NLog.Abstract
             if (ex == null)
                 switch (level)
                 {
-                    case ServiceLogLevel.Fatal:
-                        Log.Fatal(message);
-                        return;
-                    case ServiceLogLevel.Error:
-                        Log.Error(message);
-                        return;
-                    case ServiceLogLevel.Warning:
-                        Log.Warn(message);
-                        return;
-                    case ServiceLogLevel.Information:
-                        Log.Info(message);
-                        return;
-                    case ServiceLogLevel.Debug:
-                        Log.Debug(message);
-                        return;
-                    default:
-                        return;
+                    case ServiceLogLevel.Fatal: Log.Fatal(message); return;
+                    case ServiceLogLevel.Error: Log.Error(message); return;
+                    case ServiceLogLevel.Warning: Log.Warn(message); return;
+                    case ServiceLogLevel.Information: Log.Info(message); return;
+                    case ServiceLogLevel.Debug: Log.Debug(message); return;
+                    default: return;
                 }
             else
                 switch (level)
                 {
-                    case ServiceLogLevel.Fatal:
-                        Log.Fatal(message, ex);
-                        return;
-                    case ServiceLogLevel.Error:
-                        Log.Error(message, ex);
-                        return;
-                    case ServiceLogLevel.Warning:
-                        Log.Warn(message, ex);
-                        return;
-                    case ServiceLogLevel.Information:
-                        Log.Info(message, ex);
-                        return;
-                    case ServiceLogLevel.Debug:
-                        Log.Debug(message, ex);
-                        return;
-                    default:
-                        return;
+                    case ServiceLogLevel.Fatal: Log.Fatal(ex, message); return;
+                    case ServiceLogLevel.Error: Log.Error(ex, message); return;
+                    case ServiceLogLevel.Warning: Log.Warn(ex, message); return;
+                    case ServiceLogLevel.Information: Log.Info(ex, message); return;
+                    case ServiceLogLevel.Debug: Log.Debug(ex, message); return;
+                    default: return;
                 }
         }
 

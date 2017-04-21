@@ -35,7 +35,8 @@
     <DefineConstants>TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
-    <DocumentationFile>bin\Release\CommonLogging.Abstract.xml</DocumentationFile>
+    <DocumentationFile>
+    </DocumentationFile>
     <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
     <AssemblyOriginatorKeyFile>BclEx.snk</AssemblyOriginatorKeyFile>
   </PropertyGroup>
@@ -43,7 +44,10 @@
     <When Condition="'$(TargetFrameworkVersion)'=='v3.5'">
       <ItemGroup>
         <Reference Include="Common.Logging">
-          <HintPath>..\packages\Common.Logging.2.3.1\lib\net35\Common.Logging.dll</HintPath>
+          <HintPath>..\packages\Common.Logging.3.3.0\lib\net35\Common.Logging.dll</HintPath>
+        </Reference>
+        <Reference Include="Common.Logging.Core">
+          <HintPath>..\packages\Common.Logging.Core.3.3.0\lib\net35\Common.Logging.Core.dll</HintPath>
         </Reference>
         <Reference Include="System.Abstract">
           <HintPath>..\packages\System.Abstract.1.0.0\lib\net35\System.Abstract.dll</HintPath>
@@ -54,7 +58,10 @@
     <When Condition="'$(TargetFrameworkVersion)'=='v4.0'">
       <ItemGroup>
         <Reference Include="Common.Logging">
-          <HintPath>..\packages\Common.Logging.2.3.1\lib\net40\Common.Logging.dll</HintPath>
+          <HintPath>..\packages\Common.Logging.3.3.0\lib\net40\Common.Logging.dll</HintPath>
+        </Reference>
+        <Reference Include="Common.Logging.Core">
+          <HintPath>..\packages\Common.Logging.Core.3.3.0\lib\net40\Common.Logging.Core.dll</HintPath>
         </Reference>
         <Reference Include="System.Abstract">
           <HintPath>..\packages\System.Abstract.1.0.0\lib\net40\System.Abstract.dll</HintPath>
@@ -65,7 +72,10 @@
     <Otherwise>
       <ItemGroup>
         <Reference Include="Common.Logging">
-          <HintPath>..\packages\Common.Logging.2.3.1\lib\net40\Common.Logging.dll</HintPath>
+          <HintPath>..\packages\Common.Logging.3.3.0\lib\net40\Common.Logging.dll</HintPath>
+        </Reference>
+        <Reference Include="Common.Logging.Core">
+          <HintPath>..\packages\Common.Logging.Core.3.3.0\lib\net40\Common.Logging.Core.dll</HintPath>
         </Reference>
         <Reference Include="System.Abstract">
           <HintPath>..\packages\System.Abstract.1.0.0\lib\net45\System.Abstract.dll</HintPath>

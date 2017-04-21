@@ -1,7 +1,7 @@
 ﻿using Contoso.Abstract.EventSourcing;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using System.Abstract.EventSourcing;
-using System.Abstract.IntegationTests;
+using System.Abstract.AbstractTests;
 
 namespace System.Abstract.Tests.EventSourcing.Integration
 {

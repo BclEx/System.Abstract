@@ -1,6 +1,6 @@
 ﻿using Contoso.Abstract;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
-using System.Abstract.IntegationTests.ServiceLocator;
+using System.Abstract.AbstractTests.ServiceLocator;
 
 namespace System.Abstract.Tests.ServiceLocator.Integration
 {

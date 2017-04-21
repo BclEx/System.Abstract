@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="utf-8"?>
+<package>
+  <metadata>
+    <id>StackExchange.Redis.Abstract</id>
+    <version>1.0.0</version>
+    <title>StackExchange.Redis.Abstract</title>
+    <authors>Contoso</authors>
+    <owners>Contoso</owners>
+    <licenseUrl>http://www.opensource.org/licenses/mit-license.php</licenseUrl>
+    <requireLicenseAcceptance>false</requireLicenseAcceptance>
+    <description>This package contains a Redis implementation of the abstract ServiceCache.</description>
+    <releaseNotes></releaseNotes>
+    <copyright>Copyright 2010</copyright>
+    <tags>redis cache servicecache bclex</tags>
+    <language>en-US</language>
+    <dependencies>
+      <group>
+        <dependency id="System.Abstract" version="1.0.0" />
+      </group>
+      <group targetFramework="net40">
+        <dependency id="StackExchange.Redis.StrongName" version="1.2.1" />
+      </group>
+      <group targetFramework="net45">
+        <dependency id="StackExchange.Redis.StrongName" version="1.2.1" />
+      </group>
+    </dependencies>
+  </metadata>
+  <files>
+    <file src="_build\4.0\StackExchange.Redis.Abstract.dll" target="lib\net40" />
+    <file src="_build\4.5\StackExchange.Redis.Abstract.dll" target="lib\net45" />
+    <file src="StackExchange.Redis.Abstract\**\*.cs" target="src\StackExchange.Redis.Abstract" />
+  </files>
+</package>
+

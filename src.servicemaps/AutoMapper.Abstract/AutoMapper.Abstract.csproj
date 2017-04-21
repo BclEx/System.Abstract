@@ -49,7 +49,7 @@
           <HintPath>..\packages\AutoMapper.NET35.1.1.0.118\lib\net35\AutoMapper.dll</HintPath>
         </Reference>
         <Reference Include="System.Abstract">
-          <HintPath>..\packages\System.Abstract.0.5.0\lib\net35\System.Abstract.dll</HintPath>
+          <HintPath>..\packages\System.Abstract.1.0.0\lib\net35\System.Abstract.dll</HintPath>
           <Private>True</Private>
         </Reference>
       </ItemGroup>
@@ -59,8 +59,11 @@
         <Reference Include="AutoMapper">
           <HintPath>..\packages\AutoMapper.4.1.1\lib\net40\AutoMapper.dll</HintPath>
         </Reference>
+        <Reference Include="System.Runtime">
+          <HintPath>..\packages\Microsoft.Bcl.1.1.10\lib\net40\System.Runtime.dll</HintPath>
+        </Reference>
         <Reference Include="System.Abstract">
-          <HintPath>..\packages\System.Abstract.0.5.0\lib\net40\System.Abstract.dll</HintPath>
+          <HintPath>..\packages\System.Abstract.1.0.0\lib\net40\System.Abstract.dll</HintPath>
           <Private>True</Private>
         </Reference>
       </ItemGroup>
@@ -71,17 +74,19 @@
           <HintPath>..\packages\AutoMapper.6.0.2\lib\net45\AutoMapper.dll</HintPath>
         </Reference>
         <Reference Include="System.Abstract">
-          <HintPath>..\packages\System.Abstract.0.5.0\lib\net45\System.Abstract.dll</HintPath>
+          <HintPath>..\packages\System.Abstract.1.0.0\lib\net45\System.Abstract.dll</HintPath>
           <Private>True</Private>
         </Reference>
       </ItemGroup>
     </Otherwise>
   </Choose>
   <ItemGroup>
+    <Compile Include="AutoMapperServiceMap.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="app.config" />
+    <None Include="AutoMapper.Abstract.nuspec" />
     <None Include="BclEx.snk" />
     <None Include="packages.config">
       <SubType>Designer</SubType>

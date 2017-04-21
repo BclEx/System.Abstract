@@ -1,8 +1,9 @@
 ﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
 using NLog.Abstract;
-using System.Abstract.IntegationTests.ServiceLog;
+using System.Abstract;
+using System.Abstract.AbstractTests.ServiceLog;
 
-namespace System.Abstract.Tests.ServiceLocator.Integration
+namespace ServiceLog.Tests
 {
     [TestClass]
     public class NLogServiceLogTest : AbstractServiceLogTest

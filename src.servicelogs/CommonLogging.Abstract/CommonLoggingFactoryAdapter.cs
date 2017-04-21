@@ -33,20 +33,15 @@ namespace Common.Logging.Abstract
     /// <summary>
     /// CommonLoggingFactoryAdapter
     /// </summary>
-#if COMMONLOGGING
-    internal
-#else
-    public
-#endif
- class CommonLoggingFactoryAdapter : ILoggerFactoryAdapter
+    internal class CommonLoggingFactoryAdapter : ILoggerFactoryAdapter
     {
-        private readonly IServiceLog _log;
+        readonly IServiceLog _log;
 
         #region LogAdapter
 
         private class LogAdapter : AbstractLogger
         {
-            private readonly IServiceLog _log;
+            readonly IServiceLog _log;
 
             public LogAdapter(IServiceLog log)
             {

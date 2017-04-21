@@ -1,8 +1,9 @@
 ﻿using Castle.Windsor.Abstract;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
-using System.Abstract.IntegationTests.ServiceLocator;
+using System.Abstract;
+using System.Abstract.AbstractTests.ServiceLocator;
 
-namespace System.Abstract.Tests.ServiceLocator.Integration
+namespace ServiceLocator.Tests
 {
     [TestClass]
     public class CastleWindsorServiceLocatorIntegrationTests : AbstractServiceLocatorTest

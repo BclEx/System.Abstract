@@ -43,7 +43,7 @@
     <When Condition="'$(TargetFrameworkVersion)'=='v3.5'">
       <ItemGroup>
         <Reference Include="NLog">
-          <HintPath>..\packages\NLog.3.1.0.0\lib\net35\NLog.dll</HintPath>
+          <HintPath>..\packages\NLog.4.4.6\lib\net35\NLog.dll</HintPath>
         </Reference>
         <Reference Include="System.Abstract">
           <HintPath>..\packages\System.Abstract.1.0.0\lib\net35\System.Abstract.dll</HintPath>
@@ -54,7 +54,7 @@
     <When Condition="'$(TargetFrameworkVersion)'=='v4.0'">
       <ItemGroup>
         <Reference Include="NLog">
-          <HintPath>..\packages\NLog.3.1.0.0\lib\net40\NLog.dll</HintPath>
+          <HintPath>..\packages\NLog.4.4.6\lib\net40\NLog.dll</HintPath>
         </Reference>
         <Reference Include="System.Abstract">
           <HintPath>..\packages\System.Abstract.1.0.0\lib\net40\System.Abstract.dll</HintPath>
@@ -65,7 +65,7 @@
     <Otherwise>
       <ItemGroup>
         <Reference Include="NLog">
-          <HintPath>..\packages\NLog.3.1.0.0\lib\net45\NLog.dll</HintPath>
+          <HintPath>..\packages\NLog.4.4.6\lib\net45\NLog.dll</HintPath>
         </Reference>
         <Reference Include="System.Abstract">
           <HintPath>..\packages\System.Abstract.1.0.0\lib\net45\System.Abstract.dll</HintPath>

@@ -1,7 +1,7 @@
 ﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
 using System.Linq;
 
-namespace System.Abstract.IntegationTests.ServiceLocator
+namespace System.Abstract.AbstractTests.ServiceLocator
 {
     public abstract partial class AbstractServiceLocatorTest
     {

@@ -1,4 +1,4 @@
-﻿namespace System.Abstract.IntegationTests.ServiceBus
+﻿namespace System.Abstract.AbstractTests.ServiceBus
 {
     public class TestMessage
     {

@@ -1,6 +1,6 @@
 ﻿using Contoso.Abstract;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
-using System.Abstract.IntegationTests.ServiceBus;
+using System.Abstract.AbstractTests.ServiceBus;
 
 namespace System.Abstract.Tests.ServiceBus.Integration
 {

@@ -1,4 +1,4 @@
-﻿namespace System.Abstract.IntegationTests.ServiceLocator
+﻿namespace System.Abstract.AbstractTests.ServiceLocator
 {
     public interface ITestService { }
     public class TestService : ITestService { }

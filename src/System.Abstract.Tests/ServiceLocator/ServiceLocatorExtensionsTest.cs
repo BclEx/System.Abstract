@@ -1,6 +1,6 @@
 ﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
 using System.Abstract.Fakes;
-using System.Abstract.IntegationTests.ServiceLocator;
+using System.Abstract.AbstractTests.ServiceLocator;
 using System.Linq;
 
 namespace System.Abstract.Tests.ServiceLocator

@@ -1,8 +1,9 @@
 ﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
 using StructureMap.Abstract;
-using System.Abstract.IntegationTests.ServiceLocator;
+using System.Abstract;
+using System.Abstract.AbstractTests.ServiceLocator;
 
-namespace System.Abstract.Tests.ServiceLocator.Integration
+namespace ServiceLocator.Tests
 {
     [TestClass]
     public class StructureMapServiceLocatorIntegrationTests : AbstractServiceLocatorTest

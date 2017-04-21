@@ -1,6 +1,6 @@
 ﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
 
-namespace System.Abstract.IntegationTests.ServiceCache
+namespace System.Abstract.AbstractTests.ServiceCache
 {
     [TestClass]
     public abstract class AbstractServiceCacheTest

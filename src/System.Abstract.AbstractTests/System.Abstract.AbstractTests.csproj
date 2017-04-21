@@ -68,6 +68,7 @@
     <Compile Include="ServiceLocator\Fakes\TestNamedService.cs" />
     <Compile Include="ServiceLocator\Fakes\TestService.cs" />
     <Compile Include="ServiceLog\AbstractServiceLogTest.cs" />
+    <Compile Include="ServiceMap\AbstractServiceMapTest.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\System.Abstract\System.Abstract.csproj">
@@ -75,9 +76,7 @@
       <Name>System.Abstract</Name>
     </ProjectReference>
   </ItemGroup>
-  <ItemGroup>
-    <Folder Include="ServiceMap\" />
-  </ItemGroup>
+  <ItemGroup />
   <ItemGroup>
     <Fakes Include="Fakes\System.Abstract.fakes" />
   </ItemGroup>

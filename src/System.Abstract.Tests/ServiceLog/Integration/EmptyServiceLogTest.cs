@@ -1,5 +1,5 @@
 ﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
-using System.Abstract.IntegationTests.ServiceLog;
+using System.Abstract.AbstractTests.ServiceLog;
 
 namespace System.Abstract.Tests.ServiceLog.Integration
 {

@@ -1,7 +1,7 @@
 ﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
 using System.Abstract.EventSourcing;
 
-namespace System.Abstract.IntegationTests
+namespace System.Abstract.AbstractTests
 {
     [TestClass]
 	public abstract class AbstractAggregateRootSnapshotStoreTest

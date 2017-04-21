@@ -1,6 +1,6 @@
 ﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
 
-namespace System.Abstract.IntegationTests.ServiceLog
+namespace System.Abstract.AbstractTests.ServiceLog
 {
     [TestClass]
     public abstract class AbstractServiceLogTest

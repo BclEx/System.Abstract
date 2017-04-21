@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="utf-8"?>
+<package>
+  <metadata>
+    <id>EnyimMemcached.Abstract</id>
+    <version>1.0.0</version>
+    <title>EnyimMemcached.Abstract</title>
+    <authors>Contoso</authors>
+    <owners>Contoso</owners>
+    <licenseUrl>http://www.opensource.org/licenses/mit-license.php</licenseUrl>
+    <requireLicenseAcceptance>false</requireLicenseAcceptance>
+    <description>This package contains a Memcached implementation of the abstract ServiceCache.</description>
+    <releaseNotes></releaseNotes>
+    <copyright>Copyright 2010</copyright>
+    <tags>memcache memcached cache servicecache bclex</tags>
+    <language>en-US</language>
+    <dependencies>
+      <group>
+        <dependency id="System.Abstract" version="1.0.0" />
+        <dependency id="EnyimMemcached" version="2.16.0" />
+      </group>
+    </dependencies>
+  </metadata>
+  <files>
+    <file src="_build\3.5\EnyimMemcached.Abstract.dll" target="lib\net35" />
+    <file src="_build\4.0\EnyimMemcached.Abstract.dll" target="lib\net40" />
+    <file src="_build\4.5\EnyimMemcached.Abstract.dll" target="lib\net45" />
+    <file src="EnyimMemcached.Abstract\**\*.cs" target="src\EnyimMemcached.Abstract" />
+  </files>
+</package>
+

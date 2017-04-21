@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 
-namespace System.Abstract.IntegationTests.ServiceLocator
+namespace System.Abstract.AbstractTests.ServiceLocator
 {
     [TestClass]
     public abstract partial class AbstractServiceLocatorTest

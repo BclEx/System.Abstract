@@ -1,6 +1,6 @@
 ﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
 
-namespace System.Abstract.IntegationTests.ServiceBus
+namespace System.Abstract.AbstractTests.ServiceBus
 {
     [TestClass]
     public abstract class AbstractServiceBusTest
