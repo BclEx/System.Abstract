@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="utf-8"?>
+<package>
+  <metadata>
+    <id>NLog.Abstract</id>
+    <version>1.0.0</version>
+    <title>NLog.Abstract</title>
+    <authors>Contoso</authors>
+    <owners>Contoso</owners>
+    <licenseUrl>http://www.opensource.org/licenses/mit-license.php</licenseUrl>
+    <requireLicenseAcceptance>false</requireLicenseAcceptance>
+    <description>This package contains a NLog implementation of the abstract ServiceLog.</description>
+    <releaseNotes></releaseNotes>
+    <copyright>Copyright 2010</copyright>
+    <tags>nlog servicelog log logging bclex</tags>
+    <language>en-US</language>
+    <dependencies>
+      <group>
+        <dependency id="System.Abstract" version="1.0.0" />
+        <dependency id="NLog" version="4.4.6" />
+      </group>
+    </dependencies>
+  </metadata>
+  <files>
+    <file src="_build\3.5\NLog.Abstract.dll" target="lib\net35" />
+    <file src="_build\4.0\NLog.Abstract.dll" target="lib\net40" />
+    <file src="_build\4.5\NLog.Abstract.dll" target="lib\net45" />
+    <file src="NLog.Abstract\**\*.cs" target="src\NLog.Abstract" />
+  </files>
+</package>
