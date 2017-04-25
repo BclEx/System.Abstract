@@ -47,6 +47,8 @@ namespace Common.Logging.Abstract
     public class CommonLoggingServiceLog : ICommonLoggingServiceLog, ServiceLogManager.ISetupRegistration
     {
         static CommonLoggingServiceLog() { ServiceLogManager.EnsureRegistration(); }
+        readonly ILog _log;
+
         /// <summary>
         /// Initializes a new instance of the <see cref="CommonLoggingServiceLog"/> class.
         /// </summary>
@@ -57,13 +59,15 @@ namespace Common.Logging.Abstract
         /// Initializes a new instance of the <see cref="CommonLoggingServiceLog"/> class.
         /// </summary>
         /// <param name="log">The log.</param>
-        public CommonLoggingServiceLog(ILog log)
+        public CommonLoggingServiceLog(object log)
         {
             if (log == null)
                 throw new ArgumentNullException("log");
+            _log = (log as ILog);
+            if (_log == null)
+                throw new ArgumentOutOfRangeException("log", "Must be of type log4net.ILog");
             var logAsSimpleLogger = (log as AbstractSimpleLogger);
             Name = (logAsSimpleLogger != null ? logAsSimpleLogger.Name : string.Empty);
-            Log = log;
         }
 
         Action<IServiceLocator, string> ServiceLogManager.ISetupRegistration.DefaultServiceRegistrar
@@ -119,15 +123,15 @@ namespace Common.Logging.Abstract
         /// <param name="s">The s.</param>
         public void Write(ServiceLogLevel level, Exception ex, string s)
         {
-            if (Log == null)
+            if (_log == null)
                 throw new NullReferenceException("Log");
             switch (level)
             {
-                case ServiceLogLevel.Fatal: Log.Fatal(s, ex); return;
-                case ServiceLogLevel.Error: Log.Error(s, ex); return;
-                case ServiceLogLevel.Warning: Log.Warn(s, ex); return;
-                case ServiceLogLevel.Information: Log.Info(s, ex); return;
-                case ServiceLogLevel.Debug: Log.Debug(s, ex); return;
+                case ServiceLogLevel.Fatal: _log.Fatal(s, ex); return;
+                case ServiceLogLevel.Error: _log.Error(s, ex); return;
+                case ServiceLogLevel.Warning: _log.Warn(s, ex); return;
+                case ServiceLogLevel.Information: _log.Info(s, ex); return;
+                case ServiceLogLevel.Debug: _log.Debug(s, ex); return;
                 default: return;
             }
         }
@@ -137,7 +141,7 @@ namespace Common.Logging.Abstract
         /// <summary>
         /// Gets the log.
         /// </summary>
-        public ILog Log { get; private set; }
+        public ILog Log { get { return _log; } }
 
         #endregion
     }

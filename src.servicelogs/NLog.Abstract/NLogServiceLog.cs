@@ -46,6 +46,8 @@ namespace NLog.Abstract
     public class NLogServiceLog : INLogServiceLog, ServiceLogManager.ISetupRegistration
     {
         static NLogServiceLog() { ServiceLogManager.EnsureRegistration(); }
+        readonly Logger _log;
+
         /// <summary>
         /// Initializes a new instance of the <see cref="NLogServiceLog"/> class.
         /// </summary>
@@ -56,12 +58,14 @@ namespace NLog.Abstract
         /// Initializes a new instance of the <see cref="NLogServiceLog"/> class.
         /// </summary>
         /// <param name="log">The log.</param>
-        public NLogServiceLog(Logger log)
+        public NLogServiceLog(object log)
         {
             if (log == null)
                 throw new ArgumentNullException("log");
-            Name = log.Name;
-            Log = log;
+            _log = (log as Logger);
+            if (_log == null)
+                throw new ArgumentOutOfRangeException("log", "Must be of type NLog.Logger");
+            Name = _log.Name;
         }
 
         Action<IServiceLocator, string> ServiceLogManager.ISetupRegistration.DefaultServiceRegistrar
@@ -117,27 +121,27 @@ namespace NLog.Abstract
         /// <param name="s">The s.</param>
         public void Write(ServiceLogLevel level, Exception ex, string s)
         {
-            if (Log == null)
+            if (_log == null)
                 throw new NullReferenceException("Log");
             var message = string.Format(CultureInfo.CurrentCulture, "[{0}] '{1}' message: {2}", level.ToString(), Name, s);
             if (ex == null)
                 switch (level)
                 {
-                    case ServiceLogLevel.Fatal: Log.Fatal(message); return;
-                    case ServiceLogLevel.Error: Log.Error(message); return;
-                    case ServiceLogLevel.Warning: Log.Warn(message); return;
-                    case ServiceLogLevel.Information: Log.Info(message); return;
-                    case ServiceLogLevel.Debug: Log.Debug(message); return;
+                    case ServiceLogLevel.Fatal: _log.Fatal(message); return;
+                    case ServiceLogLevel.Error: _log.Error(message); return;
+                    case ServiceLogLevel.Warning: _log.Warn(message); return;
+                    case ServiceLogLevel.Information: _log.Info(message); return;
+                    case ServiceLogLevel.Debug: _log.Debug(message); return;
                     default: return;
                 }
             else
                 switch (level)
                 {
-                    case ServiceLogLevel.Fatal: Log.Fatal(ex, message); return;
-                    case ServiceLogLevel.Error: Log.Error(ex, message); return;
-                    case ServiceLogLevel.Warning: Log.Warn(ex, message); return;
-                    case ServiceLogLevel.Information: Log.Info(ex, message); return;
-                    case ServiceLogLevel.Debug: Log.Debug(ex, message); return;
+                    case ServiceLogLevel.Fatal: _log.Fatal(ex, message); return;
+                    case ServiceLogLevel.Error: _log.Error(ex, message); return;
+                    case ServiceLogLevel.Warning: _log.Warn(ex, message); return;
+                    case ServiceLogLevel.Information: _log.Info(ex, message); return;
+                    case ServiceLogLevel.Debug: _log.Debug(ex, message); return;
                     default: return;
                 }
         }
@@ -147,7 +151,7 @@ namespace NLog.Abstract
         /// <summary>
         /// Gets the log.
         /// </summary>
-        public Logger Log { get; private set; }
+        public Logger Log { get { return _log; } }
 
         #endregion
     }
