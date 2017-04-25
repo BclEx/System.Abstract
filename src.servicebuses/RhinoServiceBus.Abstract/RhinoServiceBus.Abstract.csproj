@@ -1,0 +1,140 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup Label="UserMacros">
+    <NETVER Condition="'$(NETVER)'==''">v4.0</NETVER>
+  </PropertyGroup>
+  <PropertyGroup>
+    <Configuration Condition="'$(Configuration)' == ''">Debug</Configuration>
+    <Platform Condition="'$(Platform)' == ''">AnyCPU</Platform>
+    <ProductVersion>8.0.30703</ProductVersion>
+    <SchemaVersion>2.0</SchemaVersion>
+    <ProjectGuid>{C1A8AD53-BCFC-447D-8C03-D7C453D2739E}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>Abstract.Abstract</RootNamespace>
+    <AssemblyName>RhinoServiceBus.Abstract</AssemblyName>
+    <TargetFrameworkVersion>$(NETVER)</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+    <SignAssembly>true</SignAssembly>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Debug|AnyCPU'">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE;COMMONLOGGING</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
+    <AssemblyOriginatorKeyFile>BclEx.snk</AssemblyOriginatorKeyFile>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Release|AnyCPU'">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE;COMMONLOGGING</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
+    <AssemblyOriginatorKeyFile>BclEx.snk</AssemblyOriginatorKeyFile>
+  </PropertyGroup>
+  <Choose>
+    <When Condition="'$(TargetFrameworkVersion)'=='v3.5'">
+      <ItemGroup>
+    <Reference Include="Common.Logging">
+      <HintPath>..\packages\Common.Logging.2.1.1\lib\net35\Common.Logging.dll</HintPath>
+    </Reference>
+    <Reference Include="Rhino.ServiceBus">
+      <HintPath>..\packages\Rhino.ServiceBus.3.1.1.0\lib\3.5\Rhino.ServiceBus.dll</HintPath>
+    </Reference>
+    <Reference Include="Rhino.ServiceBus.Host">
+      <ExecutableExtension>.exe</ExecutableExtension>
+      <HintPath>..\packages\Rhino.ServiceBus.Host.3.1.1.0\lib\3.5\Rhino.ServiceBus.Host.exe</HintPath>
+    </Reference>
+        <Reference Include="System.Abstract">
+          <HintPath>..\packages\System.Abstract.1.0.0\lib\net35\System.Abstract.dll</HintPath>
+          <Private>True</Private>
+        </Reference>
+      </ItemGroup>
+    </When>
+    <When Condition="'$(TargetFrameworkVersion)'=='v4.0'">
+      <ItemGroup>
+    <Reference Include="Common.Logging">
+      <HintPath>..\packages\Common.Logging.2.1.1\lib\net40\Common.Logging.dll</HintPath>
+    </Reference>
+    <Reference Include="Rhino.ServiceBus">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\packages\Rhino.ServiceBus.3.1.1.0\lib\4.0\Rhino.ServiceBus.dll</HintPath>
+    </Reference>
+    <Reference Include="Rhino.ServiceBus.Host">
+      <ExecutableExtension>.exe</ExecutableExtension>
+      <HintPath>..\packages\Rhino.ServiceBus.Host.3.1.1.0\lib\4.0\Rhino.ServiceBus.Host.exe</HintPath>
+    </Reference>
+        <Reference Include="System.Abstract">
+          <HintPath>..\packages\System.Abstract.1.0.0\lib\net40\System.Abstract.dll</HintPath>
+          <Private>True</Private>
+        </Reference>
+      </ItemGroup>
+    </When>
+    <Otherwise>
+      <ItemGroup>
+    <Reference Include="Common.Logging">
+      <HintPath>..\packages\Common.Logging.2.1.1\lib\net40\Common.Logging.dll</HintPath>
+    </Reference>
+    <Reference Include="Rhino.ServiceBus">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\packages\Rhino.ServiceBus.3.1.1.0\lib\4.0\Rhino.ServiceBus.dll</HintPath>
+    </Reference>
+    <Reference Include="Rhino.ServiceBus.Host">
+      <ExecutableExtension>.exe</ExecutableExtension>
+      <HintPath>..\packages\Rhino.ServiceBus.Host.3.1.1.0\lib\4.0\Rhino.ServiceBus.Host.exe</HintPath>
+    </Reference>
+        <Reference Include="System.Abstract">
+          <HintPath>..\packages\System.Abstract.1.0.0\lib\net45\System.Abstract.dll</HintPath>
+          <Private>True</Private>
+        </Reference>
+      </ItemGroup>
+    </Otherwise>
+  </Choose>
+  <ItemGroup>
+    <Reference Include="System" />
+    <Reference Include="System.configuration" />
+    <Reference Include="System.Messaging" />
+    <Reference Include="System.Transactions" />
+    <Reference Include="System.XML" />
+    <Reference Include="System.Xml.Linq" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="..\..\ServiceLogs\Contoso.Abstract.CommonLogging\Abstract\CommonLoggingFactoryAdapter.cs">
+      <Link>Abstract\+FromCommonLogging\CommonLoggingFactoryAdapter.cs</Link>
+    </Compile>
+    <Compile Include="RuntimeRhinoServiceBusLoadBalancedHost.cs" />
+    <Compile Include="RuntimeRhinoServiceBusHost.cs" />
+    <Compile Include="OnewayRhinoWrapServiceBusAbstractor.cs" />
+    <Compile Include="RhinoServiceBus\Serializers\XmlMessageSerializer.cs" />
+    <Compile Include="RhinoWrapServiceBusAbstractor.cs" />
+    <Compile Include="OnewayRhinoServiceBusAbstractor.cs" />
+    <Compile Include="IRhinoServiceMessageHandler.cs" />
+    <Compile Include="RhinoServiceBusTransport.cs" />
+    <Compile Include="RhinoServiceBusAbstractor.cs" />
+    <Compile Include="RhinoServiceBus\ConsumerInterceptorAdapter.cs" />
+    <Compile Include="RhinoServiceBus\ServiceLocatorLoadBalancerBootStrapper.cs" />
+    <Compile Include="RhinoServiceBus\ServiceLocatorAdapter.cs" />
+    <Compile Include="RhinoServiceBus\ServiceLocatorBuilder.cs" />
+    <Compile Include="RhinoServiceBus\Extensions.cs" />
+    <Compile Include="RhinoServiceBus\ServiceLocatorBootStrapper.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="BclEx.snk" />
+    <None Include="packages.config" />
+  </ItemGroup>
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+</Project>

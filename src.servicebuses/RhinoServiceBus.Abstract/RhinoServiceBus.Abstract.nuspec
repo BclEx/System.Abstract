@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="utf-8"?>
+<package>
+  <metadata>
+    <id>BclEx-Abstract.RhinoServiceBus</id>
+    <version>1.0.0</version>
+    <title>BclEx-Abstract.RhinoServiceBus</title>
+    <authors>Contoso</authors>
+    <owners>Contoso</owners>
+    <licenseUrl>http://www.opensource.org/licenses/mit-license.php</licenseUrl>
+    <projectUrl>http://docs.bclex.org/bclex-abstract/</projectUrl>
+    <iconUrl>http://docs.bclex.org/bclex-abstract.ico</iconUrl>
+    <requireLicenseAcceptance>false</requireLicenseAcceptance>
+    <description>This package contains a Rhino Service Bus implementation of the abstract ServiceBus.</description>
+    <releaseNotes></releaseNotes>
+    <tags>rhino rhino-esb servicebus bclex</tags>
+    <language>en-US</language>
+    <dependencies>
+      <group>
+        <dependency id="BclEx-Abstract" version="1.0.0" />
+        <dependency id="Common.Logging" version="2.1.1" />
+        <dependency id="Rhino.ServiceBus" version="3.1.1.0" />
+        <dependency id="Rhino.ServiceBus.Host" version="3.1.1.0" />
+      </group>
+    </dependencies>
+  </metadata>
+  <files>
+    <file src="build\3.5\Contoso.Abstract.RhinoServiceBus.dll" target="lib\net35" />
+    <file src="build\3.5\Contoso.Abstract.RhinoServiceBus.xml" target="lib\net35" />
+    <file src="build\4.0\Contoso.Abstract.RhinoServiceBus.dll" target="lib\net40" />
+    <file src="build\4.0\Contoso.Abstract.RhinoServiceBus.xml" target="lib\net40" />
+    <file src="build\4.5\Contoso.Abstract.RhinoServiceBus.dll" target="lib\net45" />
+    <file src="build\4.5\Contoso.Abstract.RhinoServiceBus.xml" target="lib\net45" />
+    <file src="src\ServiceBuses\Contoso.Abstract.RhinoServiceBus\**\*.cs" target="src\Contoso.Abstract.RhinoServiceBus" />
+  </files>
+</package>
+
