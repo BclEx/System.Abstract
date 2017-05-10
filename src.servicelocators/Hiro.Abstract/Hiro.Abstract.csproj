@@ -44,8 +44,8 @@
     <AssemblyOriginatorKeyFile>BclEx.snk</AssemblyOriginatorKeyFile>
     <Prefer32Bit>false</Prefer32Bit>
   </PropertyGroup>
-  <PropertyGroup>
-    <AssemblyOriginatorKeyFile>BclEx.snk</AssemblyOriginatorKeyFile>
+  <PropertyGroup Condition="'$(TargetFrameworkVersion)'=='v3.5'">
+    <DefineConstants>NET35</DefineConstants>
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="System" />

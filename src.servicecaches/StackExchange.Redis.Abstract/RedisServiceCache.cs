@@ -23,6 +23,7 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 THE SOFTWARE.
 */
 #endregion
+#if !NET35
 using System;
 using System.Abstract;
 using System.Collections.Generic;
@@ -53,22 +54,20 @@ namespace StackExchange.Redis.Abstract
         public RedisServiceCache(string configuration)
             : this(ConnectionMultiplexer.Connect(configuration), 0) { }
         /// <summary>
-        /// Initializes a new instance of the <see cref="RedisServiceCache" /> class.
-        /// </summary>
-        /// <param name="connection">The connection.</param>
-        /// <param name="db">The database.</param>
-        public RedisServiceCache(ConnectionMultiplexer connection, int db)
-            : this(connection.GetDatabase(0)) { }
-        /// <summary>
         /// Initializes a new instance of the <see cref="MemcachedServiceCache" /> class.
         /// </summary>
-        /// <param name="connection">The connection.</param>
+        /// <param name="cache">The cache.</param>
         /// <exception cref="System.ArgumentNullException">connection</exception>
-        public RedisServiceCache(IDatabase database)
+        public RedisServiceCache(object cache, int db = 0)
         {
-            if (database == null)
-                throw new ArgumentNullException("database");
-            Cache = database;
+            if (cache == null)
+                throw new ArgumentNullException("cache");
+            if (cache is IDatabase)
+                Cache = (IDatabase)cache;
+            else if (cache is ConnectionMultiplexer)
+                Cache = ((ConnectionMultiplexer)cache).GetDatabase(db);
+            else
+                throw new ArgumentOutOfRangeException("cache", "Must be of type IDatabase or ConnectionMultiplexer.");
             Settings = new ServiceCacheSettings();
         }
 
@@ -254,3 +253,4 @@ namespace StackExchange.Redis.Abstract
         #endregion
     }
 }
+#endif

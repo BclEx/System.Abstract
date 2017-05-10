@@ -19,7 +19,7 @@ task Init -depends Clean {
 }
 
 task Compile -depends Init {
-	msbuild $sln_file /target:Rebuild /p:"OutDir=$build_dir\3.5;Configuration=Debug;TargetFrameworkVersion=v3.5;DefineConstants=NET35" /m
+	msbuild $sln_file /target:Rebuild /p:"OutDir=$build_dir\3.5;Configuration=Debug;TargetFrameworkVersion=v3.5" /m
 	msbuild $sln_file /target:Rebuild /p:"OutDir=$build_dir\4.0;Configuration=Debug;TargetFrameworkVersion=v4.0" /m
 	msbuild $sln_file /target:Rebuild /p:"OutDir=$build_dir\4.5;Configuration=Debug;TargetFrameworkVersion=v4.5;TargetFrameworkProfile=" /m
 }

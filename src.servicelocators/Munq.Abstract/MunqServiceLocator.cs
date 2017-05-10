@@ -60,11 +60,13 @@ namespace Munq.Abstract
         /// Initializes a new instance of the <see cref="MunqServiceLocator"/> class.
         /// </summary>
         /// <param name="container">The container.</param>
-        public MunqServiceLocator(IocContainer container)
+        public MunqServiceLocator(object container)
         {
             if (container == null)
                 throw new ArgumentNullException("container");
-            Container = container;
+            Container = (container as IocContainer);
+            if (Container == null)
+                throw new ArgumentOutOfRangeException("container", "Must be of type Munq.IocContainer");
         }
 
         /// <summary>

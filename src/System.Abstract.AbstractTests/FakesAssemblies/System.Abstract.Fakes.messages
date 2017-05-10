@@ -1,7 +1,12 @@
 C:\_GITHUB\System.Abstract\src\System.Abstract.AbstractTests\Fakes\System.Abstract.fakes : warning : Cannot generate stub for System.CoreExtensions: type is sealed.
 C:\_GITHUB\System.Abstract\src\System.Abstract.AbstractTests\Fakes\System.Abstract.fakes : warning : Cannot generate stub for System.ExceptionExtensions: type is sealed.
 C:\_GITHUB\System.Abstract\src\System.Abstract.AbstractTests\Fakes\System.Abstract.fakes : warning : Cannot generate stub for System.Reflection.AssemblyExtensions: type is sealed.
+C:\_GITHUB\System.Abstract\src\System.Abstract.AbstractTests\Fakes\System.Abstract.fakes : warning : Cannot generate stub for System.Collections.HashHelpers: type is sealed.
+C:\_GITHUB\System.Abstract\src\System.Abstract.AbstractTests\Fakes\System.Abstract.fakes : warning : Cannot generate stub for System.Runtime.CompilerServices.ConditionalWeakTable`2: type is sealed.
+C:\_GITHUB\System.Abstract\src\System.Abstract.AbstractTests\Fakes\System.Abstract.fakes : warning : Cannot generate stub for System.Runtime.CompilerServices.DependentHandle: type is a value type.
 C:\_GITHUB\System.Abstract\src\System.Abstract.AbstractTests\Fakes\System.Abstract.fakes : warning : Cannot generate stub for System.SR: type is sealed.
+C:\_GITHUB\System.Abstract\src\System.Abstract.AbstractTests\Fakes\System.Abstract.fakes : warning : Cannot generate stub for System.System_LazyDebugView`1: type is sealed.
+C:\_GITHUB\System.Abstract\src\System.Abstract.AbstractTests\Fakes\System.Abstract.fakes : warning : Cannot generate stub for System.Threading.LazyThreadSafetyMode: type is a value type.
 C:\_GITHUB\System.Abstract\src\System.Abstract.AbstractTests\Fakes\System.Abstract.fakes : warning : Cannot generate stub for System.Abstract.EventBus: type is a value type.
 C:\_GITHUB\System.Abstract\src\System.Abstract.AbstractTests\Fakes\System.Abstract.fakes : warning : Cannot generate stub for System.Abstract.ServiceManagerLoggerBase`1: type System.Abstract.ServiceManagerLoggerBase`1 unstubbable: unsupported constraint type.
 C:\_GITHUB\System.Abstract\src\System.Abstract.AbstractTests\Fakes\System.Abstract.fakes : warning : Cannot generate stub for System.Abstract.EventSourcing.AggregateRootOptions: type is a value type.
@@ -29,14 +34,22 @@ C:\_GITHUB\System.Abstract\src\System.Abstract.AbstractTests\Fakes\System.Abstra
 C:\_GITHUB\System.Abstract\src\System.Abstract.AbstractTests\Fakes\System.Abstract.fakes : warning : Cannot generate stub for System.Abstract.ServiceRegistration: type is a value type.
 C:\_GITHUB\System.Abstract\src\System.Abstract.AbstractTests\Fakes\System.Abstract.fakes : warning : Cannot generate stub for System.Abstract.ServiceLogLevel: type is a value type.
 C:\_GITHUB\System.Abstract\src\System.Abstract.AbstractTests\Fakes\System.Abstract.fakes : warning : Cannot generate stub for System.Local: type is not visible to exported or assembly(System.Abstract.Fakes).
+C:\_GITHUB\System.Abstract\src\System.Abstract.AbstractTests\Fakes\System.Abstract.fakes : warning : Cannot generate stub for <PrivateImplementationDetails>{15ECE021-BDC6-43D6-8334-6F49156FD8DC}: type is not supported because of internal limitations.
 C:\_GITHUB\System.Abstract\src\System.Abstract.AbstractTests\Fakes\System.Abstract.fakes : warning : Cannot generate shim for System.CoreExtensions: type is not visible to exported or assembly(System.Abstract.Fakes).
 C:\_GITHUB\System.Abstract\src\System.Abstract.AbstractTests\Fakes\System.Abstract.fakes : warning : Cannot generate shim for System.ExceptionExtensions: type is not visible to exported or assembly(System.Abstract.Fakes).
+C:\_GITHUB\System.Abstract\src\System.Abstract.AbstractTests\Fakes\System.Abstract.fakes : warning : Cannot generate shim for System.Lazy`1+Boxed: type is not visible to exported or assembly(System.Abstract.Fakes).
+C:\_GITHUB\System.Abstract\src\System.Abstract.AbstractTests\Fakes\System.Abstract.fakes : warning : Cannot generate shim for System.Lazy`1+LazyInternalExceptionHolder: type is not visible to exported or assembly(System.Abstract.Fakes).
 C:\_GITHUB\System.Abstract\src\System.Abstract.AbstractTests\Fakes\System.Abstract.fakes : warning : Cannot generate shim for System.Reflection.AssemblyExtensions: type is not supported because of internal limitations.
+C:\_GITHUB\System.Abstract\src\System.Abstract.AbstractTests\Fakes\System.Abstract.fakes : warning : Cannot generate shim for System.Collections.HashHelpers: type is not visible to exported or assembly(System.Abstract.Fakes).
+C:\_GITHUB\System.Abstract\src\System.Abstract.AbstractTests\Fakes\System.Abstract.fakes : warning : Cannot generate shim for System.Runtime.CompilerServices.ConditionalWeakTable`2: type is not supported because of internal limitations.
+C:\_GITHUB\System.Abstract\src\System.Abstract.AbstractTests\Fakes\System.Abstract.fakes : warning : Cannot generate shim for System.Runtime.CompilerServices.DependentHandle: type is not supported because of internal limitations.
 C:\_GITHUB\System.Abstract\src\System.Abstract.AbstractTests\Fakes\System.Abstract.fakes : warning : Cannot generate shim for System.SR: type is not visible to exported or assembly(System.Abstract.Fakes).
+C:\_GITHUB\System.Abstract\src\System.Abstract.AbstractTests\Fakes\System.Abstract.fakes : warning : Cannot generate shim for System.System_LazyDebugView`1: type is not visible to exported or assembly(System.Abstract.Fakes).
+C:\_GITHUB\System.Abstract\src\System.Abstract.AbstractTests\Fakes\System.Abstract.fakes : warning : Cannot generate shim for System.Threading.LazyThreadSafetyMode: type is an enum.
 C:\_GITHUB\System.Abstract\src\System.Abstract.AbstractTests\Fakes\System.Abstract.fakes : warning : Cannot generate shim for System.Abstract.IServiceBus: type is an interface.
 C:\_GITHUB\System.Abstract\src\System.Abstract.AbstractTests\Fakes\System.Abstract.fakes : warning : Cannot generate shim for System.Abstract.IEventBus: type is an interface.
 C:\_GITHUB\System.Abstract\src\System.Abstract.AbstractTests\Fakes\System.Abstract.fakes : warning : Cannot generate shim for System.Abstract.IEventSource: type is an interface.
-C:\_GITHUB\System.Abstract\src\System.Abstract.AbstractTests\Fakes\System.Abstract.fakes : warning : Cannot generate shim for System.Abstract.ServiceManagerBase`3+<>c__DisplayClass4: type is not supported because of internal limitations.
+C:\_GITHUB\System.Abstract\src\System.Abstract.AbstractTests\Fakes\System.Abstract.fakes : warning : Cannot generate shim for System.Abstract.ServiceManagerBase`3+<>c__DisplayClass3: type is not supported because of internal limitations.
 C:\_GITHUB\System.Abstract\src\System.Abstract.AbstractTests\Fakes\System.Abstract.fakes : warning : Cannot generate shim for System.Abstract.ServiceManagerBase`3+ISetupDescriptor: type is an interface.
 C:\_GITHUB\System.Abstract\src\System.Abstract.AbstractTests\Fakes\System.Abstract.fakes : warning : Cannot generate shim for System.Abstract.ServiceManagerBase`3+ISetupRegistration: type is an interface.
 C:\_GITHUB\System.Abstract\src\System.Abstract.AbstractTests\Fakes\System.Abstract.fakes : warning : Cannot generate shim for System.Abstract.ServiceManagerBase`3+ServiceRegistration: type is not visible to exported or assembly(System.Abstract.Fakes).
@@ -144,3 +157,4 @@ C:\_GITHUB\System.Abstract\src\System.Abstract.AbstractTests\Fakes\System.Abstra
 C:\_GITHUB\System.Abstract\src\System.Abstract.AbstractTests\Fakes\System.Abstract.fakes : warning : Cannot generate shim for System.Abstract.IServiceMap: type is an interface.
 C:\_GITHUB\System.Abstract\src\System.Abstract.AbstractTests\Fakes\System.Abstract.fakes : warning : Cannot generate shim for System.Abstract.ServiceMapManager+<>c__DisplayClassa: type is not supported because of internal limitations.
 C:\_GITHUB\System.Abstract\src\System.Abstract.AbstractTests\Fakes\System.Abstract.fakes : warning : Cannot generate shim for System.Abstract.ServiceMapManagerLogger+LoggerFlags: type is an enum.
+C:\_GITHUB\System.Abstract\src\System.Abstract.AbstractTests\Fakes\System.Abstract.fakes : warning : Cannot generate shim for <PrivateImplementationDetails>{15ECE021-BDC6-43D6-8334-6F49156FD8DC}: type is not supported because of internal limitations.

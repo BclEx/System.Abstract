@@ -1,4 +1,5 @@
-﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
+﻿#if !NET35
+using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Munq.Abstract;
 using System.Abstract;
 using System.Abstract.AbstractTests.ServiceLocator;
@@ -58,3 +59,4 @@ namespace ServiceLocator.Tests
         #endregion
     }
 }
+#endif

@@ -23,6 +23,9 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 THE SOFTWARE.
 */
 #endregion
+#if !NET35
+using AutoMapper.Configuration;
+#endif
 using System;
 using System.Abstract;
 using System.Globalization;
@@ -46,13 +49,24 @@ namespace AutoMapper.Abstract
     public class AutoMapperServiceMap : IAutoMapperServiceMap, ServiceMapManager.ISetupRegistration
     {
         static AutoMapperServiceMap() { ServiceMapManager.EnsureRegistration(); }
+        /// <summary>
+        /// Initializes a new instance of the <see cref="AutoMapperServiceMap"/> class.
+        /// </summary>
         public AutoMapperServiceMap()
             : this((IConfiguration)null) { }
-        public AutoMapperServiceMap(IConfiguration configuration)
+        /// <summary>
+        /// Initializes a new instance of the <see cref="AutoMapperServiceMap"/> class.
+        /// </summary>
+        /// <param name="configuration">The configuration.</param>
+        /// <exception cref="System.ArgumentNullException">configuration</exception>
+        /// <exception cref="System.ArgumentOutOfRangeException">configuration;Must be of type AutoMapper.IConfiguration</exception>
+        public AutoMapperServiceMap(object configuration)
         {
             if (configuration == null)
                 throw new ArgumentNullException("configuration");
-            Configuration = configuration;
+            Configuration = (configuration as IConfiguration);
+            if (Configuration == null)
+                throw new ArgumentOutOfRangeException("configuration", "Must be of type AutoMapper.IConfiguration");
         }
 
         Action<IServiceLocator, string> ServiceMapManager.ISetupRegistration.DefaultServiceRegistrar

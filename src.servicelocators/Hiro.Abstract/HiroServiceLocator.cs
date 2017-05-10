@@ -67,12 +67,14 @@ namespace Hiro.Abstract
         /// Initializes a new instance of the <see cref="HiroServiceLocator"/> class.
         /// </summary>
         /// <param name="builder">The builder.</param>
-        public HiroServiceLocator(DependencyMap builder)
+        public HiroServiceLocator(object builder)
         {
             if (builder == null)
                 throw new ArgumentNullException("builder");
-            Builder = builder;
-            _registrar = new HiroServiceRegistrar(this, builder, out _containerBuilder);
+            Builder = (builder as DependencyMap);
+            if (Builder == null)
+                throw new ArgumentOutOfRangeException("builder", "Must be of type Hiro.DependencyMap");
+            _registrar = new HiroServiceRegistrar(this, Builder, out _containerBuilder);
         }
         //public HiroServiceLocator(IMicroContainer container)
         //{

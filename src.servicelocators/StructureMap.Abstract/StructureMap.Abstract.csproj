@@ -43,6 +43,9 @@
     <AssemblyOriginatorKeyFile>BclEx.snk</AssemblyOriginatorKeyFile>
     <Prefer32Bit>false</Prefer32Bit>
   </PropertyGroup>
+  <PropertyGroup Condition="'$(TargetFrameworkVersion)'=='v3.5'">
+    <DefineConstants>NET35</DefineConstants>
+  </PropertyGroup>
   <Choose>
     <When Condition="'$(TargetFrameworkVersion)'=='v3.5'">
       <ItemGroup>

@@ -2,7 +2,7 @@
 <package>
   <metadata>
     <id>StackExchange.Redis.Abstract</id>
-    <version>1.0.0</version>
+    <version>1.2.1.1</version>
     <title>StackExchange.Redis.Abstract</title>
     <authors>Contoso</authors>
     <owners>Contoso</owners>

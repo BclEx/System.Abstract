@@ -60,11 +60,13 @@ namespace StructureMap.Abstract
         /// Initializes a new instance of the <see cref="StructureMapServiceLocator"/> class.
         /// </summary>
         /// <param name="container">The container.</param>
-        public StructureMapServiceLocator(IContainer container)
+        public StructureMapServiceLocator(object container)
         {
             if (container == null)
                 throw new ArgumentNullException("container");
-            Container = container;
+            Container = (container as IContainer);
+            if (Container == null)
+                throw new ArgumentOutOfRangeException("container", "Must be of type StructureMap.IContainer");
         }
 
         /// <summary>

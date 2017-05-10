@@ -62,11 +62,13 @@ namespace Spring.Abstract
         /// Initializes a new instance of the <see cref="SpringServiceLocator"/> class.
         /// </summary>
         /// <param name="container">The container.</param>
-        public SpringServiceLocator(GenericApplicationContext container)
+        public SpringServiceLocator(object container)
         {
             if (container == null)
                 throw new ArgumentNullException("container");
-            Container = container;
+            Container = (container as GenericApplicationContext);
+            if (Container == null)
+                throw new ArgumentOutOfRangeException("container", "Must be of type Spring.Context.Support.GenericApplicationContext");
         }
 
         /// <summary>

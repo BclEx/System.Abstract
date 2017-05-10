@@ -62,11 +62,13 @@ namespace Castle.Windsor.Abstract
         /// Initializes a new instance of the <see cref="CastleWindsorServiceLocator"/> class.
         /// </summary>
         /// <param name="container">The container.</param>
-        public CastleWindsorServiceLocator(IWindsorContainer container)
+        public CastleWindsorServiceLocator(object container)
         {
             if (container == null)
                 throw new ArgumentNullException("container");
-            Container = container;
+            Container = (container as IWindsorContainer);
+            if (Container == null)
+                throw new ArgumentOutOfRangeException("container", "Must be of type Castle.Windsor.IWindsorContainer");
         }
 
         /// <summary>

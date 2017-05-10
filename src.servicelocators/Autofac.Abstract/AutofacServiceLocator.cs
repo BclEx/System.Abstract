@@ -59,30 +59,27 @@ namespace Autofac.Abstract
         /// <summary>
         /// Initializes a new instance of the <see cref="AutofacServiceLocator"/> class.
         /// </summary>
-        /// <param name="container">The container.</param>
-        public AutofacServiceLocator(IContainer container)
+        /// <param name="container">The container (IContainer or ContainerBuilder).</param>
+        public AutofacServiceLocator(object container)
         {
             if (container == null)
                 throw new ArgumentNullException("container");
-            Container = container;
-        }
-        /// <summary>
-        /// Initializes a new instance of the <see cref="AutofacServiceLocator"/> class.
-        /// </summary>
-        /// <param name="containerBuilder">The container builder.</param>
-        public AutofacServiceLocator(ContainerBuilder containerBuilder)
-        {
-            if (containerBuilder == null)
-                throw new ArgumentNullException("containerBuilder");
-            _registrar = new AutofacServiceRegistrar(this, containerBuilder, out _containerBuilder);
+            if (container is ContainerBuilder)
+            {
+                _registrar = new AutofacServiceRegistrar(this, container as ContainerBuilder, out _containerBuilder);
+                return;
+            }
+            Container = (container as IContainer);
+            if (Container == null)
+                throw new ArgumentOutOfRangeException("container", "Must be of type Autofac.IContainer");
         }
 
-        private AutofacServiceLocator(IComponentContext container)
-        {
-            if (container == null)
-                throw new ArgumentNullException("container");
-            //_registrar = new AutofacServiceRegistrar(this, containerBuilder, out _containerBuilder);
-        }
+        //private AutofacServiceLocator(IComponentContext container)
+        //{
+        //    if (container == null)
+        //        throw new ArgumentNullException("container");
+        //    //_registrar = new AutofacServiceRegistrar(this, containerBuilder, out _containerBuilder);
+        //}
 
         /// <summary>
         /// Performs application-defined tasks associated with freeing, releasing, or resetting unmanaged resources.

@@ -60,11 +60,13 @@ namespace Microsoft.Practices.Unity.Abstract
         /// Initializes a new instance of the <see cref="UnityServiceLocator"/> class.
         /// </summary>
         /// <param name="container">The container.</param>
-        public UnityServiceLocator(IUnityContainer container)
+        public UnityServiceLocator(object container)
         {
             if (container == null)
                 throw new ArgumentNullException("container");
-            Container = container;
+            Container = (container as IUnityContainer);
+            if (Container == null)
+                throw new ArgumentOutOfRangeException("container", "Must be of type Microsoft.Practices.Unity.IUnityContainer");
             _container.AddNewExtension<UnityStrategiesExtension>();
         }
 

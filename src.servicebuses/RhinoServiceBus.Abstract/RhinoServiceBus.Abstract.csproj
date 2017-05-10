@@ -11,7 +11,7 @@
     <ProjectGuid>{C1A8AD53-BCFC-447D-8C03-D7C453D2739E}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>Abstract.Abstract</RootNamespace>
+    <RootNamespace>RhinoServiceBus.Abstract</RootNamespace>
     <AssemblyName>RhinoServiceBus.Abstract</AssemblyName>
     <TargetFrameworkVersion>$(NETVER)</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
@@ -38,19 +38,22 @@
     <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
     <AssemblyOriginatorKeyFile>BclEx.snk</AssemblyOriginatorKeyFile>
   </PropertyGroup>
+  <PropertyGroup Condition="'$(TargetFrameworkVersion)'=='v3.5'">
+    <DefineConstants>NET35</DefineConstants>
+  </PropertyGroup>
   <Choose>
     <When Condition="'$(TargetFrameworkVersion)'=='v3.5'">
       <ItemGroup>
-    <Reference Include="Common.Logging">
-      <HintPath>..\packages\Common.Logging.2.1.1\lib\net35\Common.Logging.dll</HintPath>
-    </Reference>
-    <Reference Include="Rhino.ServiceBus">
-      <HintPath>..\packages\Rhino.ServiceBus.3.1.1.0\lib\3.5\Rhino.ServiceBus.dll</HintPath>
-    </Reference>
-    <Reference Include="Rhino.ServiceBus.Host">
-      <ExecutableExtension>.exe</ExecutableExtension>
-      <HintPath>..\packages\Rhino.ServiceBus.Host.3.1.1.0\lib\3.5\Rhino.ServiceBus.Host.exe</HintPath>
-    </Reference>
+        <Reference Include="Common.Logging">
+          <HintPath>..\packages\Common.Logging.2.1.1\lib\net35\Common.Logging.dll</HintPath>
+        </Reference>
+        <Reference Include="Rhino.ServiceBus">
+          <HintPath>..\packages\Rhino.ServiceBus.3.1.1.0\lib\3.5\Rhino.ServiceBus.dll</HintPath>
+        </Reference>
+        <Reference Include="Rhino.ServiceBus.Host">
+          <ExecutableExtension>.exe</ExecutableExtension>
+          <HintPath>..\packages\Rhino.ServiceBus.Host.3.1.1.0\lib\3.5\Rhino.ServiceBus.Host.exe</HintPath>
+        </Reference>
         <Reference Include="System.Abstract">
           <HintPath>..\packages\System.Abstract.1.0.0\lib\net35\System.Abstract.dll</HintPath>
           <Private>True</Private>
@@ -59,17 +62,17 @@
     </When>
     <When Condition="'$(TargetFrameworkVersion)'=='v4.0'">
       <ItemGroup>
-    <Reference Include="Common.Logging">
-      <HintPath>..\packages\Common.Logging.2.1.1\lib\net40\Common.Logging.dll</HintPath>
-    </Reference>
-    <Reference Include="Rhino.ServiceBus">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\packages\Rhino.ServiceBus.3.1.1.0\lib\4.0\Rhino.ServiceBus.dll</HintPath>
-    </Reference>
-    <Reference Include="Rhino.ServiceBus.Host">
-      <ExecutableExtension>.exe</ExecutableExtension>
-      <HintPath>..\packages\Rhino.ServiceBus.Host.3.1.1.0\lib\4.0\Rhino.ServiceBus.Host.exe</HintPath>
-    </Reference>
+        <Reference Include="Common.Logging">
+          <HintPath>..\packages\Common.Logging.2.1.1\lib\net40\Common.Logging.dll</HintPath>
+        </Reference>
+        <Reference Include="Rhino.ServiceBus">
+          <SpecificVersion>False</SpecificVersion>
+          <HintPath>..\packages\Rhino.ServiceBus.3.1.1.0\lib\4.0\Rhino.ServiceBus.dll</HintPath>
+        </Reference>
+        <Reference Include="Rhino.ServiceBus.Host">
+          <ExecutableExtension>.exe</ExecutableExtension>
+          <HintPath>..\packages\Rhino.ServiceBus.Host.3.1.1.0\lib\4.0\Rhino.ServiceBus.Host.exe</HintPath>
+        </Reference>
         <Reference Include="System.Abstract">
           <HintPath>..\packages\System.Abstract.1.0.0\lib\net40\System.Abstract.dll</HintPath>
           <Private>True</Private>
@@ -78,17 +81,17 @@
     </When>
     <Otherwise>
       <ItemGroup>
-    <Reference Include="Common.Logging">
-      <HintPath>..\packages\Common.Logging.2.1.1\lib\net40\Common.Logging.dll</HintPath>
-    </Reference>
-    <Reference Include="Rhino.ServiceBus">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\packages\Rhino.ServiceBus.3.1.1.0\lib\4.0\Rhino.ServiceBus.dll</HintPath>
-    </Reference>
-    <Reference Include="Rhino.ServiceBus.Host">
-      <ExecutableExtension>.exe</ExecutableExtension>
-      <HintPath>..\packages\Rhino.ServiceBus.Host.3.1.1.0\lib\4.0\Rhino.ServiceBus.Host.exe</HintPath>
-    </Reference>
+        <Reference Include="Common.Logging">
+          <HintPath>..\packages\Common.Logging.2.1.1\lib\net40\Common.Logging.dll</HintPath>
+        </Reference>
+        <Reference Include="Rhino.ServiceBus">
+          <SpecificVersion>False</SpecificVersion>
+          <HintPath>..\packages\Rhino.ServiceBus.3.1.1.0\lib\4.0\Rhino.ServiceBus.dll</HintPath>
+        </Reference>
+        <Reference Include="Rhino.ServiceBus.Host">
+          <ExecutableExtension>.exe</ExecutableExtension>
+          <HintPath>..\packages\Rhino.ServiceBus.Host.3.1.1.0\lib\4.0\Rhino.ServiceBus.Host.exe</HintPath>
+        </Reference>
         <Reference Include="System.Abstract">
           <HintPath>..\packages\System.Abstract.1.0.0\lib\net45\System.Abstract.dll</HintPath>
           <Private>True</Private>
@@ -105,9 +108,6 @@
     <Reference Include="System.Xml.Linq" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="..\..\ServiceLogs\Contoso.Abstract.CommonLogging\Abstract\CommonLoggingFactoryAdapter.cs">
-      <Link>Abstract\+FromCommonLogging\CommonLoggingFactoryAdapter.cs</Link>
-    </Compile>
     <Compile Include="RuntimeRhinoServiceBusLoadBalancedHost.cs" />
     <Compile Include="RuntimeRhinoServiceBusHost.cs" />
     <Compile Include="OnewayRhinoWrapServiceBusAbstractor.cs" />
@@ -128,6 +128,10 @@
   <ItemGroup>
     <None Include="BclEx.snk" />
     <None Include="packages.config" />
+    <None Include="RhinoServiceBus.Abstract.nuspec" />
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="+FromCommonLogging\" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

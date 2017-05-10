@@ -88,42 +88,36 @@ namespace Microsoft.ApplicationServer.Caching.Abstract
 
         static ServerAppFabricServiceCache() { ServiceCacheManager.EnsureRegistration(); }
         /// <summary>
-        /// Initializes a new instance of the <see cref="ServerAppFabricServiceCache"/> class.
+        /// Initializes a new instance of the <see cref="ServerAppFabricServiceCache" /> class.
         /// </summary>
         public ServerAppFabricServiceCache()
             : this(DefaultCacheFactory) { }
         /// <summary>
-        /// Initializes a new instance of the <see cref="ServerAppFabricServiceCache"/> class.
+        /// Initializes a new instance of the <see cref="ServerAppFabricServiceCache" /> class.
         /// </summary>
         /// <param name="cacheName">Name of the cache.</param>
         public ServerAppFabricServiceCache(string cacheName)
             : this(DefaultCacheFactory, cacheName) { }
         /// <summary>
-        /// Initializes a new instance of the <see cref="ServerAppFabricServiceCache"/> class.
+        /// Initializes a new instance of the <see cref="ServerAppFabricServiceCache" /> class.
         /// </summary>
-        /// <param name="configuration">The configuration.</param>
-        public ServerAppFabricServiceCache(DataCacheFactoryConfiguration configuration)
-            : this(new DataCacheFactory(configuration)) { }
-        /// <summary>
-        /// Initializes a new instance of the <see cref="ServerAppFabricServiceCache"/> class.
-        /// </summary>
-        /// <param name="cacheFactory">The cache factory.</param>
-        public ServerAppFabricServiceCache(DataCacheFactory cacheFactory)
-            : this(cacheFactory.GetDefaultCache()) { CacheFactory = cacheFactory; }
-        /// <summary>
-        /// Initializes a new instance of the <see cref="ServerAppFabricServiceCache"/> class.
-        /// </summary>
-        /// <param name="cacheFactory">The cache factory.</param>
+        /// <param name="cache">The cache (DataCache or DataCacheFactory or DataCacheFactoryConfiguration).</param>
         /// <param name="cacheName">Name of the cache.</param>
-        public ServerAppFabricServiceCache(DataCacheFactory cacheFactory, string cacheName)
-            : this(cacheFactory.GetCache(cacheName)) { CacheFactory = cacheFactory; }
-        /// <summary>
-        /// Initializes a new instance of the <see cref="ServerAppFabricServiceCache"/> class.
-        /// </summary>
-        /// <param name="cache">The cache.</param>
-        public ServerAppFabricServiceCache(DataCache cache)
+        /// <exception cref="System.ArgumentNullException">cache</exception>
+        /// <exception cref="System.ArgumentOutOfRangeException">cache;Must be of type DataCache, DataCacheFactoryConfiguration or DataCacheFactory.</exception>
+        public ServerAppFabricServiceCache(object cache, string cacheName = null)
         {
-            Cache = cache;
+            if (cache == null)
+                throw new ArgumentNullException("cache");
+            if (cache is DataCache)
+                Cache = (DataCache)cache;
+            else if (cache is DataCacheFactoryConfiguration)
+            {
+                CacheFactory = new DataCacheFactory((DataCacheFactoryConfiguration)cache);
+                Cache = (cacheName != null ? CacheFactory.GetCache(cacheName) : CacheFactory.GetDefaultCache());
+            }
+            else
+                throw new ArgumentOutOfRangeException("cache", "Must be of type DataCache, DataCacheFactoryConfiguration or DataCacheFactory.");
             Settings = new ServiceCacheSettings(new DefaultTouchableCacheItem(this, null));
         }
 
@@ -136,15 +130,18 @@ namespace Microsoft.ApplicationServer.Caching.Abstract
         /// </summary>
         /// <param name="serviceType">An object that specifies the type of service object to get.</param>
         /// <returns>
-        /// A service object of type <paramref name="serviceType"/>.
+        /// A service object of type <paramref name="serviceType" />.
         /// -or-
-        /// null if there is no service object of type <paramref name="serviceType"/>.
+        /// null if there is no service object of type <paramref name="serviceType" />.
         /// </returns>
+        /// <exception cref="System.NotImplementedException"></exception>
         public object GetService(Type serviceType) { throw new NotImplementedException(); }
 
         /// <summary>
-        /// Gets or sets the <see cref="System.Object"/> with the specified name.
+        /// Gets or sets the <see cref="System.Object" /> with the specified name.
         /// </summary>
+        /// <param name="name">The name.</param>
+        /// <returns></returns>
         public object this[string name]
         {
             get { return Get(null, name); }
@@ -160,6 +157,12 @@ namespace Microsoft.ApplicationServer.Caching.Abstract
         /// <param name="value">The value.</param>
         /// <param name="dispatch">The dispatch.</param>
         /// <returns></returns>
+        /// <exception cref="System.ArgumentNullException">itemPolicy</exception>
+        /// <exception cref="System.ArgumentOutOfRangeException">
+        /// itemPolicy.SlidingExpiration;not supported.
+        /// or
+        /// itemPolicy.RemovedCallback;not supported.
+        /// </exception>
         public object Add(object tag, string name, CacheItemPolicy itemPolicy, object value, ServiceCacheByDispatcher dispatch)
         {
             if (itemPolicy == null)
@@ -231,7 +234,7 @@ namespace Microsoft.ApplicationServer.Caching.Abstract
         /// <param name="registration">The registration.</param>
         /// <param name="header">The header.</param>
         /// <returns></returns>
-        /// <exception cref="System.ArgumentNullException"></exception>
+        /// <exception cref="System.ArgumentNullException">registration</exception>
         public object Get(object tag, string name, IServiceCacheRegistration registration, out CacheItemHeader header)
         {
             if (registration == null)
@@ -254,6 +257,7 @@ namespace Microsoft.ApplicationServer.Caching.Abstract
         /// <param name="tag">The tag.</param>
         /// <param name="names">The names.</param>
         /// <returns></returns>
+        /// <exception cref="System.ArgumentNullException">names</exception>
         public object Get(object tag, IEnumerable<string> names)
         {
             if (names == null)
@@ -266,7 +270,7 @@ namespace Microsoft.ApplicationServer.Caching.Abstract
         /// <param name="tag">The tag.</param>
         /// <param name="registration">The registration.</param>
         /// <returns></returns>
-        /// <exception cref="System.ArgumentNullException"></exception>
+        /// <exception cref="System.ArgumentNullException">registration</exception>
         /// <exception cref="System.NotImplementedException"></exception>
         public IEnumerable<CacheItemHeader> Get(object tag, IServiceCacheRegistration registration)
         {
@@ -282,6 +286,7 @@ namespace Microsoft.ApplicationServer.Caching.Abstract
         /// <param name="name">The name.</param>
         /// <param name="value">The value.</param>
         /// <returns></returns>
+        /// <exception cref="System.NotSupportedException"></exception>
         public bool TryGet(object tag, string name, out object value)
         {
             throw new NotSupportedException();
@@ -296,6 +301,12 @@ namespace Microsoft.ApplicationServer.Caching.Abstract
         /// <param name="value">The value to store in cache.</param>
         /// <param name="dispatch">The dispatch.</param>
         /// <returns></returns>
+        /// <exception cref="System.ArgumentNullException">itemPolicy</exception>
+        /// <exception cref="System.ArgumentOutOfRangeException">
+        /// itemPolicy.SlidingExpiration;not supported.
+        /// or
+        /// itemPolicy.RemovedCallback;not supported.
+        /// </exception>
         public object Set(object tag, string name, CacheItemPolicy itemPolicy, object value, ServiceCacheByDispatcher dispatch)
         {
             if (itemPolicy == null)
@@ -440,7 +451,7 @@ namespace Microsoft.ApplicationServer.Caching.Abstract
             private ServerAppFabricServiceCache _parent;
             private ITouchableCacheItem _base;
             /// <summary>
-            /// Initializes a new instance of the <see cref="DefaultTouchableCacheItem"/> class.
+            /// Initializes a new instance of the <see cref="DefaultTouchableCacheItem" /> class.
             /// </summary>
             /// <param name="parent">The parent.</param>
             /// <param name="base">The @base.</param>
@@ -480,6 +491,9 @@ namespace Microsoft.ApplicationServer.Caching.Abstract
         /// <summary>
         /// Gets the cache factory.
         /// </summary>
+        /// <value>
+        /// The cache factory.
+        /// </value>
         public DataCacheFactory CacheFactory { get; private set; }
         /// <summary>
         /// Gets the cache.

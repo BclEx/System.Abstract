@@ -1933,8 +1933,8 @@
         <member name="P:System.Abstract.Fakes.ShimEventSource.StaticConstructor">
             <summary>Sets the shim of EventSource.EventSource()</summary>
         </member>
-        <member name="P:System.Abstract.Fakes.ShimEventSource._SystemAbstractServiceManagerBaseSystemAbstractIEventSourceSystemActionSystemAbstractIEventSourceSystemAbstractEventSourceManagerLoggerISetupRegistrationget_DefaultServiceRegistrarb__14IServiceLocatorString">
-            <summary>Sets the shim of EventSource.&lt;System.Abstract.ServiceManagerBase&lt;System.Abstract.IEventSource,System.Action&lt;System.Abstract.IEventSource&gt;,System.Abstract.EventSourceManagerLogger&gt;.ISetupRegistration.get_DefaultServiceRegistrar&gt;b__14(IServiceLocator locator, String name)</summary>
+        <member name="P:System.Abstract.Fakes.ShimEventSource._SystemAbstractServiceManagerBaseSystemAbstractIEventSourceSystemActionSystemAbstractIEventSourceSystemAbstractEventSourceManagerLoggerISetupRegistrationget_DefaultServiceRegistrarb__13IServiceLocatorString">
+            <summary>Sets the shim of EventSource.&lt;System.Abstract.ServiceManagerBase&lt;System.Abstract.IEventSource,System.Action&lt;System.Abstract.IEventSource&gt;,System.Abstract.EventSourceManagerLogger&gt;.ISetupRegistration.get_DefaultServiceRegistrar&gt;b__13(IServiceLocator locator, String name)</summary>
         </member>
         <member name="T:System.Abstract.Fakes.ShimEventSource.AllInstances">
             <summary>Define shims for all instances members</summary>
@@ -1948,8 +1948,8 @@
         <member name="P:System.Abstract.Fakes.ShimEventSource.AllInstances.GetServiceType">
             <summary>Sets the shim of EventSource.GetService(Type serviceType)</summary>
         </member>
-        <member name="P:System.Abstract.Fakes.ShimEventSource.AllInstances._SystemAbstractServiceManagerBaseSystemAbstractIEventSourceSystemActionSystemAbstractIEventSourceSystemAbstractEventSourceManagerLoggerISetupRegistrationget_DefaultServiceRegistrarb__14IServiceLocatorString">
-            <summary>Sets the shim of EventSource.&lt;System.Abstract.ServiceManagerBase&lt;System.Abstract.IEventSource,System.Action&lt;System.Abstract.IEventSource&gt;,System.Abstract.EventSourceManagerLogger&gt;.ISetupRegistration.get_DefaultServiceRegistrar&gt;b__14(IServiceLocator locator, String name)</summary>
+        <member name="P:System.Abstract.Fakes.ShimEventSource.AllInstances._SystemAbstractServiceManagerBaseSystemAbstractIEventSourceSystemActionSystemAbstractIEventSourceSystemAbstractEventSourceManagerLoggerISetupRegistrationget_DefaultServiceRegistrarb__13IServiceLocatorString">
+            <summary>Sets the shim of EventSource.&lt;System.Abstract.ServiceManagerBase&lt;System.Abstract.IEventSource,System.Action&lt;System.Abstract.IEventSource&gt;,System.Abstract.EventSourceManagerLogger&gt;.ISetupRegistration.get_DefaultServiceRegistrar&gt;b__13(IServiceLocator locator, String name)</summary>
         </member>
         <member name="T:System.Abstract.Fakes.ShimEventSource.ShimDefaultFactory">
             <summary>Shim type of System.Abstract.EventSource+DefaultFactory</summary>
@@ -1969,8 +1969,8 @@
         <member name="P:System.Abstract.Fakes.ShimEventSource.ShimDefaultFactory.StaticConstructor">
             <summary>Sets the shim of DefaultFactory.DefaultFactory()</summary>
         </member>
-        <member name="P:System.Abstract.Fakes.ShimEventSource.ShimDefaultFactory._cctorb__15Type">
-            <summary>Sets the shim of DefaultFactory.&lt;.cctor&gt;b__15(Type t)</summary>
+        <member name="P:System.Abstract.Fakes.ShimEventSource.ShimDefaultFactory._cctorb__14Type">
+            <summary>Sets the shim of DefaultFactory.&lt;.cctor&gt;b__14(Type t)</summary>
         </member>
         <member name="T:System.Abstract.Fakes.ShimEventSourceManager">
             <summary>Shim type of System.Abstract.EventSourceManager</summary>
@@ -5114,6 +5114,141 @@
             <summary>Gets or sets the instance behavior.</summary>
         </member>
         <member name="P:System.Abstract.Fakes.StubServiceMapManagerLogger.InstanceObserver">
+            <summary>Gets or sets the instance observer.</summary>
+        </member>
+        <member name="T:System.Fakes.ShimLazy`1">
+            <summary>Shim type of System.Lazy`1</summary>
+        </member>
+        <member name="M:System.Fakes.ShimLazy`1.#ctor">
+            <summary>Initializes a new shim instance</summary>
+        </member>
+        <member name="M:System.Fakes.ShimLazy`1.#ctor(System.Lazy{`0})">
+            <summary>Initializes a new shim for the given instance</summary>
+        </member>
+        <member name="M:System.Fakes.ShimLazy`1.BehaveAsCurrent">
+            <summary>Assigns the &apos;Current&apos; behavior for all methods of the shimmed type</summary>
+        </member>
+        <member name="M:System.Fakes.ShimLazy`1.BehaveAsNotImplemented">
+            <summary>Assigns the &apos;NotImplemented&apos; behavior for all methods of the shimmed type</summary>
+        </member>
+        <member name="P:System.Fakes.ShimLazy`1.Behavior">
+            <summary>Assigns the behavior for all methods of the shimmed type</summary>
+        </member>
+        <member name="P:System.Fakes.ShimLazy`1.Constructor">
+            <summary>Sets the shim of Lazy`1.Lazy`1()</summary>
+        </member>
+        <member name="P:System.Fakes.ShimLazy`1.ConstructorBoolean">
+            <summary>Sets the shim of Lazy`1.Lazy`1(Boolean isThreadSafe)</summary>
+        </member>
+        <member name="P:System.Fakes.ShimLazy`1.ConstructorFuncOfT0">
+            <summary>Sets the shim of Lazy`1.Lazy`1(Func`1&lt;!0&gt; valueFactory)</summary>
+        </member>
+        <member name="P:System.Fakes.ShimLazy`1.ConstructorFuncOfT0Boolean">
+            <summary>Sets the shim of Lazy`1.Lazy`1(Func`1&lt;!0&gt; valueFactory, Boolean isThreadSafe)</summary>
+        </member>
+        <member name="P:System.Fakes.ShimLazy`1.ConstructorFuncOfT0LazyThreadSafetyMode">
+            <summary>Sets the shim of Lazy`1.Lazy`1(Func`1&lt;!0&gt; valueFactory, LazyThreadSafetyMode mode)</summary>
+        </member>
+        <member name="P:System.Fakes.ShimLazy`1.ConstructorLazyThreadSafetyMode">
+            <summary>Sets the shim of Lazy`1.Lazy`1(LazyThreadSafetyMode mode)</summary>
+        </member>
+        <member name="P:System.Fakes.ShimLazy`1.GetObjectFromModeLazyThreadSafetyMode">
+            <summary>Sets the shim of Lazy`1.GetObjectFromMode(LazyThreadSafetyMode mode)</summary>
+        </member>
+        <member name="P:System.Fakes.ShimLazy`1.IsValueCreatedGet">
+            <summary>Sets the shim of Lazy`1.get_IsValueCreated()</summary>
+        </member>
+        <member name="P:System.Fakes.ShimLazy`1.IsValueFaultedGet">
+            <summary>Sets the shim of Lazy`1.get_IsValueFaulted()</summary>
+        </member>
+        <member name="P:System.Fakes.ShimLazy`1.LazyInitValue">
+            <summary>Sets the shim of Lazy`1.LazyInitValue()</summary>
+        </member>
+        <member name="P:System.Fakes.ShimLazy`1.ModeGet">
+            <summary>Sets the shim of Lazy`1.get_Mode()</summary>
+        </member>
+        <member name="P:System.Fakes.ShimLazy`1.OnSerializingStreamingContext">
+            <summary>Sets the shim of Lazy`1.OnSerializing(StreamingContext context)</summary>
+        </member>
+        <member name="P:System.Fakes.ShimLazy`1.StaticConstructor">
+            <summary>Sets the shim of Lazy`1.Lazy`1()</summary>
+        </member>
+        <member name="P:System.Fakes.ShimLazy`1.ToString">
+            <summary>Sets the shim of Lazy`1.ToString()</summary>
+        </member>
+        <member name="P:System.Fakes.ShimLazy`1.ValueForDebugDisplayGet">
+            <summary>Sets the shim of Lazy`1.get_ValueForDebugDisplay()</summary>
+        </member>
+        <member name="P:System.Fakes.ShimLazy`1.ValueGet">
+            <summary>Sets the shim of Lazy`1.get_Value()</summary>
+        </member>
+        <member name="P:System.Fakes.ShimLazy`1._cctorb__0">
+            <summary>Sets the shim of Lazy`1.&lt;.cctor&gt;b__0()</summary>
+        </member>
+        <member name="T:System.Fakes.ShimLazy`1.AllInstances">
+            <summary>Define shims for all instances members</summary>
+        </member>
+        <member name="P:System.Fakes.ShimLazy`1.AllInstances.IsValueCreatedGet">
+            <summary>Sets the shim of Lazy`1.get_IsValueCreated()</summary>
+        </member>
+        <member name="P:System.Fakes.ShimLazy`1.AllInstances.IsValueFaultedGet">
+            <summary>Sets the shim of Lazy`1.get_IsValueFaulted()</summary>
+        </member>
+        <member name="P:System.Fakes.ShimLazy`1.AllInstances.LazyInitValue">
+            <summary>Sets the shim of Lazy`1.LazyInitValue()</summary>
+        </member>
+        <member name="P:System.Fakes.ShimLazy`1.AllInstances.ModeGet">
+            <summary>Sets the shim of Lazy`1.get_Mode()</summary>
+        </member>
+        <member name="P:System.Fakes.ShimLazy`1.AllInstances.OnSerializingStreamingContext">
+            <summary>Sets the shim of Lazy`1.OnSerializing(StreamingContext context)</summary>
+        </member>
+        <member name="P:System.Fakes.ShimLazy`1.AllInstances.ToString01">
+            <summary>Sets the shim of Lazy`1.ToString()</summary>
+        </member>
+        <member name="P:System.Fakes.ShimLazy`1.AllInstances.ValueForDebugDisplayGet">
+            <summary>Sets the shim of Lazy`1.get_ValueForDebugDisplay()</summary>
+        </member>
+        <member name="P:System.Fakes.ShimLazy`1.AllInstances.ValueGet">
+            <summary>Sets the shim of Lazy`1.get_Value()</summary>
+        </member>
+        <member name="T:System.Fakes.StubLazy`1">
+            <summary>Stub type of System.Lazy`1</summary>
+        </member>
+        <member name="M:System.Fakes.StubLazy`1.#ctor">
+            <summary>Initializes a new instance</summary>
+        </member>
+        <member name="M:System.Fakes.StubLazy`1.#ctor(System.Func{`0})">
+            <summary>Initializes a new instance</summary>
+        </member>
+        <member name="M:System.Fakes.StubLazy`1.#ctor(System.Threading.LazyThreadSafetyMode)">
+            <summary>Initializes a new instance</summary>
+        </member>
+        <member name="M:System.Fakes.StubLazy`1.#ctor(System.Boolean)">
+            <summary>Initializes a new instance</summary>
+        </member>
+        <member name="M:System.Fakes.StubLazy`1.#ctor(System.Func{`0},System.Threading.LazyThreadSafetyMode)">
+            <summary>Initializes a new instance</summary>
+        </member>
+        <member name="M:System.Fakes.StubLazy`1.#ctor(System.Func{`0},System.Boolean)">
+            <summary>Initializes a new instance</summary>
+        </member>
+        <member name="M:System.Fakes.StubLazy`1.InitializeStub">
+            <summary>Initializes a new instance of type StubLazy</summary>
+        </member>
+        <member name="M:System.Fakes.StubLazy`1.ToString">
+            <summary>Sets the stub of Lazy`1.ToString()</summary>
+        </member>
+        <member name="F:System.Fakes.StubLazy`1.ToString01">
+            <summary>Sets the stub of Lazy`1.ToString()</summary>
+        </member>
+        <member name="P:System.Fakes.StubLazy`1.CallBase">
+            <summary>Gets or sets a value that indicates if the base method should be called instead of the fallback behavior</summary>
+        </member>
+        <member name="P:System.Fakes.StubLazy`1.InstanceBehavior">
+            <summary>Gets or sets the instance behavior.</summary>
+        </member>
+        <member name="P:System.Fakes.StubLazy`1.InstanceObserver">
             <summary>Gets or sets the instance observer.</summary>
         </member>
     </members>

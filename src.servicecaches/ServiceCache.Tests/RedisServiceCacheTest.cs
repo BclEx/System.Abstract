@@ -1,4 +1,5 @@
-﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
+﻿#if !NET35
+using Microsoft.VisualStudio.TestTools.UnitTesting;
 using StackExchange.Redis.Abstract;
 using System.Abstract;
 using System.Abstract.AbstractTests.ServiceCache;
@@ -11,3 +12,4 @@ namespace ServiceCache.Tests
         protected override IServiceCache CreateServiceCache() { return new RedisServiceCache(""); }
     }
 }
+#endif

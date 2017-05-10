@@ -116,38 +116,33 @@ namespace Enyim.Caching.Abstract
 
         static MemcachedServiceCache() { ServiceCacheManager.EnsureRegistration(); }
         /// <summary>
-        /// Initializes a new instance of the <see cref="MemcachedServiceCache"/> class.
+        /// Initializes a new instance of the <see cref="MemcachedServiceCache" /> class.
         /// </summary>
         public MemcachedServiceCache()
             : this(new MemcachedClient(), new TagMapper()) { }
         /// <summary>
-        /// Initializes a new instance of the <see cref="MemcachedServiceCache"/> class.
+        /// Initializes a new instance of the <see cref="MemcachedServiceCache" /> class.
         /// </summary>
-        /// <param name="configuration">The configuration.</param>
-        public MemcachedServiceCache(IMemcachedClientConfiguration configuration)
-            : this(configuration == null ? new MemcachedClient() : new MemcachedClient(configuration), new TagMapper()) { }
-        /// <summary>
-        /// Initializes a new instance of the <see cref="MemcachedServiceCache"/> class.
-        /// </summary>
-        /// <param name="client">The client.</param>
-        public MemcachedServiceCache(IMemcachedClient client)
-            : this(client, new TagMapper()) { }
-        /// <summary>
-        /// Initializes a new instance of the <see cref="MemcachedServiceCache"/> class.
-        /// </summary>
-        /// <param name="client">The client.</param>
+        /// <param name="cache">The client.</param>
         /// <param name="tagMapper">The tag mapper.</param>
-        public MemcachedServiceCache(IMemcachedClient client, ITagMapper tagMapper)
+        /// <exception cref="System.ArgumentNullException">cache</exception>
+        /// <exception cref="System.ArgumentOutOfRangeException">cache;Must be of type IMemcachedClient or IMemcachedClientConfiguration.</exception>
+        public MemcachedServiceCache(object cache, ITagMapper tagMapper = null)
         {
-            if (client == null)
-                throw new ArgumentNullException("client");
-            Cache = client;
-            _tagMapper = tagMapper;
+            if (cache == null)
+                throw new ArgumentNullException("cache");
+            if (cache is IMemcachedClient)
+                Cache = (IMemcachedClient)cache;
+            else if (cache is IMemcachedClientConfiguration)
+                Cache = new MemcachedClient((IMemcachedClientConfiguration)cache);
+            else
+                throw new ArgumentOutOfRangeException("cache", "Must be of type IMemcachedClient or IMemcachedClientConfiguration.");
+            _tagMapper = tagMapper ?? new TagMapper();
             Settings = new ServiceCacheSettings();
         }
         /// <summary>
         /// Releases unmanaged resources and performs other cleanup operations before the
-        /// <see cref="MemcachedServiceCache"/> is reclaimed by garbage collection.
+        /// <see cref="MemcachedServiceCache" /> is reclaimed by garbage collection.
         /// </summary>
         ~MemcachedServiceCache()
         {

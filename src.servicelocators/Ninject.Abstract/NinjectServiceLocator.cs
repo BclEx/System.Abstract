@@ -62,11 +62,13 @@ namespace Ninject.Abstract
         /// Initializes a new instance of the <see cref="NinjectServiceLocator"/> class.
         /// </summary>
         /// <param name="kernel">The kernel.</param>
-        public NinjectServiceLocator(IKernel kernel)
+        public NinjectServiceLocator(object kernel)
         {
             if (kernel == null)
                 throw new ArgumentNullException("kernel");
-            Container = kernel;
+            Container = (kernel as IKernel);
+            if (Container == null)
+                throw new ArgumentOutOfRangeException("container", "Must be of type Ninject.IKernel");
         }
 
         /// <summary>
