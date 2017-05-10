@@ -7,9 +7,9 @@ rd /S/Q src.servicelocators\packages\System.Abstract.1.0.0 2> nul
 rd /S/Q src.servicelogs\packages\System.Abstract.1.0.0 2> nul
 rd /S/Q src.servicemaps\packages\System.Abstract.1.0.0 2> nul
 
-pushd src.eventsources & cmd EventSources.cmd & popd
-pushd src.servicebuses & cmd ServiceBuses.cmd & popd
-pushd src.servicecaches & cmd ServiceCaches.cmd & popd
-pushd src.servicelocators & cmd ServiceLocators.cmd & popd
-pushd src.servicelogs & cmd ServiceLogs.cmd & popd
-pushd src.servicemaps & cmd ServiceMaps.cmd & popd
+pushd src.eventsources & cmd /C EventSources.cmd & popd
+pushd src.servicebuses & cmd /C ServiceBuses.cmd & popd
+pushd src.servicecaches & cmd /C ServiceCaches.cmd & popd
+pushd src.servicelocators & cmd /C ServiceLocators.cmd & popd
+pushd src.servicelogs & cmd /C ServiceLogs.cmd & popd
+pushd src.servicemaps & cmd /C ServiceMaps.cmd & popd

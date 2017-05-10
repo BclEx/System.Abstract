@@ -5,6 +5,7 @@ build/
 [Oo]bj/
 packages/
 _build/
+FakesAssemblies/
 *.suo
 *.user
 _ReSharper.*/
