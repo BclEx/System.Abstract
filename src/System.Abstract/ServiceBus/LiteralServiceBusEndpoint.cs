@@ -33,9 +33,10 @@ namespace System.Abstract
     public class LiteralServiceBusEndpoint : IServiceBusEndpoint
     {
         /// <summary>
-        /// Initializes a new instance of the <see cref="LiteralServiceBusEndpoint"/> class.
+        /// Initializes a new instance of the <see cref="LiteralServiceBusEndpoint" /> class.
         /// </summary>
         /// <param name="literal">The literal.</param>
+        /// <exception cref="System.ArgumentNullException">literal</exception>
         public LiteralServiceBusEndpoint(string literal)
         {
             if (literal == null)
@@ -45,6 +46,9 @@ namespace System.Abstract
         /// <summary>
         /// Gets the value.
         /// </summary>
+        /// <value>
+        /// The value.
+        /// </value>
         public string Value { get; private set; }
     }
 }

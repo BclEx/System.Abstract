@@ -29,7 +29,7 @@ namespace System.Abstract
     /// <summary>
     /// ServiceLogManager
     /// </summary>
-    public class ServiceLogManager : ServiceManagerBase<IServiceLog, Action<IServiceLog>, ServiceLogManagerLogger>
+    public class ServiceLogManager : ServiceManagerBase<IServiceLog, ServiceLogManagerLogger>
     {
         #region EmptyServiceLog
 
@@ -96,7 +96,6 @@ namespace System.Abstract
         {
             Registration = new ServiceRegistration
             {
-                MakeAction = a => x => a(x),
                 OnSetup = (service, descriptor) =>
                 {
                     if (descriptor != null)
@@ -116,40 +115,10 @@ namespace System.Abstract
                 SetProvider(DefaultServiceProvider);
         }
 
-
-        /// <summary>
-        /// Sets the provider.
-        /// </summary>
-        /// <param name="provider">The provider.</param>
-        /// <param name="setupDescriptor">The setup descriptor.</param>
-        /// <returns></returns>
-        public static Lazy<IServiceLog> SetProvider(Func<IServiceLog> provider, ISetupDescriptor setupDescriptor = null) { return (Lazy = MakeByProviderProtected(provider, setupDescriptor)); }
-        /// <summary>
-        /// Makes the by provider.
-        /// </summary>
-        /// <param name="provider">The provider.</param>
-        /// <param name="setupDescriptor">The setup descriptor.</param>
-        /// <returns></returns>
-        public static Lazy<IServiceLog> MakeByProvider(Func<IServiceLog> provider, ISetupDescriptor setupDescriptor = null) { return MakeByProviderProtected(provider, setupDescriptor); }
-
-        /// <summary>
-        /// Gets the current.
-        /// </summary>
-        public static IServiceLog Current
-        {
-            get { return GetCurrent(); }
-        }
-
         /// <summary>
         /// Ensures the registration.
         /// </summary>
         public static void EnsureRegistration() { }
-        /// <summary>
-        /// Gets the setup descriptor.
-        /// </summary>
-        /// <param name="service">The service.</param>
-        /// <returns></returns>
-        public static ISetupDescriptor GetSetupDescriptor(Lazy<IServiceLog> service) { return GetSetupDescriptorProtected(service, null); }
 
         /// <summary>
         /// Gets this instance.

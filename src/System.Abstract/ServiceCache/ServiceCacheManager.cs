@@ -29,13 +29,12 @@ namespace System.Abstract
     /// <summary>
     /// ServiceCacheManager
     /// </summary>
-    public class ServiceCacheManager : ServiceManagerBase<IServiceCache, Action<IServiceCache>, ServiceCacheManagerLogger>
+    public class ServiceCacheManager : ServiceManagerBase<IServiceCache, ServiceCacheManagerLogger>
     {
         static ServiceCacheManager()
         {
             Registration = new ServiceRegistration
             {
-                MakeAction = a => x => a(x),
                 OnSetup = (service, descriptor) =>
                 {
                     if (descriptor != null)
@@ -49,55 +48,26 @@ namespace System.Abstract
                         foreach (var action in descriptor.Actions)
                             action(service);
                 },
-                DefaultServiceRegistrar = (service, locator, name) =>
+                RegisterWithLocator = (service, locator, name) =>
                 {
                     RegisterInstance(service, locator, name);
                     var distributedServiceCache = (service as IDistributedServiceCache);
                     if (distributedServiceCache != null)
                         RegisterInstance(distributedServiceCache, locator, name);
                     // specific registration
-                    var setupRegistration = (service as ISetupRegistration);
+                    var setupRegistration = (service as IRegisterWithLocator);
                     if (setupRegistration != null)
-                        setupRegistration.DefaultServiceRegistrar(locator, name);
+                        setupRegistration.RegisterWithLocator(locator, name);
                 },
             };
             // default provider
-            if (Lazy == null && DefaultServiceProvider != null)
+            if (Current == null && DefaultServiceProvider != null)
                 SetProvider(DefaultServiceProvider);
-        }
-
-        /// <summary>
-        /// Sets the provider.
-        /// </summary>
-        /// <param name="provider">The provider.</param>
-        /// <param name="setupDescriptor">The setup descriptor.</param>
-        /// <returns></returns>
-        public static Lazy<IServiceCache> SetProvider(Func<IServiceCache> provider, ISetupDescriptor setupDescriptor = null) { return (Lazy = MakeByProviderProtected(provider, setupDescriptor)); }
-        /// <summary>
-        /// Makes the by provider.
-        /// </summary>
-        /// <param name="provider">The provider.</param>
-        /// <param name="setupDescriptor">The setup descriptor.</param>
-        /// <returns></returns>
-        public static Lazy<IServiceCache> MakeByProvider(Func<IServiceCache> provider, ISetupDescriptor setupDescriptor = null) { return MakeByProviderProtected(provider, setupDescriptor); }
-
-        /// <summary>
-        /// Gets the current.
-        /// </summary>
-        public static IServiceCache Current
-        {
-            get { return GetCurrent(); }
         }
 
         /// <summary>
         /// Ensures the registration.
         /// </summary>
         public static void EnsureRegistration() { }
-        /// <summary>
-        /// Gets the setup descriptor.
-        /// </summary>
-        /// <param name="service">The service.</param>
-        /// <returns></returns>
-        public static ISetupDescriptor GetSetupDescriptor(Lazy<IServiceCache> service) { return GetSetupDescriptorProtected(service, null); }
     }
 }

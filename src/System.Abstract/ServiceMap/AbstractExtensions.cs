@@ -56,56 +56,9 @@ namespace System.Abstract
 
         #region Lazy Setup
 
-        /// <summary>
-        /// Registers the with service locator.
-        /// </summary>
-        /// <param name="service">The service.</param>
-        /// <param name="name">The name.</param>
-        /// <returns></returns>
-        public static Lazy<IServiceMap> RegisterWithServiceLocator<T>(this Lazy<IServiceMap> service, string name = null)
-            where T : class, IServiceMap { ServiceMapManager.GetSetupDescriptor(service).RegisterWithServiceLocator<T>(service, ServiceLocatorManager.Lazy, name); return service; }
-        /// <summary>
-        /// Registers the with service locator.
-        /// </summary>
-        /// <param name="service">The service.</param>
-        /// <param name="locator">The locator.</param>
-        /// <param name="name">The name.</param>
-        /// <returns></returns>
-        public static Lazy<IServiceMap> RegisterWithServiceLocator<T>(this Lazy<IServiceMap> service, Lazy<IServiceLocator> locator, string name = null)
-            where T : class, IServiceMap { ServiceMapManager.GetSetupDescriptor(service).RegisterWithServiceLocator<T>(service, locator, name); return service; }
-        /// <summary>
-        /// Registers the with service locator.
-        /// </summary>
-        /// <param name="service">The service.</param>
-        /// <param name="name">The name.</param>
-        /// <returns></returns>
-        public static Lazy<IServiceMap> RegisterWithServiceLocator(this Lazy<IServiceMap> service, string name = null) { ServiceMapManager.GetSetupDescriptor(service).RegisterWithServiceLocator(service, ServiceLocatorManager.Lazy, name); return service; }
-        /// <summary>
-        /// Registers the with service locator.
-        /// </summary>
-        /// <param name="service">The service.</param>
-        /// <param name="locator">The locator.</param>
-        /// <param name="name">The name.</param>
-        /// <returns></returns>
-        public static Lazy<IServiceMap> RegisterWithServiceLocator(this Lazy<IServiceMap> service, Lazy<IServiceLocator> locator, string name = null) { ServiceMapManager.GetSetupDescriptor(service).RegisterWithServiceLocator(service, locator, name); return service; }
-        /// <summary>
-        /// Registers the with service locator.
-        /// </summary>
-        /// <typeparam name="T"></typeparam>
-        /// <param name="service">The service.</param>
-        /// <param name="locator">The locator.</param>
-        /// <param name="name">The name.</param>
-        /// <returns></returns>
-        public static Lazy<IServiceMap> RegisterWithServiceLocator<T>(this Lazy<IServiceMap> service, IServiceLocator locator, string name = null)
-            where T : class, IServiceMap { ServiceMapManager.GetSetupDescriptor(service).RegisterWithServiceLocator<T>(service, locator, name); return service; }
-        /// <summary>
-        /// Registers the with service locator.
-        /// </summary>
-        /// <param name="service">The service.</param>
-        /// <param name="locator">The locator.</param>
-        /// <param name="name">The name.</param>
-        /// <returns></returns>
-        public static Lazy<IServiceMap> RegisterWithServiceLocator(this Lazy<IServiceMap> service, IServiceLocator locator, string name = null) { ServiceMapManager.GetSetupDescriptor(service).RegisterWithServiceLocator(service, locator, name); return service; }
+        public static Lazy<IServiceMap> RegisterWithServiceLocator<T>(this Lazy<IServiceMap> service, string name = null, IServiceLocator locator = null)
+            where T : class, IServiceMap { ServiceMapManager.GetSetupDescriptor(service).RegisterWithServiceLocator<T>(service, name, locator); return service; }
+        public static Lazy<IServiceMap> RegisterWithServiceLocator(this Lazy<IServiceMap> service, Type serviceType, string name = null, IServiceLocator locator = null) { ServiceMapManager.GetSetupDescriptor(service).RegisterWithServiceLocator(service, serviceType, name, locator); return service; }
 
         #endregion
     }

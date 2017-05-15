@@ -40,9 +40,10 @@ namespace System.Abstract
         IServiceBus _parent;
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="EventBus"/> struct.
+        /// Initializes a new instance of the <see cref="EventBus" /> struct.
         /// </summary>
         /// <param name="parent">The parent.</param>
+        /// <exception cref="System.ArgumentNullException">parent</exception>
         public EventBus(IServiceBus parent)
         {
             if (parent == null)
@@ -54,9 +55,9 @@ namespace System.Abstract
         /// </summary>
         /// <param name="serviceType">An object that specifies the type of service object to get.</param>
         /// <returns>
-        /// A service object of type <paramref name="serviceType"/>.
+        /// A service object of type <paramref name="serviceType" />.
         /// -or-
-        /// null if there is no service object of type <paramref name="serviceType"/>.
+        /// null if there is no service object of type <paramref name="serviceType" />.
         /// </returns>
         public object GetService(Type serviceType) { return _parent.GetService(serviceType); }
         /// <summary>

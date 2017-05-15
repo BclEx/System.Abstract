@@ -152,7 +152,7 @@ namespace System.Abstract
         /// <param name="name">The name.</param>
         /// <returns></returns>
         public static Lazy<IServiceBus> RegisterWithServiceLocator<T>(this Lazy<IServiceBus> service, string name = null)
-            where T : class, IServiceBus { ServiceBusManager.GetSetupDescriptor(service).RegisterWithServiceLocator<T>(service, ServiceLocatorManager.Lazy, name); return service; }
+            where T : class, IServiceBus { ServiceBusManager.GetSetupDescriptor(service).RegisterWithServiceLocator<T>(service, ServiceLocatorManager.Current, name); return service; }
         /// <summary>
         /// Registers the with service locator.
         /// </summary>
@@ -169,7 +169,7 @@ namespace System.Abstract
         /// <param name="service">The service.</param>
         /// <param name="name">The name.</param>
         /// <returns></returns>
-        public static Lazy<IServiceBus> RegisterWithServiceLocator(this Lazy<IServiceBus> service, string name = null) { ServiceBusManager.GetSetupDescriptor(service).RegisterWithServiceLocator(service, ServiceLocatorManager.Lazy, name); return service; }
+        public static Lazy<IServiceBus> RegisterWithServiceLocator(this Lazy<IServiceBus> service, string name = null) { ServiceBusManager.GetSetupDescriptor(service).RegisterWithServiceLocator(service, ServiceLocatorManager.Current, name); return service; }
         /// <summary>
         /// Registers the with service locator.
         /// </summary>

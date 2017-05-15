@@ -35,10 +35,12 @@ namespace System.Abstract
     /// <summary>
     /// ServiceManagerBase
     /// </summary>
-    public abstract partial class ServiceManagerBase<TIService, TServiceSetupAction, TServiceManagerLogger>
-        where TIService : class
+    /// <typeparam name="TService">The type of the service.</typeparam>
+    /// <typeparam name="TServiceManagerLogger">The type of the service manager logger.</typeparam>
+    public abstract partial class ServiceManagerBase<TService, TServiceManagerLogger>
+        where TService : class
     {
-        static readonly ConditionalWeakTable<Lazy<TIService>, ISetupDescriptor> _setupDescriptors = new ConditionalWeakTable<Lazy<TIService>, ISetupDescriptor>();
+        static readonly ConditionalWeakTable<Lazy<TService>, ISetupDescriptor> _setupDescriptors = new ConditionalWeakTable<Lazy<TService>, ISetupDescriptor>();
         static readonly object _lock = new object();
 
         // Force "precise" initialization
@@ -50,7 +52,7 @@ namespace System.Abstract
         /// <value>
         /// The DefaultServiceProvider.
         /// </value>
-        public static Func<TIService> DefaultServiceProvider { get; set; }
+        public static Func<TService> DefaultServiceProvider { get; set; }
 
         /// <summary>
         /// Gets or sets the lazy.
@@ -58,42 +60,30 @@ namespace System.Abstract
         /// <value>
         /// The lazy.
         /// </value>
-        public static Lazy<TIService> Lazy { get; protected set; }
+        public static Lazy<TService> Lazy { get; protected set; }
 
         /// <summary>
-        /// Gets or sets the last exception.
-        /// </summary>
-        /// <value>
-        /// The last exception.
-        /// </value>
-        public static Exception LastException { get; protected set; }
-
-        /// <summary>
-        /// Makes the by provider protected.
+        /// Makes the by provider.
         /// </summary>
         /// <param name="provider">The provider.</param>
         /// <param name="setupDescriptor">The setup descriptor.</param>
         /// <returns></returns>
+        /// <exception cref="System.ArgumentNullException">provider</exception>
         [DebuggerStepThroughAttribute]
-        public static Lazy<TIService> MakeByProviderProtected(Func<TIService> provider, ISetupDescriptor setupDescriptor)
+        public static Lazy<TService> MakeByProvider(Func<TService> provider, ISetupDescriptor setupDescriptor = null)
         {
             if (provider == null)
                 throw new ArgumentNullException("provider");
-            var lazy = new Lazy<TIService>(provider, LazyThreadSafetyMode.PublicationOnly);
-            GetSetupDescriptorProtected(lazy, setupDescriptor);
+            var lazy = new Lazy<TService>(provider, LazyThreadSafetyMode.PublicationOnly);
+            GetSetupDescriptor(lazy, setupDescriptor);
             return lazy;
         }
 
         /// <summary>
-        /// 
-        /// </summary>
-        protected static TIService LazyValue;
-
-        /// <summary>
-        /// Gets or sets the debugger.
+        /// Gets or sets the logger.
         /// </summary>
         /// <value>
-        /// The debugger.
+        /// The logger.
         /// </value>
         public static TServiceManagerLogger Logger { get; set; }
 
@@ -106,60 +96,61 @@ namespace System.Abstract
         protected static ServiceRegistration Registration { get; set; }
 
         /// <summary>
+        /// Sets the provider.
+        /// </summary>
+        /// <param name="provider">The provider.</param>
+        /// <param name="setupDescriptor">The setup descriptor.</param>
+        /// <returns></returns>
+        public static Lazy<TService> SetProvider(Func<TService> provider, ISetupDescriptor setupDescriptor = null) { return (Lazy = MakeByProvider(provider, setupDescriptor)); }
+
+        /// <summary>
         /// Gets the current.
         /// </summary>
-        /// <returns></returns>
-        /// <exception cref="System.InvalidOperationException">Service undefined. Ensure SetProvider</exception>
+        /// <value>
+        /// The current.
+        /// </value>
+        /// <exception cref="System.InvalidOperationException">AbstractService undefined. Did you forget to SetProvider?</exception>
         /// <exception cref="System.Exception"></exception>
-        protected static TIService GetCurrent()
+        public static TService Current
         {
-            if (Lazy == null)
-                throw new InvalidOperationException("Service undefined. Ensure SetProvider");
-            if (LazyValue != null)
-                return LazyValue;
-            if (Lazy.IsValueCreated)
-                return Lazy.Value;
-            try { return Lazy.Value; }
-            catch (Exception e)
+            get
             {
-                var reflectionTypeLoadException = (e as ReflectionTypeLoadException);
-                if (reflectionTypeLoadException != null)
+                if (Lazy.IsValueCreated)
+                    return Lazy.Value;
+                if (InflightValue != null)
+                    return InflightValue;
+                if (Lazy == null)
+                    throw new InvalidOperationException("AbstractService undefined. Did you forget to SetProvider?");
+                try { return Lazy.Value; }
+                catch (ReflectionTypeLoadException e)
                 {
+#if NET35
                     var b = new StringBuilder();
-                    foreach (var ex2 in reflectionTypeLoadException.LoaderExceptions)
-                        b.AppendLine(ex2.Message);
+                    foreach (var ex in e.LoaderExceptions)
+                        b.AppendLine(ex.Message);
                     throw new Exception(b.ToString(), e);
+#else
+                throw new AggregateException(e.LoaderExceptions);
+#endif
                 }
-                throw e.PrepareForRethrow();
+                catch (Exception) { throw; }
             }
-
-            //var value = Lazy.Value;
-            //if (LastException != null)
-            //{
-            //    var reflectionTypeLoadException = (LastException as ReflectionTypeLoadException);
-            //    if (reflectionTypeLoadException != null)
-            //    {
-            //        var b = new StringBuilder();
-            //        foreach (var ex2 in reflectionTypeLoadException.LoaderExceptions)
-            //            b.AppendLine(ex2.Message);
-            //        throw new Exception(b.ToString(), LastException);
-            //    }
-            //    throw LastException.PrepareForRethrow();
-            //}
-            //return value;
         }
 
         #region Setup
 
         /// <summary>
-        /// ISetupRegistration
+        /// IRegisterWithLocator
         /// </summary>
-        public interface ISetupRegistration
+        public interface IRegisterWithLocator
         {
             /// <summary>
-            /// Gets the on service registrar.
+            /// Gets the register with locator.
             /// </summary>
-            Action<IServiceLocator, string> DefaultServiceRegistrar { get; }
+            /// <value>
+            /// The register with locator.
+            /// </value>
+            Action<IServiceLocator, string> RegisterWithLocator { get; }
         }
 
         /// <summary>
@@ -168,20 +159,16 @@ namespace System.Abstract
         protected class ServiceRegistration
         {
             /// <summary>
-            /// Initializes a new instance of the <see cref="ServiceManagerBase&lt;TIService, TServiceSetupAction, TServiceManagerDebugger&gt;.ServiceRegistration"/> class.
+            /// Initializes a new instance of the <see cref="ServiceRegistration"/> class.
             /// </summary>
             public ServiceRegistration()
             {
-                DefaultServiceRegistrar = (service, locator, name) =>
+                RegisterWithLocator = (service, locator, name) =>
                 {
-                    //var behavior = (service.Registrar as IServiceRegistrarBehaviorAccessor);
-                    //if (behavior != null && !behavior.RegisterInLocator)
-                    //    throw new InvalidOperationException();
-                    RegisterInstance(service, locator, name);
-                    // specific registration
-                    var setupRegistration = (service as ISetupRegistration);
-                    if (setupRegistration != null)
-                        setupRegistration.DefaultServiceRegistrar(locator, name);
+                    //RegisterInstance(service, locator, name);
+                    var registerWithLocator = (service as IRegisterWithLocator);
+                    if (registerWithLocator != null)
+                        registerWithLocator.RegisterWithLocator(locator, name);
                 };
             }
 
@@ -191,42 +178,21 @@ namespace System.Abstract
             /// <value>
             /// The on setup.
             /// </value>
-            public Func<TIService, ISetupDescriptor, TIService> OnSetup { get; set; }
+            public Func<TService, ISetupDescriptor, TService> OnSetup { get; set; }
             /// <summary>
             /// Gets or sets the on change.
             /// </summary>
             /// <value>
             /// The on change.
             /// </value>
-            public Action<TIService, ISetupDescriptor> OnChange { get; set; }
+            public Action<TService, ISetupDescriptor> OnChange { get; set; }
             /// <summary>
             /// Gets or sets the on service registrar.
             /// </summary>
             /// <value>
             /// The on service registrar.
             /// </value>
-            public Action<TIService, IServiceLocator, string> DefaultServiceRegistrar { get; set; }
-            /// <summary>
-            /// Gets or sets the make action.
-            /// </summary>
-            /// <value>
-            /// The make action.
-            /// </value>
-            public Func<Action<TIService>, TServiceSetupAction> MakeAction { get; set; }
-        }
-
-        /// <summary>
-        /// RegisterInstance
-        /// </summary>
-        public static void RegisterInstance<T>(T service, IServiceLocator locator, string name)
-            where T : class
-        {
-            if (locator == null)
-                throw new ArgumentNullException("locator");
-            if (name == null)
-                locator.Registrar.RegisterInstance<T>(service);
-            else
-                locator.Registrar.RegisterInstance<T>(service, name);
+            public Action<TService, IServiceLocator, string> RegisterWithLocator { get; set; }
         }
 
         #endregion
@@ -236,7 +202,7 @@ namespace System.Abstract
         /// <summary>
         /// ApplySetup
         /// </summary>
-        private static TIService ApplySetup(Lazy<TIService> service, TIService newInstance)
+        private static TService ApplySetupDescriptors(Lazy<TService> service, TService newInstance)
         {
             if (service == null)
                 throw new ArgumentNullException("ApplySetup: service");
@@ -258,7 +224,7 @@ namespace System.Abstract
         /// <summary>
         /// ApplyChanges
         /// </summary>
-        private static void ApplyChange(Lazy<TIService> service, ISetupDescriptor changeDescriptor)
+        private static void ApplyChange(Lazy<TService> service, ISetupDescriptor changeDescriptor)
         {
             if (service == null)
                 throw new ArgumentNullException("service");
@@ -273,10 +239,15 @@ namespace System.Abstract
         }
 
         /// <summary>
+        /// InflightValue
+        /// </summary>
+        protected static TService InflightValue;
+
+        /// <summary>
         /// GetSetupDescriptorProtected
         /// </summary>
         [DebuggerStepThroughAttribute]
-        protected static ISetupDescriptor GetSetupDescriptorProtected(Lazy<TIService> service, ISetupDescriptor firstDescriptor)
+        public static ISetupDescriptor GetSetupDescriptor(Lazy<TService> service, ISetupDescriptor firstDescriptor = null)
         {
             if (service == null)
                 throw new ArgumentNullException("service");
@@ -294,17 +265,36 @@ namespace System.Abstract
                 {
                     descriptor = (firstDescriptor ?? new SetupDescriptor(Registration, null));
                     _setupDescriptors.Add(service, descriptor);
-                    service.HookValueFactory(valueFactory => ApplySetup(service, LazyValue = valueFactory()));
-                    //service.HookValueFactory(valueFactory =>
-                    //{
-                    //    TIService s = null;
-                    //    try { s = ApplySetup(service, LazyValue = valueFactory()); }
-                    //    catch (Exception e) { LastException = e; }
-                    //    return s;
-                    //});
+                    service.HookValueFactory(valueFactory => ApplySetupDescriptors(service, InflightValue = valueFactory()));
                 }
             return descriptor;
         }
+
+        /// <summary>
+        /// RegisterInstance
+        /// </summary>
+        public static void RegisterInstance<T>(T service, string name = null, IServiceLocator locator = null)
+            where T : class
+        {
+            if (service == null)
+                throw new ArgumentNullException("service");
+            if (name == null) locator.Registrar.RegisterInstance<T>(service);
+            else locator.Registrar.RegisterInstance<T>(service, name);
+        }
+
+        /// <summary>
+        /// RegisterInstance
+        /// </summary>
+        public static void RegisterInstance(object service, Type serviceType, string name = null, IServiceLocator locator = null)
+        {
+            if (service == null)
+                throw new ArgumentNullException("service");
+            if (serviceType == null)
+                throw new ArgumentNullException("serviceType");
+            if (name == null) locator.Registrar.RegisterInstance(serviceType, service);
+            else locator.Registrar.RegisterInstance(serviceType, service, name);
+        }
+
 
         /// <summary>
         /// ISetupDescriptor
@@ -315,82 +305,60 @@ namespace System.Abstract
             /// Does the specified action.
             /// </summary>
             /// <param name="action">The action.</param>
-            void Do(Action<TIService> action);
-            /// <summary>
-            /// Does the specified action.
-            /// </summary>
-            /// <param name="action">The action.</param>
-            void Do(TServiceSetupAction action);
-            /// <summary>
-            /// Registers the with service locator.
-            /// </summary>
-            /// <typeparam name="T"></typeparam>
-            /// <param name="service">The service.</param>
-            /// <param name="locator">The locator.</param>
-            /// <param name="name">The name.</param>
-            void RegisterWithServiceLocator<T>(Lazy<TIService> service, Lazy<IServiceLocator> locator, string name)
-                where T : class, TIService;
-            /// <summary>
-            /// Registers the with service locator.
-            /// </summary>
-            /// <param name="service">The service.</param>
-            /// <param name="locator">The locator.</param>
-            /// <param name="name">The name.</param>
-            void RegisterWithServiceLocator(Lazy<TIService> service, Lazy<IServiceLocator> locator, string name);
-            /// <summary>
-            /// Registers the with service locator.
-            /// </summary>
-            /// <typeparam name="T"></typeparam>
-            /// <param name="service">The service.</param>
-            /// <param name="locator">The locator.</param>
-            /// <param name="name">The name.</param>
-            void RegisterWithServiceLocator<T>(Lazy<TIService> service, IServiceLocator locator, string name)
-                where T : class, TIService;
-            /// <summary>
-            /// Registers the with service locator.
-            /// </summary>
-            /// <param name="service">The service.</param>
-            /// <param name="locator">The locator.</param>
-            /// <param name="name">The name.</param>
-            void RegisterWithServiceLocator(Lazy<TIService> service, IServiceLocator locator, string name);
+            void Do(Action<TService> action);
             /// <summary>
             /// Gets the actions.
             /// </summary>
-            IEnumerable<TServiceSetupAction> Actions { get; }
+            /// <value>
+            /// The actions.
+            /// </value>
+            IEnumerable<Action<TService>> Actions { get; }
+            /// <summary>
+            /// Registers the with service locator.
+            /// </summary>
+            /// <typeparam name="T"></typeparam>
+            /// <param name="service">The service.</param>
+            /// <param name="name">The name.</param>
+            /// <param name="locator">The locator.</param>
+            [DebuggerStepThroughAttribute]
+            void RegisterWithServiceLocator<T>(Lazy<TService> service, string name = null, IServiceLocator locator = null)
+                where T : class, TService;
+            /// <summary>
+            /// Registers the with service locator.
+            /// </summary>
+            /// <param name="service">The service.</param>
+            /// <param name="serviceType">Type of the service.</param>
+            /// <param name="name">The name.</param>
+            /// <param name="locator">The locator.</param>
+            [DebuggerStepThroughAttribute]
+            void RegisterWithServiceLocator(Lazy<TService> service, Type serviceType, string name = null, IServiceLocator locator = null);
         }
 
         /// <summary>
-        /// LazySetupDescriptor
+        /// SetupDescriptor
         /// </summary>
         protected class SetupDescriptor : ISetupDescriptor
         {
-            List<TServiceSetupAction> _actions = new List<TServiceSetupAction>();
+            List<Action<TService>> _actions = new List<Action<TService>>();
             ServiceRegistration _registration;
             Action<ISetupDescriptor> _postAction;
 
             /// <summary>
-            /// Initializes a new instance of the <see cref="ServiceManagerBase&lt;TIService, TServiceSetupAction, TDebuggerFlags&gt;.SetupDescriptor"/> class.
+            /// Initializes a new instance of the <see cref="SetupDescriptor"/> class.
             /// </summary>
             /// <param name="registration">The registration.</param>
             /// <param name="postAction">The post action.</param>
+            /// <exception cref="System.ArgumentNullException">registration;Please ensure EnsureRegistration() has been called previously.</exception>
             public SetupDescriptor(ServiceRegistration registration, Action<ISetupDescriptor> postAction)
             {
                 if (registration == null)
-                    throw new ArgumentNullException("registration", "Please ensure EnsureRegistration() has been called");
+                    throw new ArgumentNullException("registration", "Please ensure EnsureRegistration() has been called previously.");
                 _registration = registration;
                 _postAction = postAction;
             }
 
             [DebuggerStepThroughAttribute]
-            void ISetupDescriptor.Do(Action<TIService> action)
-            {
-                _actions.Add(_registration.MakeAction(action));
-                if (_postAction != null)
-                    _postAction(this);
-            }
-
-            [DebuggerStepThroughAttribute]
-            void ISetupDescriptor.Do(TServiceSetupAction action)
+            void ISetupDescriptor.Do(Action<TService> action)
             {
                 if (action == null)
                     throw new ArgumentNullException("action");
@@ -399,80 +367,46 @@ namespace System.Abstract
                     _postAction(this);
             }
 
-            [DebuggerStepThroughAttribute]
-            void ISetupDescriptor.RegisterWithServiceLocator<T>(Lazy<TIService> service, Lazy<IServiceLocator> locator, string name)
-            {
-                if (service == null)
-                    throw new ArgumentNullException("service");
-                if (locator == null)
-                    throw new ArgumentNullException("locator", "Unable to locate ServiceLocator, please ensure this is defined first.");
-                if (!locator.IsValueCreated)
-                {
-                    var descriptor = ServiceLocatorManager.GetSetupDescriptor(locator);
-                    if (descriptor == null)
-                        throw new NullReferenceException();
-                    descriptor.Do(l => RegisterInstance<T>((T)service.Value, l, name));
-                }
-                else
-                {
-                    var descriptor = GetSetupDescriptorProtected(service, null);
-                    if (descriptor == null)
-                        throw new NullReferenceException();
-                    descriptor.Do(l => RegisterInstance<T>((T)service.Value, locator.Value, name));
-                }
-            }
-            [DebuggerStepThroughAttribute]
-            void ISetupDescriptor.RegisterWithServiceLocator(Lazy<TIService> service, Lazy<IServiceLocator> locator, string name)
-            {
-                if (service == null)
-                    throw new ArgumentNullException("service");
-                if (locator == null)
-                    throw new ArgumentNullException("locator", "Unable to locate ServiceLocator, please ensure this is defined first.");
-                var serviceRegistrar = _registration.DefaultServiceRegistrar;
-                if (serviceRegistrar == null)
-                    throw new NullReferenceException("registration.ServiceLocatorRegistrar");
-                if (!locator.IsValueCreated)
-                {
-                    // question: should this use RegisterWithServiceLocator below?
-                    var descriptor = ServiceLocatorManager.GetSetupDescriptor(locator);
-                    if (descriptor == null)
-                        throw new NullReferenceException();
-                    descriptor.Do(l => serviceRegistrar(service.Value, l, name));
-                }
-                else
-                {
-                    var descriptor = GetSetupDescriptorProtected(service, null);
-                    if (descriptor == null)
-                        throw new NullReferenceException();
-                    descriptor.Do(s => serviceRegistrar(s, locator.Value, name));
-                }
-            }
-            [DebuggerStepThroughAttribute]
-            void ISetupDescriptor.RegisterWithServiceLocator<T>(Lazy<TIService> service, IServiceLocator locator, string name)
-            {
-                if (service == null)
-                    throw new ArgumentNullException("service");
-                if (locator == null)
-                    throw new ArgumentNullException("locator", "Unable to locate ServiceLocator, please ensure this is defined first.");
-                RegisterInstance<T>((T)service.Value, locator, name);
-            }
-            [DebuggerStepThroughAttribute]
-            void ISetupDescriptor.RegisterWithServiceLocator(Lazy<TIService> service, IServiceLocator locator, string name)
-            {
-                if (service == null)
-                    throw new ArgumentNullException("service");
-                if (locator == null)
-                    throw new ArgumentNullException("locator", "Unable to locate ServiceLocator, please ensure this is defined first.");
-                var serviceRegistrar = _registration.DefaultServiceRegistrar;
-                if (serviceRegistrar == null)
-                    throw new NullReferenceException("registration.ServiceLocatorRegistrar");
-                serviceRegistrar(service.Value, locator, name);
-            }
-
-            IEnumerable<TServiceSetupAction> ISetupDescriptor.Actions
+            IEnumerable<Action<TService>> ISetupDescriptor.Actions
             {
                 [DebuggerStepThroughAttribute]
                 get { return _actions; }
+            }
+
+            /// <summary>
+            /// Registers the with service locator.
+            /// </summary>
+            /// <typeparam name="T"></typeparam>
+            /// <param name="service">The service.</param>
+            /// <param name="name">The name.</param>
+            /// <param name="locator">The locator.</param>
+            /// <exception cref="System.ArgumentNullException">service</exception>
+            [DebuggerStepThroughAttribute]
+            void ISetupDescriptor.RegisterWithServiceLocator<T>(Lazy<TService> service, string name, IServiceLocator locator)
+            {
+                if (service == null)
+                    throw new ArgumentNullException("service");
+                RegisterInstance<T>((T)service.Value, name, locator);
+            }
+
+            /// <summary>
+            /// Registers the with service locator.
+            /// </summary>
+            /// <param name="service">The service.</param>
+            /// <param name="serviceType">Type of the service.</param>
+            /// <param name="name">The name.</param>
+            /// <param name="locator">The locator.</param>
+            /// <exception cref="System.ArgumentNullException">service
+            /// or
+            /// serviceType</exception>
+            [DebuggerStepThroughAttribute]
+            void ISetupDescriptor.RegisterWithServiceLocator(Lazy<TService> service, Type serviceType, string name, IServiceLocator locator)
+            {
+                if (service == null)
+                    throw new ArgumentNullException("service");
+                if (serviceType == null)
+                    throw new ArgumentNullException("serviceType");
+                RegisterInstance(service.Value, serviceType, name, locator);
             }
         }
 

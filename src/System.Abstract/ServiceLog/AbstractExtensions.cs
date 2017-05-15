@@ -285,7 +285,7 @@ namespace System.Abstract
         /// <param name="name">The name.</param>
         /// <returns></returns>
         public static Lazy<IServiceLog> RegisterWithServiceLocator<T>(this Lazy<IServiceLog> service, string name = null)
-            where T : class, IServiceLog { ServiceLogManager.GetSetupDescriptor(service).RegisterWithServiceLocator<T>(service, ServiceLocatorManager.Lazy, name); return service; }
+            where T : class, IServiceLog { ServiceLogManager.GetSetupDescriptor(service).RegisterWithServiceLocator<T>(service, ServiceLocatorManager.Current, name); return service; }
         /// <summary>
         /// Registers the with service locator.
         /// </summary>
@@ -301,7 +301,7 @@ namespace System.Abstract
         /// <param name="service">The service.</param>
         /// <param name="name">The name.</param>
         /// <returns></returns>
-        public static Lazy<IServiceLog> RegisterWithServiceLocator(this Lazy<IServiceLog> service, string name = null) { ServiceLogManager.GetSetupDescriptor(service).RegisterWithServiceLocator(service, ServiceLocatorManager.Lazy, name); return service; }
+        public static Lazy<IServiceLog> RegisterWithServiceLocator(this Lazy<IServiceLog> service, string name = null) { ServiceLogManager.GetSetupDescriptor(service).RegisterWithServiceLocator(service, ServiceLocatorManager.Current, name); return service; }
         /// <summary>
         /// Registers the with service locator.
         /// </summary>

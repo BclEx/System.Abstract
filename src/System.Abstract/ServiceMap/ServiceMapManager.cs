@@ -29,13 +29,12 @@ namespace System.Abstract
     /// <summary>
     /// ServiceMapManager
     /// </summary>
-    public class ServiceMapManager : ServiceManagerBase<IServiceMap, Action<IServiceMap>, ServiceMapManagerLogger>
+    public class ServiceMapManager : ServiceManagerBase<IServiceMap, ServiceMapManagerLogger>
     {
         static ServiceMapManager()
         {
             Registration = new ServiceRegistration
             {
-                MakeAction = a => x => a(x),
                 OnSetup = (service, descriptor) =>
                 {
                     if (descriptor != null)
@@ -49,13 +48,13 @@ namespace System.Abstract
                         foreach (var action in descriptor.Actions)
                             action(service);
                 },
-                DefaultServiceRegistrar = (service, locator, name) =>
+                RegisterWithLocator = (service, locator, name) =>
                 {
                     RegisterInstance(service, locator, name);
                     // specific registration
-                    var setupRegistration = (service as ISetupRegistration);
+                    var setupRegistration = (service as IRegisterWithLocator);
                     if (setupRegistration != null)
-                        setupRegistration.DefaultServiceRegistrar(locator, name);
+                        setupRegistration.RegisterWithLocator(locator, name);
                 },
             };
             // default provider
@@ -64,37 +63,8 @@ namespace System.Abstract
         }
 
         /// <summary>
-        /// Sets the provider.
-        /// </summary>
-        /// <param name="provider">The provider.</param>
-        /// <param name="setupDescriptor">The setup descriptor.</param>
-        /// <returns></returns>
-        public static Lazy<IServiceMap> SetProvider(Func<IServiceMap> provider, ISetupDescriptor setupDescriptor = null) { return (Lazy = MakeByProviderProtected(provider, setupDescriptor)); }
-        /// <summary>
-        /// Makes the by provider.
-        /// </summary>
-        /// <param name="provider">The provider.</param>
-        /// <param name="setupDescriptor">The setup descriptor.</param>
-        /// <returns></returns>
-        public static Lazy<IServiceMap> MakeByProvider(Func<IServiceMap> provider, ISetupDescriptor setupDescriptor = null) { return MakeByProviderProtected(provider, setupDescriptor); }
-
-        /// <summary>
-        /// Gets the current.
-        /// </summary>
-        public static IServiceMap Current
-        {
-            get { return GetCurrent(); }
-        }
-
-        /// <summary>
         /// Ensures the registration.
         /// </summary>
         public static void EnsureRegistration() { }
-        /// <summary>
-        /// Gets the setup descriptor.
-        /// </summary>
-        /// <param name="service">The service.</param>
-        /// <returns></returns>
-        public static ISetupDescriptor GetSetupDescriptor(Lazy<IServiceMap> service) { return GetSetupDescriptorProtected(service, null); }
     }
 }

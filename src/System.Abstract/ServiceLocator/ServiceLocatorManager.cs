@@ -29,7 +29,7 @@ namespace System.Abstract
     /// <summary>
     /// ServiceLocatorManager
     /// </summary>
-    public class ServiceLocatorManager : ServiceManagerBase<IServiceLocator, Action<IServiceLocator>, ServiceLocatorManagerLogger>
+    public class ServiceLocatorManager : ServiceManagerBase<IServiceLocator, ServiceLocatorManagerLogger>
     {
         readonly static Type _ignoreServiceLocatorType = typeof(IIgnoreServiceLocator);
 
@@ -37,7 +37,6 @@ namespace System.Abstract
         {
             Registration = new ServiceRegistration
             {
-                MakeAction = a => x => a(x),
                 OnSetup = (service, descriptor) =>
                 {
                     var behavior = (service.Registrar as IServiceRegistrarBehaviorAccessor);
@@ -56,43 +55,9 @@ namespace System.Abstract
                 },
             };
             // default provider
-            if (Lazy == null && DefaultServiceProvider != null)
+            if (Current == null && DefaultServiceProvider != null)
                 SetProvider(DefaultServiceProvider);
         }
-
-        /// <summary>
-        /// Sets the provider.
-        /// </summary>
-        /// <param name="provider">The provider.</param>
-        /// <param name="setupDescriptor">The setup descriptor.</param>
-        /// <returns></returns>
-        public static Lazy<IServiceLocator> SetProvider(Func<IServiceLocator> provider, ISetupDescriptor setupDescriptor = null) { return (Lazy = MakeByProviderProtected(provider, setupDescriptor)); }
-        /// <summary>
-        /// Makes the by provider.
-        /// </summary>
-        /// <param name="provider">The provider.</param>
-        /// <param name="setupDescriptor">The setup descriptor.</param>
-        /// <returns></returns>
-        public static Lazy<IServiceLocator> MakeByProvider(Func<IServiceLocator> provider, ISetupDescriptor setupDescriptor = null) { return MakeByProviderProtected(provider, setupDescriptor); }
-
-        /// <summary>
-        /// Gets the current.
-        /// </summary>
-        public static IServiceLocator Current
-        {
-            get { return GetCurrent(); }
-        }
-
-        /// <summary>
-        /// Ensures the registration.
-        /// </summary>
-        public static void EnsureRegistration() { }
-        /// <summary>
-        /// Gets the setup descriptor.
-        /// </summary>
-        /// <param name="service">The service.</param>
-        /// <returns></returns>
-        public static ISetupDescriptor GetSetupDescriptor(Lazy<IServiceLocator> service) { return GetSetupDescriptorProtected(service, null); }
 
         private static void RegisterSelfInLocator(IServiceLocator locator)
         {

@@ -46,7 +46,7 @@ namespace System.Abstract
     /// <summary>
     /// EventSource
     /// </summary>
-    public class EventSource : IEventSource, EventSourceManager.ISetupRegistration
+    public class EventSource : IEventSource, EventSourceManager.IRegisterWithLocator
     {
         readonly IEventStore _eventStore;
         readonly IAggregateRootSnapshotStore _snapshotStore;
@@ -66,7 +66,7 @@ namespace System.Abstract
 
         static EventSource() { EventSourceManager.EnsureRegistration(); }
         /// <summary>
-        /// Initializes a new instance of the <see cref="EventSource"/> class.
+        /// Initializes a new instance of the <see cref="EventSource" /> class.
         /// </summary>
         /// <param name="eventStore">The event store.</param>
         /// <param name="snapshotStore">The snapshot store.</param>
@@ -80,7 +80,7 @@ namespace System.Abstract
             _factory = (factory ?? DefaultFactory.Factory);
         }
 
-        Action<IServiceLocator, string> EventSourceManager.ISetupRegistration.DefaultServiceRegistrar
+        Action<IServiceLocator, string> EventSourceManager.IRegisterWithLocator.RegisterWithLocator
         {
             get { return (locator, name) => EventSourceManager.RegisterInstance<IEventSource>(this, locator, name); }
         }
@@ -90,10 +90,11 @@ namespace System.Abstract
         /// </summary>
         /// <param name="serviceType">An object that specifies the type of service object to get.</param>
         /// <returns>
-        /// A service object of type <paramref name="serviceType"/>.
+        /// A service object of type <paramref name="serviceType" />.
         /// -or-
-        /// null if there is no service object of type <paramref name="serviceType"/>.
+        /// null if there is no service object of type <paramref name="serviceType" />.
         /// </returns>
+        /// <exception cref="System.NotImplementedException"></exception>
         public object GetService(Type serviceType) { throw new NotImplementedException(); }
 
         /// <summary>

@@ -34,6 +34,7 @@ namespace System.Abstract
     /// <summary>
     /// IServiceMessageHandler
     /// </summary>
+    /// <typeparam name="TMessage">The type of the message.</typeparam>
     public interface IServiceMessageHandler<TMessage>
         where TMessage : class
     {

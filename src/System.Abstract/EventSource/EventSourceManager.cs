@@ -29,13 +29,12 @@ namespace System.Abstract
     /// <summary>
     /// EventSourceManager
     /// </summary>
-    public class EventSourceManager : ServiceManagerBase<IEventSource, Action<IEventSource>, EventSourceManagerLogger>
+    public class EventSourceManager : ServiceManagerBase<IEventSource, EventSourceManagerLogger>
     {
         static EventSourceManager()
         {
             Registration = new ServiceRegistration
             {
-                MakeAction = a => x => a(x),
                 OnSetup = (service, descriptor) =>
                 {
                     if (descriptor != null)
@@ -56,37 +55,8 @@ namespace System.Abstract
         }
 
         /// <summary>
-        /// Sets the provider.
-        /// </summary>
-        /// <param name="provider">The provider.</param>
-        /// <param name="setupDescriptor">The setup descriptor.</param>
-        /// <returns></returns>
-        public static Lazy<IEventSource> SetProvider(Func<IEventSource> provider, ISetupDescriptor setupDescriptor = null) { return (Lazy = MakeByProviderProtected(provider, setupDescriptor)); }
-        /// <summary>
-        /// Makes the by provider.
-        /// </summary>
-        /// <param name="provider">The provider.</param>
-        /// <param name="setupDescriptor">The setup descriptor.</param>
-        /// <returns></returns>
-        public static Lazy<IEventSource> MakeByProvider(Func<IEventSource> provider, ISetupDescriptor setupDescriptor = null) { return MakeByProviderProtected(provider, setupDescriptor); }
-
-        /// <summary>
-        /// Gets the current.
-        /// </summary>
-        public static IEventSource Current
-        {
-            get { return GetCurrent(); }
-        }
-
-        /// <summary>
         /// Ensures the registration.
         /// </summary>
         public static void EnsureRegistration() { }
-        /// <summary>
-        /// Gets the setup descriptor.
-        /// </summary>
-        /// <param name="service">The service.</param>
-        /// <returns></returns>
-        public static ISetupDescriptor GetSetupDescriptor(Lazy<IEventSource> service) { return GetSetupDescriptorProtected(service, null); }
     }
 }

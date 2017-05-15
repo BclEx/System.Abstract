@@ -48,7 +48,7 @@ namespace System.Abstract
             {
                 if (_log != null)
                     return _log;
-                _log = ServiceLogManager.Current;
+                _log = ServiceLogManager.Lazy;
                 Started();
                 return _log;
             }
