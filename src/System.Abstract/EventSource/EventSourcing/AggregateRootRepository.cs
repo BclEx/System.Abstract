@@ -118,7 +118,7 @@ namespace System.Abstract.EventSourcing
         /// <param name="aggregateId">The aggregate Id.</param>
         /// <returns></returns>
         public IEnumerable<Event> GetEventsById(object aggregateId) =>
-            _eventStore.GetEventsByID(aggregateId, 0);
+            _eventStore.GetEventsById(aggregateId, 0);
 
         /// <summary>
         /// Gets the by ID.
@@ -150,7 +150,7 @@ namespace System.Abstract.EventSourcing
                 }
             }
             // load events
-            var events = _eventStore.GetEventsByID(aggregateId, (snapshot != null ? snapshot.LastEventSequence : 0));
+            var events = _eventStore.GetEventsById(aggregateId, (snapshot != null ? snapshot.LastEventSequence : 0));
             loaded |= ((IAggregateRootStateAccessor)aggregate).LoadFromHistory(events);
             return (queryOptions & AggregateRootQueryOptions.UseNullAggregates) == 0  || loaded ? aggregate : null;
         }

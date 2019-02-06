@@ -23,6 +23,7 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 THE SOFTWARE.
 */
 #endregion
+
 using System;
 using System.Linq;
 using System.Collections.Generic;
@@ -33,6 +34,7 @@ namespace Contoso.Abstract.EventSourcing
     /// <summary>
     /// MemoryAggregateRootSnapshotStore
     /// </summary>
+    /// <seealso cref="System.Abstract.EventSourcing.IAggregateRootSnapshotStore" />
     public class MemoryAggregateRootSnapshotStore : IAggregateRootSnapshotStore
     {
         readonly List<AggregateRootSnapshot> _snapshots = new List<AggregateRootSnapshot>();
@@ -41,30 +43,27 @@ namespace Contoso.Abstract.EventSourcing
         /// Gets the latest snapshot.
         /// </summary>
         /// <typeparam name="TAggregateRoot">The type of the aggregate root.</typeparam>
-        /// <param name="aggregateID">The aggregate ID.</param>
-        /// <returns></returns>
-        public AggregateRootSnapshot GetLatestSnapshot<TAggregateRoot>(object aggregateID)
-            where TAggregateRoot : AggregateRoot
-        {
-            return _snapshots
-                .Where(x => x.AggregateID.Equals(aggregateID))
+        /// <param name="aggregateId">The aggregate Id.</param>
+        /// <returns>AggregateRootSnapshot.</returns>
+        public AggregateRootSnapshot GetLatestSnapshot<TAggregateRoot>(object aggregateId)
+            where TAggregateRoot : AggregateRoot =>
+            _snapshots
+                .Where(x => x.AggregateId.Equals(aggregateId))
                 .OrderBy(x => x.LastEventSequence)
                 .SingleOrDefault();
-        }
 
         /// <summary>
         /// Saves the snapshot.
         /// </summary>
         /// <param name="aggregateType">Type of the aggregate.</param>
         /// <param name="snapshot">The snapshot.</param>
-        public void SaveSnapshot(Type aggregateType, AggregateRootSnapshot snapshot)
-        {
+        public void SaveSnapshot(Type aggregateType, AggregateRootSnapshot snapshot) =>
             _snapshots.Add(snapshot);
-        }
 
         /// <summary>
         /// Gets the inline snapshot predicate.
         /// </summary>
+        /// <value>The inline snapshot predicate.</value>
         public Func<IAggregateRootRepository, AggregateRoot, bool> InlineSnapshotPredicate { get; set; }
     }
 }

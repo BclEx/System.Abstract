@@ -50,10 +50,10 @@ namespace System.Abstract
                 },
                 RegisterWithLocator = (service, locator, name) =>
                 {
-                    RegisterInstance(service, locator, name);
+                    RegisterInstance(service, name, locator);
                     var publishingServiceBus = (service as IPublishingServiceBus);
                     if (publishingServiceBus != null)
-                        RegisterInstance(publishingServiceBus, locator, name);
+                        RegisterInstance(publishingServiceBus, name, locator);
                     // specific registration
                     var setupRegistration = (service as IRegisterWithLocator);
                     if (setupRegistration != null)

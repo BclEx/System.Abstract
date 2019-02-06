@@ -24,35 +24,26 @@ THE SOFTWARE.
 */
 #endregion
 
-using System;
-using System.Abstract.EventSourcing;
-using System.Collections.Generic;
-
-namespace Contoso.Abstract.EventSourcing
+namespace System.Abstract
 {
     /// <summary>
-    /// FileEventStore
+    /// ITouchableCacheItem
     /// </summary>
-    /// <seealso cref="System.Abstract.EventSourcing.IEventStore" />
-    public class FileEventStore : IEventStore
-    {
+    public interface ITouchableCacheItem
+	{
         /// <summary>
-        /// Gets the events by ID.
+        /// Touches the specified tag.
         /// </summary>
-        /// <param name="aggregateID">The aggregate ID.</param>
-        /// <param name="startSequence">The start sequence.</param>
-        /// <returns>IEnumerable&lt;Event&gt;.</returns>
-        /// <exception cref="NotImplementedException"></exception>
-        public IEnumerable<Event> GetEventsById(object aggregateID, int startSequence) =>
-            throw new NotImplementedException();
+        /// <param name="tag">The tag.</param>
+        /// <param name="names">The names.</param>
+		void Touch(object tag, string[] names);
 
         /// <summary>
-        /// Saves the events.
+        /// Makes the dependency.
         /// </summary>
-        /// <param name="aggregateID">The aggregate ID.</param>
-        /// <param name="events">The events.</param>
-        /// <exception cref="NotImplementedException"></exception>
-        public void SaveEvents(object aggregateID, IEnumerable<Event> events) =>
-            throw new NotImplementedException();
-    }
+        /// <param name="tag">The tag.</param>
+        /// <param name="names">The names.</param>
+        /// <returns>System.Object.</returns>
+		object MakeDependency(object tag, string[] names);
+	}
 }

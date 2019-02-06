@@ -50,13 +50,11 @@ namespace System.Abstract
                 },
                 RegisterWithLocator = (service, locator, name) =>
                 {
-                    RegisterInstance(service, locator, name);
-                    var distributedServiceCache = (service as IDistributedServiceCache);
-                    if (distributedServiceCache != null)
-                        RegisterInstance(distributedServiceCache, locator, name);
+                    RegisterInstance(service, name, locator);
+                    if (service is IDistributedServiceCache distributedServiceCache)
+                        RegisterInstance(distributedServiceCache, name, locator);
                     // specific registration
-                    var setupRegistration = (service as IRegisterWithLocator);
-                    if (setupRegistration != null)
+                    if (service is IRegisterWithLocator setupRegistration)
                         setupRegistration.RegisterWithLocator(locator, name);
                 },
             };

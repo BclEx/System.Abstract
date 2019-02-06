@@ -171,7 +171,7 @@ namespace System.Abstract
         public static void EnsureCacheDependency(IServiceCache service, object tag, CacheItemDependency dependency)
         {
             if (service == null)
-                throw new ArgumentNullException("service");
+                throw new ArgumentNullException(nameof(service));
             string[] names;
             if (dependency == null || (names = dependency(service, null, tag, null) as string[]) == null)
                 return;
@@ -186,7 +186,7 @@ namespace System.Abstract
         public static void EnsureCacheDependency(IServiceCache service, IEnumerable<string> names)
         {
             if (service == null)
-                throw new ArgumentNullException("service");
+                throw new ArgumentNullException(nameof(service));
             if (names != null)
                 foreach (var name in names)
                     service.Add(null, name, new CacheItemPolicy { AbsoluteExpiration = ServiceCache.InfiniteAbsoluteExpiration }, string.Empty);
@@ -973,7 +973,7 @@ namespace System.Abstract
         /// <returns>Lazy&lt;IServiceCache&gt;.</returns>
         public static Lazy<IServiceCache> RegisterWithServiceLocator<T>(this Lazy<IServiceCache> service, string name = null)
             where T : class, IServiceCache
-        { ServiceCacheManager.GetSetupDescriptor(service).RegisterWithServiceLocator<T>(service, ServiceLocatorManager.Current, name); return service; }
+        { ServiceCacheManager.GetSetupDescriptor(service).RegisterWithServiceLocator<T>(service, name, ServiceLocatorManager.Current); return service; }
         /// <summary>
         /// Registers the with service locator.
         /// </summary>
@@ -984,7 +984,7 @@ namespace System.Abstract
         /// <returns>Lazy&lt;IServiceCache&gt;.</returns>
         public static Lazy<IServiceCache> RegisterWithServiceLocator<T>(this Lazy<IServiceCache> service, IServiceLocator locator, string name = null)
             where T : class, IServiceCache
-        { ServiceCacheManager.GetSetupDescriptor(service).RegisterWithServiceLocator<T>(service, locator, name); return service; }
+        { ServiceCacheManager.GetSetupDescriptor(service).RegisterWithServiceLocator<T>(service, name, locator); return service; }
         /// <summary>
         /// Registers the with service locator.
         /// </summary>
@@ -995,7 +995,7 @@ namespace System.Abstract
         /// <returns>Lazy&lt;IServiceCache&gt;.</returns>
         public static Lazy<IServiceCache> RegisterWithServiceLocator<T>(this Lazy<IServiceCache> service, Lazy<IServiceLocator> locator, string name = null)
             where T : class, IServiceCache
-        { ServiceCacheManager.GetSetupDescriptor(service).RegisterWithServiceLocator<T>(service, locator, name); return service; }
+        { ServiceCacheManager.GetSetupDescriptor(service).RegisterWithServiceLocator<T>(service, name, locator); return service; }
 
         /// <summary>
         /// Registers the with service locator.
@@ -1005,7 +1005,7 @@ namespace System.Abstract
         /// <param name="name">The name.</param>
         /// <returns>Lazy&lt;IServiceCache&gt;.</returns>
         public static Lazy<IServiceCache> RegisterWithServiceLocator(this Lazy<IServiceCache> service, Type serviceType, string name = null)
-        { ServiceCacheManager.GetSetupDescriptor(service).RegisterWithServiceLocator(service, serviceType, ServiceLocatorManager.Current, name); return service; }
+        { ServiceCacheManager.GetSetupDescriptor(service).RegisterWithServiceLocator(service, serviceType, name, ServiceLocatorManager.Current); return service; }
         /// <summary>
         /// Registers the with service locator.
         /// </summary>
@@ -1015,7 +1015,7 @@ namespace System.Abstract
         /// <param name="name">The name.</param>
         /// <returns>Lazy&lt;IServiceCache&gt;.</returns>
         public static Lazy<IServiceCache> RegisterWithServiceLocator(this Lazy<IServiceCache> service, Type serviceType, IServiceLocator locator, string name = null)
-        { ServiceCacheManager.GetSetupDescriptor(service).RegisterWithServiceLocator(service, serviceType, locator, name); return service; }
+        { ServiceCacheManager.GetSetupDescriptor(service).RegisterWithServiceLocator(service, serviceType, name, locator); return service; }
         /// <summary>
         /// Registers the with service locator.
         /// </summary>
@@ -1025,7 +1025,7 @@ namespace System.Abstract
         /// <param name="name">The name.</param>
         /// <returns>Lazy&lt;IServiceCache&gt;.</returns>
         public static Lazy<IServiceCache> RegisterWithServiceLocator(this Lazy<IServiceCache> service, Type serviceType, Lazy<IServiceLocator> locator, string name = null)
-        { ServiceCacheManager.GetSetupDescriptor(service).RegisterWithServiceLocator(service, serviceType, locator, name); return service; }
+        { ServiceCacheManager.GetSetupDescriptor(service).RegisterWithServiceLocator(service, serviceType, name, locator); return service; }
 
         #endregion
     }

@@ -43,7 +43,7 @@ namespace Contoso.Abstract
     /// <summary>
     /// ConsoleServiceLog
     /// </summary>
-    public class ConsoleServiceLog : IConsoleServiceLog, ServiceLogManager.ISetupRegistration
+    public class ConsoleServiceLog : IConsoleServiceLog, ServiceLogManager.IRegisterWithLocator
     {
         static ConsoleServiceLog() { ServiceLogManager.EnsureRegistration(); }
         /// <summary>
@@ -56,10 +56,8 @@ namespace Contoso.Abstract
             Log = Console.Out;
         }
 
-        Action<IServiceLocator, string> ServiceLogManager.ISetupRegistration.DefaultServiceRegistrar
-        {
-            get { return (locator, name) => ServiceLogManager.RegisterInstance<IConsoleServiceLog>(this, locator, name); }
-        }
+        Action<IServiceLocator, string> ServiceLogManager.IRegisterWithLocator.RegisterWithLocator =>
+            (locator, name) => ServiceLogManager.RegisterInstance<IConsoleServiceLog>(this, name, locator);
 
         /// <summary>
         /// Gets the service object of the specified type.

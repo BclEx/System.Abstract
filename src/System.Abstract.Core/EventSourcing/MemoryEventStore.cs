@@ -23,6 +23,7 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 THE SOFTWARE.
 */
 #endregion
+
 using System;
 using System.Linq;
 using System.Collections.Generic;
@@ -35,39 +36,34 @@ namespace Contoso.Abstract.EventSourcing
     /// </summary>
     public class MemoryEventStore : IEventStore
     {
-        private readonly List<Event> _events = new List<Event>();
+        readonly List<Event> _events = new List<Event>();
 
         /// <summary>
-        /// Gets the events by ID.
+        /// Gets the events by Id.
         /// </summary>
-        /// <param name="aggregateID">The aggregate ID.</param>
+        /// <param name="aggregateId">The aggregate Id.</param>
         /// <param name="startSequence">The start sequence.</param>
-        /// <returns></returns>
-        public IEnumerable<Event> GetEventsByID(object aggregateID, int startSequence)
-        {
-            return _events
-                .Where(x => x.AggregateID.Equals(aggregateID) && x.EventSequence > startSequence)
+        /// <returns>IEnumerable&lt;Event&gt;.</returns>
+        public IEnumerable<Event> GetEventsById(object aggregateId, int startSequence) =>
+             _events
+                .Where(x => x.AggregateId.Equals(aggregateId) && x.EventSequence > startSequence)
                 .ToList();
-        }
 
         /// <summary>
         /// Gets the events by event types.
         /// </summary>
         /// <param name="eventTypes">The event types.</param>
-        /// <returns></returns>
-        public IEnumerable<Event> GetEventsByEventTypes(IEnumerable<Type> eventTypes)
-        {
+        /// <returns>IEnumerable&lt;Event&gt;.</returns>
+        /// <exception cref="NotImplementedException"></exception>
+        public IEnumerable<Event> GetEventsByEventTypes(IEnumerable<Type> eventTypes) =>
             throw new NotImplementedException();
-        }
 
         /// <summary>
         /// Saves the events.
         /// </summary>
-        /// <param name="aggregateID">The aggregate ID.</param>
+        /// <param name="aggregateId">The aggregate Id.</param>
         /// <param name="events">The events.</param>
-        public void SaveEvents(object aggregateID, IEnumerable<Event> events)
-        {
+        public void SaveEvents(object aggregateId, IEnumerable<Event> events) =>
             _events.AddRange(events);
-        }
     }
 }

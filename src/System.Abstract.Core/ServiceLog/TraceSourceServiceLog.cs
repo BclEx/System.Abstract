@@ -44,7 +44,7 @@ namespace Contoso.Abstract
     /// <summary>
     /// TraceSourceServiceLog
     /// </summary>
-    public class TraceSourceServiceLog : ITraceSourceServiceLog, ServiceLogManager.ISetupRegistration
+    public class TraceSourceServiceLog : ITraceSourceServiceLog, ServiceLogManager.IRegisterWithLocator
     {
         private static readonly Dictionary<string, TraceSource> _logs = new Dictionary<string, TraceSource>();
 
@@ -66,10 +66,8 @@ namespace Contoso.Abstract
             Log = GetAndCache(name, defaultLevel);
         }
 
-        Action<IServiceLocator, string> ServiceLogManager.ISetupRegistration.DefaultServiceRegistrar
-        {
-            get { return (locator, name) => ServiceLogManager.RegisterInstance<ITraceSourceServiceLog>(this, locator, name); }
-        }
+        Action<IServiceLocator, string> ServiceLogManager.IRegisterWithLocator.RegisterWithLocator =>
+            (locator, name) => ServiceLogManager.RegisterInstance<ITraceSourceServiceLog>(this, name, locator);
 
         /// <summary>
         /// Gets the service object of the specified type.

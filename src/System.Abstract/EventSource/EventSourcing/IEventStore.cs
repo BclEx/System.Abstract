@@ -39,7 +39,7 @@ namespace System.Abstract.EventSourcing
         /// <param name="aggregateId">The aggregate Id.</param>
         /// <param name="startSequence">The start sequence.</param>
         /// <returns>IEnumerable&lt;Event&gt;.</returns>
-        IEnumerable<Event> GetEventsByID(object aggregateId, int startSequence);
+        IEnumerable<Event> GetEventsById(object aggregateId, int startSequence);
 
         /// <summary>
         /// Saves the events.

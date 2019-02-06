@@ -88,7 +88,7 @@ namespace System.Abstract
         /// </summary>
         /// <value>The register with locator.</value>
         Action<IServiceLocator, string> EventSourceManager.IRegisterWithLocator.RegisterWithLocator =>
-            (locator, name) => EventSourceManager.RegisterInstance<IEventSource>(this, locator, name);
+            (locator, name) => EventSourceManager.RegisterInstance<IEventSource>(this, name, locator);
 
         /// <summary>
         /// Gets the service object of the specified type.

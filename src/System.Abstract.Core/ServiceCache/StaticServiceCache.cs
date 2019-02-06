@@ -51,7 +51,7 @@ namespace Contoso.Abstract
     ///   <example>
     /// ServiceCacheManager.SetProvider(() =&gt; new StaticServiceCache())
     ///   </example>
-    public class StaticServiceCache : IStaticServiceCache, ServiceCacheManager.ISetupRegistration
+    public class StaticServiceCache : IStaticServiceCache, ServiceCacheManager.IRegisterWithLocator
     {
         static readonly Dictionary<string, object> _cache = new Dictionary<string, object>();
 
@@ -64,10 +64,8 @@ namespace Contoso.Abstract
             Settings = new ServiceCacheSettings(new DefaultFileTouchableCacheItem(this, new DefaultTouchableCacheItem(this, null)));
         }
 
-        Action<IServiceLocator, string> ServiceCacheManager.ISetupRegistration.DefaultServiceRegistrar
-        {
-            get { return (locator, name) => ServiceCacheManager.RegisterInstance<IStaticServiceCache>(this, locator, name); }
-        }
+        Action<IServiceLocator, string> ServiceCacheManager.IRegisterWithLocator.RegisterWithLocator =>
+            (locator, name) => ServiceCacheManager.RegisterInstance<IStaticServiceCache>(this, name, locator);
 
         /// <summary>
         /// Gets the service object of the specified type.

@@ -44,7 +44,7 @@ namespace Contoso.Abstract
     /// <summary>
     /// EventLogServiceLog
     /// </summary>
-    public class EventLogServiceLog : IEventLogServiceLog, IDisposable, ServiceLogManager.ISetupRegistration
+    public class EventLogServiceLog : IEventLogServiceLog, IDisposable, ServiceLogManager.IRegisterWithLocator
     {
         static EventLogServiceLog() { ServiceLogManager.EnsureRegistration(); }
         /// <summary>
@@ -101,10 +101,8 @@ namespace Contoso.Abstract
             }
         }
 
-        Action<IServiceLocator, string> ServiceLogManager.ISetupRegistration.DefaultServiceRegistrar
-        {
-            get { return (locator, name) => ServiceLogManager.RegisterInstance<IEventLogServiceLog>(this, locator, name); }
-        }
+        Action<IServiceLocator, string> ServiceLogManager.IRegisterWithLocator.RegisterWithLocator =>
+            (locator, name) => ServiceLogManager.RegisterInstance<IEventLogServiceLog>(this, name, locator);
 
         /// <summary>
         /// Gets the service object of the specified type.

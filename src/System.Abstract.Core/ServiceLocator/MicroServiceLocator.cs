@@ -19,7 +19,7 @@ namespace Contoso.Abstract
     /// <summary>
     /// MicroServiceLocator
     /// </summary>
-    public class MicroServiceLocator : IMicroServiceLocator, ServiceLocatorManager.ISetupRegistration
+    public class MicroServiceLocator : IMicroServiceLocator, ServiceLocatorManager.IRegisterWithLocator
     {
         IDictionary<string, IDictionary<Type, object>> _containers;
         MicroServiceRegistrar _registrar;
@@ -56,10 +56,8 @@ namespace Contoso.Abstract
             Container = container;
         }
 
-        Action<IServiceLocator, string> ServiceLocatorManager.ISetupRegistration.DefaultServiceRegistrar
-        {
-            get { return (locator, name) => ServiceLocatorManager.RegisterInstance<IMicroServiceLocator>(this, locator, name); }
-        }
+        Action<IServiceLocator, string> ServiceLocatorManager.IRegisterWithLocator.RegisterWithLocator =>
+            (locator, name) => ServiceLocatorManager.RegisterInstance<IMicroServiceLocator>(this, name, locator);
 
         /// <summary>
         /// Gets the service object of the specified type.

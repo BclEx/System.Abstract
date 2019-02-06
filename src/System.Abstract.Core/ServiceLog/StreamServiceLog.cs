@@ -44,7 +44,7 @@ namespace Contoso.Abstract
     /// <summary>
     /// StreamServiceLog
     /// </summary>
-    public class StreamServiceLog : IStreamLogServiceLog, IDisposable, ServiceLogManager.ISetupRegistration
+    public class StreamServiceLog : IStreamLogServiceLog, IDisposable, ServiceLogManager.IRegisterWithLocator
     {
         static StreamServiceLog() { ServiceLogManager.EnsureRegistration(); }
         /// <summary>
@@ -105,10 +105,8 @@ namespace Contoso.Abstract
             }
         }
 
-        Action<IServiceLocator, string> ServiceLogManager.ISetupRegistration.DefaultServiceRegistrar
-        {
-            get { return (locator, name) => ServiceLogManager.RegisterInstance<IStreamLogServiceLog>(this, locator, name); }
-        }
+        Action<IServiceLocator, string> ServiceLogManager.IRegisterWithLocator.RegisterWithLocator =>
+            (locator, name) => ServiceLogManager.RegisterInstance<IStreamLogServiceLog>(this, name, locator);
 
         /// <summary>
         /// Gets the service object of the specified type.

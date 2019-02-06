@@ -46,7 +46,7 @@ namespace Contoso.Abstract
     ///   <example>
     /// ServiceCacheManager.SetProvider(() =&gt; new EmptyServiceCache())
     ///   </example>
-    public class EmptyServiceCache : IEmptyServiceCache, ServiceCacheManager.ISetupRegistration
+    public class EmptyServiceCache : IEmptyServiceCache, ServiceCacheManager.IRegisterWithLocator
     {
         static EmptyServiceCache() { ServiceCacheManager.EnsureRegistration(); }
         /// <summary>
@@ -57,10 +57,8 @@ namespace Contoso.Abstract
             Settings = new ServiceCacheSettings();
         }
 
-        Action<IServiceLocator, string> ServiceCacheManager.ISetupRegistration.DefaultServiceRegistrar
-        {
-            get { return (locator, name) => ServiceCacheManager.RegisterInstance<IEmptyServiceCache>(this, locator, name); }
-        }
+        Action<IServiceLocator, string> ServiceCacheManager.IRegisterWithLocator.RegisterWithLocator =>
+            (locator, name) => ServiceCacheManager.RegisterInstance<IEmptyServiceCache>(this, name, locator);
 
         /// <summary>
         /// Gets the service object of the specified type.

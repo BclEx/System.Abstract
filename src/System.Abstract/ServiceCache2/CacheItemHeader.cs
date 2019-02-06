@@ -24,35 +24,22 @@ THE SOFTWARE.
 */
 #endregion
 
-using System;
-using System.Abstract.EventSourcing;
-using System.Collections.Generic;
-
-namespace Contoso.Abstract.EventSourcing
+namespace System.Abstract
 {
     /// <summary>
-    /// FileEventStore
+    /// CacheItemHeader
     /// </summary>
-    /// <seealso cref="System.Abstract.EventSourcing.IEventStore" />
-    public class FileEventStore : IEventStore
+    public class CacheItemHeader
     {
         /// <summary>
-        /// Gets the events by ID.
+        /// Gets or sets the item.
         /// </summary>
-        /// <param name="aggregateID">The aggregate ID.</param>
-        /// <param name="startSequence">The start sequence.</param>
-        /// <returns>IEnumerable&lt;Event&gt;.</returns>
-        /// <exception cref="NotImplementedException"></exception>
-        public IEnumerable<Event> GetEventsById(object aggregateID, int startSequence) =>
-            throw new NotImplementedException();
-
+        /// <value>The item.</value>
+        public string Item { get; set; }
         /// <summary>
-        /// Saves the events.
+        /// Values
         /// </summary>
-        /// <param name="aggregateID">The aggregate ID.</param>
-        /// <param name="events">The events.</param>
-        /// <exception cref="NotImplementedException"></exception>
-        public void SaveEvents(object aggregateID, IEnumerable<Event> events) =>
-            throw new NotImplementedException();
+        /// <value>The values.</value>
+        public object[] Values { get; set; }
     }
 }

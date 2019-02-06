@@ -24,35 +24,28 @@ THE SOFTWARE.
 */
 #endregion
 
-using System;
-using System.Abstract.EventSourcing;
-using System.Collections.Generic;
-
-namespace Contoso.Abstract.EventSourcing
+namespace System.Abstract
 {
     /// <summary>
-    /// FileEventStore
+    /// ServiceCacheManagerLogger
     /// </summary>
-    /// <seealso cref="System.Abstract.EventSourcing.IEventStore" />
-    public class FileEventStore : IEventStore
+    public class ServiceCacheManagerLogger : ServiceManagerLoggerBase<ServiceCacheManagerLogger.LoggerFlags>
     {
         /// <summary>
-        /// Gets the events by ID.
+        /// LoggerFlags
         /// </summary>
-        /// <param name="aggregateID">The aggregate ID.</param>
-        /// <param name="startSequence">The start sequence.</param>
-        /// <returns>IEnumerable&lt;Event&gt;.</returns>
-        /// <exception cref="NotImplementedException"></exception>
-        public IEnumerable<Event> GetEventsById(object aggregateID, int startSequence) =>
-            throw new NotImplementedException();
+        [Flags]
+        public enum LoggerFlags { }
 
         /// <summary>
-        /// Saves the events.
+        /// Started.
         /// </summary>
-        /// <param name="aggregateID">The aggregate ID.</param>
-        /// <param name="events">The events.</param>
-        /// <exception cref="NotImplementedException"></exception>
-        public void SaveEvents(object aggregateID, IEnumerable<Event> events) =>
-            throw new NotImplementedException();
+        protected override void Started()
+        {
+            if (Log != null)
+                Log.Information(@"
+Logger set for ServiceCacheManagerLogger. please set the following Flags to get greater detail:
+");
+        }
     }
 }

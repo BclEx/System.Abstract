@@ -10,3 +10,4 @@ FakesAssemblies/
 *.user
 _ReSharper.*/
 *resharper.user
+.vs

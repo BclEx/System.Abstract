@@ -24,24 +24,24 @@ THE SOFTWARE.
 */
 #endregion
 
+using System.Collections.Generic;
+using System.Linq;
+using System.Runtime.Caching;
+using System.Threading.Tasks;
+
 namespace System.Abstract
 {
     /// <summary>
-    /// ServiceLocatorManager
+    /// ServiceCacheManager
     /// </summary>
-    public class ServiceLocatorManager : ServiceManagerBase<IServiceLocator, ServiceLocatorManagerLogger>
+    public class ServiceCacheManager : ServiceManagerBase<IServiceCache, ServiceCacheManagerLogger>
     {
-        readonly static Type _ignoreServiceLocatorType = typeof(IIgnoreServiceLocator);
-
-        static ServiceLocatorManager()
+        static ServiceCacheManager()
         {
             Registration = new ServiceRegistration
             {
                 OnSetup = (service, descriptor) =>
                 {
-                    var behavior = (service.Registrar as IServiceRegistrarBehaviorAccessor);
-                    if (behavior == null || behavior.RegisterInLocator)
-                        RegisterSelfInLocator(service);
                     if (descriptor != null)
                         foreach (var action in descriptor.Actions)
                             action(service);
@@ -53,6 +53,15 @@ namespace System.Abstract
                         foreach (var action in descriptor.Actions)
                             action(service);
                 },
+                RegisterWithLocator = (service, locator, name) =>
+                {
+                    RegisterInstance(service, name, locator);
+                    if (service is IDistributedServiceCache distributedServiceCache)
+                        RegisterInstance(distributedServiceCache, name, locator);
+                    // specific registration
+                    if (service is IRegisterWithLocator setupRegistration)
+                        setupRegistration.RegisterWithLocator(locator, name);
+                },
             };
             // default provider
             if (Current == null && DefaultServiceProvider != null)
@@ -63,36 +72,5 @@ namespace System.Abstract
         /// Ensures the registration.
         /// </summary>
         public static void EnsureRegistration() { }
-
-        static void RegisterSelfInLocator(IServiceLocator locator) =>
-            locator.Registrar.RegisterInstance(locator);
-
-        /// <summary>
-        /// Determines whether [has ignore service locator] [the specified instance].
-        /// </summary>
-        /// <param name="instance">The instance.</param>
-        /// <returns>
-        ///   <c>true</c> if [has ignore service locator] [the specified instance]; otherwise, <c>false</c>.
-        /// </returns>
-        public static bool HasIgnoreServiceLocator(object instance) =>
-            instance == null || HasIgnoreServiceLocator(instance.GetType());
-        /// <summary>
-        /// Determines whether [has ignore service locator].
-        /// </summary>
-        /// <typeparam name="TService">The type of the service.</typeparam>
-        /// <returns>
-        ///   <c>true</c> if [has ignore service locator]; otherwise, <c>false</c>.
-        /// </returns>
-        public static bool HasIgnoreServiceLocator<TService>() =>
-            HasIgnoreServiceLocator(typeof(TService));
-        /// <summary>
-        /// Determines whether [has ignore service locator] [the specified type].
-        /// </summary>
-        /// <param name="type">The type.</param>
-        /// <returns>
-        ///   <c>true</c> if [has ignore service locator] [the specified type]; otherwise, <c>false</c>.
-        /// </returns>
-        public static bool HasIgnoreServiceLocator(Type type) =>
-            type == null || _ignoreServiceLocatorType.IsAssignableFrom(type) || IgnoreServiceLocatorAttribute.HasIgnoreServiceLocator(type);
     }
 }
