@@ -8,10 +8,8 @@ namespace System.Abstract.AbstractTests.ServiceBus
         protected IServiceBus Bus { get; private set; }
         protected abstract IServiceBus CreateServiceBus();
 
-        public AbstractServiceBusTest()
-        {
+        public AbstractServiceBusTest() =>
             Bus = CreateServiceBus();
-        }
 
         [TestMethod]
         public virtual void CreateMessage_Should_Return_Valid_Instance()

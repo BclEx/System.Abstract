@@ -23,10 +23,9 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 THE SOFTWARE.
 */
 #endregion
-using System.Linq;
+
 using System.Collections.Generic;
-using System.Linq.Expressions;
-using System.Collections.ObjectModel;
+using System.Linq;
 
 namespace System.Abstract.EventSourcing
 {
@@ -36,29 +35,32 @@ namespace System.Abstract.EventSourcing
     public interface IAggregateRootRepository
     {
         /// <summary>
-        /// Gets the by ID.
+        /// Gets the by Id.
         /// </summary>
         /// <typeparam name="TAggregateRoot">The type of the aggregate root.</typeparam>
-        /// <param name="aggregateID">The aggregate ID.</param>
+        /// <param name="aggregateId">The aggregate Id.</param>
         /// <param name="queryOptions">The query options.</param>
-        /// <returns></returns>
-        TAggregateRoot GetByID<TAggregateRoot>(object aggregateID, AggregateRootQueryOptions queryOptions)
+        /// <returns>TAggregateRoot.</returns>
+        TAggregateRoot GetById<TAggregateRoot>(object aggregateId, AggregateRootQueryOptions queryOptions)
             where TAggregateRoot : AggregateRoot;
+
         /// <summary>
-        /// Gets the many by I ds.
+        /// Gets the many by Ids.
         /// </summary>
         /// <typeparam name="TAggregateRoot">The type of the aggregate root.</typeparam>
-        /// <param name="aggregateIDs">The aggregate I ds.</param>
+        /// <param name="aggregateIds">The aggregate Ids.</param>
         /// <param name="queryOptions">The query options.</param>
-        /// <returns></returns>
-        IEnumerable<TAggregateRoot> GetManyByIDs<TAggregateRoot>(IEnumerable<object> aggregateIDs, AggregateRootQueryOptions queryOptions)
+        /// <returns>IEnumerable&lt;TAggregateRoot&gt;.</returns>
+        IEnumerable<TAggregateRoot> GetManyByIds<TAggregateRoot>(IEnumerable<object> aggregateIds, AggregateRootQueryOptions queryOptions)
             where TAggregateRoot : AggregateRoot;
+
         /// <summary>
-        /// Gets the events by ID.
+        /// Gets the events by Id.
         /// </summary>
-        /// <param name="aggregateID">The aggregate ID.</param>
-        /// <returns></returns>
-        IEnumerable<Event> GetEventsByID(object aggregateID);
+        /// <param name="aggregateId">The aggregate Id.</param>
+        /// <returns>IEnumerable&lt;Event&gt;.</returns>
+        IEnumerable<Event> GetEventsById(object aggregateId);
+
         /// <summary>
         /// Saves the specified aggregate.
         /// </summary>
@@ -69,6 +71,7 @@ namespace System.Abstract.EventSourcing
         /// </summary>
         /// <param name="aggregate">The aggregate.</param>
         void Save(IEnumerable<AggregateRoot> aggregate);
+
         /// <summary>
         /// Makes the snapshot.
         /// </summary>
@@ -80,6 +83,7 @@ namespace System.Abstract.EventSourcing
     /// <summary>
     /// AggregateRootRepository
     /// </summary>
+    /// <seealso cref="System.Abstract.EventSourcing.IAggregateRootRepository" />
     public class AggregateRootRepository : IAggregateRootRepository
     {
         readonly IEventStore _eventStore;
@@ -90,46 +94,45 @@ namespace System.Abstract.EventSourcing
         readonly Func<Type, AggregateRoot> _factory;
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="AggregateRootRepository"/> class.
+        /// Initializes a new instance of the <see cref="AggregateRootRepository" /> class.
         /// </summary>
         /// <param name="eventStore">The event store.</param>
         /// <param name="snapshotStore">The snapshot store.</param>
         /// <param name="eventDispatcher">The event dispatcher.</param>
         /// <param name="factory">The factory.</param>
+        /// <exception cref="ArgumentNullException">eventStore</exception>
         /// <exception cref="System.ArgumentNullException">eventStore</exception>
         public AggregateRootRepository(IEventStore eventStore, IAggregateRootSnapshotStore snapshotStore, Action<IEnumerable<Event>> eventDispatcher = null, Func<Type, AggregateRoot> factory = null)
         {
-            if (eventStore == null)
-                throw new ArgumentNullException("eventStore");
-            _eventStore = eventStore;
-            _batchedEventStore = (eventStore as IBatchedEventStore);
+            _eventStore = eventStore ?? throw new ArgumentNullException("eventStore");
+            _batchedEventStore = eventStore as IBatchedEventStore;
             _snapshotStore = snapshotStore;
-            _batchedSnapshotStore = (snapshotStore as IBatchedAggregateRootSnapshotStore);
+            _batchedSnapshotStore = snapshotStore as IBatchedAggregateRootSnapshotStore;
             _eventDispatcher = eventDispatcher;
-            _factory = (factory ?? EventSource.DefaultFactory.Factory);
+            _factory = factory ?? EventSource.DefaultFactory.Factory;
         }
 
         /// <summary>
         /// Gets the events by ID.
         /// </summary>
-        /// <param name="aggregateID">The aggregate ID.</param>
+        /// <param name="aggregateId">The aggregate Id.</param>
         /// <returns></returns>
-        public IEnumerable<Event> GetEventsByID(object aggregateID)
-        {
-            return _eventStore.GetEventsByID(aggregateID, 0);
-        }
+        public IEnumerable<Event> GetEventsById(object aggregateId) =>
+            _eventStore.GetEventsByID(aggregateId, 0);
 
         /// <summary>
         /// Gets the by ID.
         /// </summary>
         /// <typeparam name="TAggregateRoot">The type of the aggregate root.</typeparam>
-        /// <param name="aggregateID">The aggregate ID.</param>
+        /// <param name="aggregateId">The aggregate Id.</param>
         /// <param name="queryOptions">The query options.</param>
-        /// <returns></returns>
-        public TAggregateRoot GetByID<TAggregateRoot>(object aggregateID, AggregateRootQueryOptions queryOptions)
+        /// <returns>TAggregateRoot.</returns>
+        /// <exception cref="ArgumentNullException">aggregateID</exception>
+        /// <exception cref="InvalidOperationException">aggregate</exception>
+        public TAggregateRoot GetById<TAggregateRoot>(object aggregateId, AggregateRootQueryOptions queryOptions)
              where TAggregateRoot : AggregateRoot
         {
-            if (aggregateID == null)
+            if (aggregateId == null)
                 throw new ArgumentNullException("aggregateID");
             var aggregate = (_factory(typeof(TAggregateRoot)) as TAggregateRoot);
             if (aggregate == null)
@@ -140,31 +143,31 @@ namespace System.Abstract.EventSourcing
             if (_snapshotStore != null)
             {
                 var snapshoter = (aggregate as ICanAggregateRootSnapshot);
-                if (snapshoter != null && (snapshot = _snapshotStore.GetLatestSnapshot<TAggregateRoot>(aggregateID)) != null)
+                if (snapshoter != null && (snapshot = _snapshotStore.GetLatestSnapshot<TAggregateRoot>(aggregateId)) != null)
                 {
                     loaded = true;
                     snapshoter.LoadSnapshot(snapshot);
                 }
             }
             // load events
-            var events = _eventStore.GetEventsByID(aggregateID, (snapshot != null ? snapshot.LastEventSequence : 0));
+            var events = _eventStore.GetEventsByID(aggregateId, (snapshot != null ? snapshot.LastEventSequence : 0));
             loaded |= ((IAggregateRootStateAccessor)aggregate).LoadFromHistory(events);
-            return ((queryOptions & AggregateRootQueryOptions.UseNullAggregates) == 0 ? aggregate : (loaded ? aggregate : null));
+            return (queryOptions & AggregateRootQueryOptions.UseNullAggregates) == 0  || loaded ? aggregate : null;
         }
 
         /// <summary>
-        /// Gets the many by I ds.
+        /// Gets the many by Ids.
         /// </summary>
         /// <typeparam name="TAggregateRoot">The type of the aggregate root.</typeparam>
-        /// <param name="aggregateIDs">The aggregate I ds.</param>
+        /// <param name="aggregateIds">The aggregate Ids.</param>
         /// <param name="queryOptions">The query options.</param>
         /// <returns></returns>
-        public IEnumerable<TAggregateRoot> GetManyByIDs<TAggregateRoot>(IEnumerable<object> aggregateIDs, AggregateRootQueryOptions queryOptions)
+        public IEnumerable<TAggregateRoot> GetManyByIds<TAggregateRoot>(IEnumerable<object> aggregateIds, AggregateRootQueryOptions queryOptions)
             where TAggregateRoot : AggregateRoot
         {
-            if (aggregateIDs == null)
-                throw new ArgumentNullException("aggregateIDs");
-            return aggregateIDs.Select(x => GetByID<TAggregateRoot>(x, queryOptions)).ToList();
+            if (aggregateIds == null)
+                throw new ArgumentNullException(nameof(aggregateIds));
+            return aggregateIds.Select(x => GetById<TAggregateRoot>(x, queryOptions)).ToList();
         }
 
         /// <summary>
@@ -177,9 +180,8 @@ namespace System.Abstract.EventSourcing
                 throw new ArgumentNullException("aggregate");
             var accessAggregateState = (IAggregateRootStateAccessor)aggregate;
             var events = accessAggregateState.GetUncommittedChanges();
-            _eventStore.SaveEvents(aggregate.AggregateID, events);
-            if (_eventDispatcher != null)
-                _eventDispatcher(events);
+            _eventStore.SaveEvents(aggregate.AggregateId, events);
+            _eventDispatcher?.Invoke(events);
             accessAggregateState.MarkChangesAsCommitted();
             Func<IAggregateRootRepository, AggregateRoot, bool> inlineSnapshotPredicate;
             if (_snapshotStore != null && (inlineSnapshotPredicate = _snapshotStore.InlineSnapshotPredicate) != null && aggregate is ICanAggregateRootSnapshot)
@@ -207,7 +209,7 @@ namespace System.Abstract.EventSourcing
             if (aggregate == null)
                 throw new ArgumentNullException("aggregate");
             ICanAggregateRootSnapshot snapshoter;
-            if (_snapshotStore != null && (snapshoter = (aggregate as ICanAggregateRootSnapshot)) != null)
+            if (_snapshotStore != null && (snapshoter = aggregate as ICanAggregateRootSnapshot) != null)
                 if (predicate == null || predicate(this, aggregate))
                     _snapshotStore.SaveSnapshot(aggregate.GetType(), snapshoter.GetSnapshot());
         }

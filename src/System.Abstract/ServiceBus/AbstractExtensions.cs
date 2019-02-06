@@ -23,6 +23,7 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 THE SOFTWARE.
 */
 #endregion
+
 using System.Linq;
 using System.Reflection;
 using System.Collections.Generic;
@@ -40,9 +41,10 @@ namespace System.Abstract
         /// <typeparam name="TMessage">The type of the message.</typeparam>
         /// <param name="serviceBus">The service bus.</param>
         /// <param name="messageBuilder">The message builder.</param>
-        /// <returns></returns>
+        /// <returns>IServiceBusCallback.</returns>
         public static IServiceBusCallback Send<TMessage>(this IServiceBus serviceBus, Action<TMessage> messageBuilder)
-            where TMessage : class { return serviceBus.Send(null, serviceBus.CreateMessage<TMessage>(messageBuilder)); }
+            where TMessage : class =>
+            serviceBus.Send(null, serviceBus.CreateMessage(messageBuilder));
         /// <summary>
         /// Sends the specified service bus.
         /// </summary>
@@ -50,9 +52,10 @@ namespace System.Abstract
         /// <param name="serviceBus">The service bus.</param>
         /// <param name="destination">The destination.</param>
         /// <param name="messageBuilder">The message builder.</param>
-        /// <returns></returns>
+        /// <returns>IServiceBusCallback.</returns>
         public static IServiceBusCallback Send<TMessage>(this IServiceBus serviceBus, string destination, Action<TMessage> messageBuilder)
-            where TMessage : class { return serviceBus.Send(new LiteralServiceBusEndpoint(destination), serviceBus.CreateMessage<TMessage>(messageBuilder)); }
+            where TMessage : class =>
+            serviceBus.Send(new LiteralServiceBusEndpoint(destination), serviceBus.CreateMessage(messageBuilder));
         /// <summary>
         /// Sends the specified service bus.
         /// </summary>
@@ -60,24 +63,28 @@ namespace System.Abstract
         /// <param name="serviceBus">The service bus.</param>
         /// <param name="destination">The destination.</param>
         /// <param name="messageBuilder">The message builder.</param>
-        /// <returns></returns>
+        /// <returns>IServiceBusCallback.</returns>
         public static IServiceBusCallback Send<TMessage>(this IServiceBus serviceBus, IServiceBusEndpoint destination, Action<TMessage> messageBuilder)
-            where TMessage : class { return serviceBus.Send(destination, serviceBus.CreateMessage<TMessage>(messageBuilder)); }
+            where TMessage : class =>
+            serviceBus.Send(destination, serviceBus.CreateMessage(messageBuilder));
         /// <summary>
         /// Sends the specified service bus.
         /// </summary>
         /// <param name="serviceBus">The service bus.</param>
         /// <param name="messages">The messages.</param>
-        /// <returns></returns>
-        public static IServiceBusCallback Send(this IServiceBus serviceBus, params object[] messages) { return serviceBus.Send(null, messages); }
+        /// <returns>IServiceBusCallback.</returns>
+        public static IServiceBusCallback Send(this IServiceBus serviceBus, params object[] messages) =>
+            serviceBus.Send(null, messages);
         /// <summary>
         /// Sends the specified service bus.
         /// </summary>
         /// <param name="serviceBus">The service bus.</param>
         /// <param name="destination">The destination.</param>
         /// <param name="messages">The messages.</param>
-        /// <returns></returns>
-        public static IServiceBusCallback Send(this IServiceBus serviceBus, string destination, params object[] messages) { return serviceBus.Send(new LiteralServiceBusEndpoint(destination), messages); }
+        /// <returns>IServiceBusCallback.</returns>
+        public static IServiceBusCallback Send(this IServiceBus serviceBus, string destination, params object[] messages) =>
+            serviceBus.Send(new LiteralServiceBusEndpoint(destination), messages);
+
         /// <summary>
         /// Replies the specified service bus.
         /// </summary>
@@ -85,7 +92,8 @@ namespace System.Abstract
         /// <param name="serviceBus">The service bus.</param>
         /// <param name="messageBuilder">The message builder.</param>
         public static void Reply<TMessage>(this IServiceBus serviceBus, Action<TMessage> messageBuilder)
-            where TMessage : class { serviceBus.Reply(serviceBus.CreateMessage(messageBuilder)); }
+            where TMessage : class =>
+            serviceBus.Reply(serviceBus.CreateMessage(messageBuilder));
 
         // publishing
         /// <summary>
@@ -95,8 +103,9 @@ namespace System.Abstract
         /// <param name="serviceBus">The service bus.</param>
         /// <param name="messageBuilder">The message builder.</param>
         public static void Publish<TMessage>(this IPublishingServiceBus serviceBus, Action<TMessage> messageBuilder)
-            where TMessage : class { serviceBus.Publish(serviceBus.CreateMessage<TMessage>(messageBuilder)); }
-        //
+            where TMessage : class =>
+            serviceBus.Publish(serviceBus.CreateMessage(messageBuilder));
+
         /// <summary>
         /// Subscribes the specified service bus.
         /// </summary>
@@ -104,20 +113,24 @@ namespace System.Abstract
         /// <param name="serviceBus">The service bus.</param>
         /// <param name="condition">The condition.</param>
         public static void Subscribe<TMessage>(this IPublishingServiceBus serviceBus, Predicate<TMessage> condition = null)
-            where TMessage : class { serviceBus.Subscribe(typeof(TMessage), (condition == null ? null : new Predicate<object>(m => (m is TMessage ? condition((TMessage)m) : true)))); }
+            where TMessage : class =>
+            serviceBus.Subscribe(typeof(TMessage), condition == null ? null : new Predicate<object>(m => m is TMessage ? condition((TMessage)m) : true));
         /// <summary>
         /// Subscribes the specified service bus.
         /// </summary>
         /// <param name="serviceBus">The service bus.</param>
         /// <param name="messageType">Type of the message.</param>
-        public static void Subscribe(this IPublishingServiceBus serviceBus, Type messageType) { }
+        public static void Subscribe(this IPublishingServiceBus serviceBus, Type messageType) =>
+            serviceBus.Subscribe(messageType);
+
         /// <summary>
         /// Unsubscribes the specified service bus.
         /// </summary>
         /// <typeparam name="TMessage">The type of the message.</typeparam>
         /// <param name="serviceBus">The service bus.</param>
         public static void Unsubscribe<TMessage>(this IPublishingServiceBus serviceBus)
-            where TMessage : class { serviceBus.Subscribe(typeof(TMessage)); }
+            where TMessage : class =>
+            serviceBus.Unsubscribe(typeof(TMessage));
 
         #region BehaveAs
 
@@ -126,7 +139,7 @@ namespace System.Abstract
         /// </summary>
         /// <typeparam name="T"></typeparam>
         /// <param name="service">The service.</param>
-        /// <returns></returns>
+        /// <returns>T.</returns>
         public static T BehaveAs<T>(this IServiceBus service)
             where T : class, IServiceBus
         {
@@ -135,9 +148,9 @@ namespace System.Abstract
             {
                 serviceWrapper = (service as IServiceWrapper<IServiceBus>);
                 if (serviceWrapper != null)
-                    service = serviceWrapper.Parent;
+                    service = serviceWrapper.Base;
             } while (serviceWrapper != null);
-            return (service as T);
+            return service as T;
         }
 
         #endregion
@@ -150,9 +163,10 @@ namespace System.Abstract
         /// <typeparam name="T"></typeparam>
         /// <param name="service">The service.</param>
         /// <param name="name">The name.</param>
-        /// <returns></returns>
+        /// <returns>Lazy&lt;IServiceBus&gt;.</returns>
         public static Lazy<IServiceBus> RegisterWithServiceLocator<T>(this Lazy<IServiceBus> service, string name = null)
-            where T : class, IServiceBus { ServiceBusManager.GetSetupDescriptor(service).RegisterWithServiceLocator<T>(service, ServiceLocatorManager.Current, name); return service; }
+            where T : class, IServiceBus
+        { ServiceBusManager.GetSetupDescriptor(service).RegisterWithServiceLocator<T>(service, ServiceLocatorManager.Lazy, name); return service; }
         /// <summary>
         /// Registers the with service locator.
         /// </summary>
@@ -160,74 +174,86 @@ namespace System.Abstract
         /// <param name="service">The service.</param>
         /// <param name="locator">The locator.</param>
         /// <param name="name">The name.</param>
-        /// <returns></returns>
-        public static Lazy<IServiceBus> RegisterWithServiceLocator<T>(this Lazy<IServiceBus> service, Lazy<IServiceLocator> locator, string name = null)
-            where T : class, IServiceBus { ServiceBusManager.GetSetupDescriptor(service).RegisterWithServiceLocator<T>(service, locator, name); return service; }
+        /// <returns>Lazy&lt;IServiceBus&gt;.</returns>
+        public static Lazy<IServiceBus> RegisterWithServiceLocator<T>(this Lazy<IServiceBus> service, IServiceLocator locator, string name = null)
+            where T : class, IServiceBus
+        { ServiceBusManager.GetSetupDescriptor(service).RegisterWithServiceLocator<T>(service, locator, name); return service; }
         /// <summary>
         /// Registers the with service locator.
         /// </summary>
-        /// <param name="service">The service.</param>
-        /// <param name="name">The name.</param>
-        /// <returns></returns>
-        public static Lazy<IServiceBus> RegisterWithServiceLocator(this Lazy<IServiceBus> service, string name = null) { ServiceBusManager.GetSetupDescriptor(service).RegisterWithServiceLocator(service, ServiceLocatorManager.Current, name); return service; }
-        /// <summary>
-        /// Registers the with service locator.
-        /// </summary>
+        /// <typeparam name="T"></typeparam>
         /// <param name="service">The service.</param>
         /// <param name="locator">The locator.</param>
         /// <param name="name">The name.</param>
-        /// <returns></returns>
-        public static Lazy<IServiceBus> RegisterWithServiceLocator(this Lazy<IServiceBus> service, Lazy<IServiceLocator> locator, string name = null) { ServiceBusManager.GetSetupDescriptor(service).RegisterWithServiceLocator(service, locator, name); return service; }
+        /// <returns>Lazy&lt;IServiceBus&gt;.</returns>
+        public static Lazy<IServiceBus> RegisterWithServiceLocator<T>(this Lazy<IServiceBus> service, Lazy<IServiceLocator> locator, string name = null)
+            where T : class, IServiceBus
+        { ServiceBusManager.GetSetupDescriptor(service).RegisterWithServiceLocator<T>(service, locator, name); return service; }
 
         /// <summary>
         /// Registers the with service locator.
         /// </summary>
-        /// <typeparam name="T"></typeparam>
         /// <param name="service">The service.</param>
-        /// <param name="locator">The locator.</param>
+        /// <param name="serviceType">Type of the service.</param>
         /// <param name="name">The name.</param>
-        /// <returns></returns>
-        public static Lazy<IServiceBus> RegisterWithServiceLocator<T>(this Lazy<IServiceBus> service, IServiceLocator locator, string name = null)
-            where T : class, IServiceBus { ServiceBusManager.GetSetupDescriptor(service).RegisterWithServiceLocator<T>(service, locator, name); return service; }
+        /// <returns>Lazy&lt;IServiceBus&gt;.</returns>
+        public static Lazy<IServiceBus> RegisterWithServiceLocator(this Lazy<IServiceBus> service, Type serviceType, string name = null)
+        { ServiceBusManager.GetSetupDescriptor(service).RegisterWithServiceLocator(service, serviceType, ServiceLocatorManager.Lazy, name); return service; }
         /// <summary>
         /// Registers the with service locator.
         /// </summary>
         /// <param name="service">The service.</param>
+        /// <param name="serviceType">Type of the service.</param>
         /// <param name="locator">The locator.</param>
         /// <param name="name">The name.</param>
-        /// <returns></returns>
-        public static Lazy<IServiceBus> RegisterWithServiceLocator(this Lazy<IServiceBus> service, IServiceLocator locator, string name = null) { ServiceBusManager.GetSetupDescriptor(service).RegisterWithServiceLocator(service, locator, name); return service; }
+        /// <returns>Lazy&lt;IServiceBus&gt;.</returns>
+        public static Lazy<IServiceBus> RegisterWithServiceLocator(this Lazy<IServiceBus> service, Type serviceType, IServiceLocator locator, string name = null)
+        { ServiceBusManager.GetSetupDescriptor(service).RegisterWithServiceLocator(service, serviceType, locator, name); return service; }
+        /// <summary>
+        /// Registers the with service locator.
+        /// </summary>
+        /// <param name="service">The service.</param>
+        /// <param name="serviceType">Type of the service.</param>
+        /// <param name="locator">The locator.</param>
+        /// <param name="name">The name.</param>
+        /// <returns>Lazy&lt;IServiceBus&gt;.</returns>
+        public static Lazy<IServiceBus> RegisterWithServiceLocator(this Lazy<IServiceBus> service, Type serviceType, Lazy<IServiceLocator> locator, string name = null)
+        { ServiceBusManager.GetSetupDescriptor(service).RegisterWithServiceLocator(service, serviceType, locator, name); return service; }
 
         /// <summary>
         /// Adds the endpoint.
         /// </summary>
         /// <param name="service">The service.</param>
         /// <param name="endpoint">The endpoint.</param>
-        /// <returns></returns>
-        public static Lazy<IServiceBus> AddEndpoint(this Lazy<IServiceBus> service, string endpoint) { return service; }
+        /// <returns>Lazy&lt;IServiceBus&gt;.</returns>
+        public static Lazy<IServiceBus> AddEndpoint(this Lazy<IServiceBus> service, string endpoint) =>
+            service;
 
         /// <summary>
         /// Adds the message handlers by scan.
         /// </summary>
         /// <param name="service">The service.</param>
         /// <param name="assemblies">The assemblies.</param>
-        /// <returns></returns>
-        public static Lazy<IServiceBus> AddMessageHandlersByScan(this Lazy<IServiceBus> service, params Assembly[] assemblies) { ServiceBusManager.GetSetupDescriptor(service).Do(s => AddMessageHandlersByScan(s, null, assemblies)); return service; }
+        /// <returns>Lazy&lt;IServiceBus&gt;.</returns>
+        public static Lazy<IServiceBus> AddMessageHandlersByScan(this Lazy<IServiceBus> service, params Assembly[] assemblies)
+        { ServiceBusManager.GetSetupDescriptor(service).Do(s => AddMessageHandlersByScan(s, null, assemblies)); return service; }
         /// <summary>
         /// Adds the message handlers by scan.
         /// </summary>
         /// <param name="service">The service.</param>
         /// <param name="predicate">The predicate.</param>
         /// <param name="assemblies">The assemblies.</param>
-        /// <returns></returns>
-        public static Lazy<IServiceBus> AddMessageHandlersByScan(this Lazy<IServiceBus> service, Predicate<Type> predicate, params Assembly[] assemblies) { ServiceBusManager.GetSetupDescriptor(service).Do(s => AddMessageHandlersByScan(s, predicate, assemblies)); return service; }
+        /// <returns>Lazy&lt;IServiceBus&gt;.</returns>
+        public static Lazy<IServiceBus> AddMessageHandlersByScan(this Lazy<IServiceBus> service, Predicate<Type> predicate, params Assembly[] assemblies)
+        { ServiceBusManager.GetSetupDescriptor(service).Do(s => AddMessageHandlersByScan(s, predicate, assemblies)); return service; }
         /// <summary>
         /// Adds the message handler.
         /// </summary>
         /// <param name="service">The service.</param>
         /// <param name="handlerType">Type of the handler.</param>
-        /// <returns></returns>
-        public static Lazy<IServiceBus> AddMessageHandler(this Lazy<IServiceBus> service, Type handlerType) { ServiceBusManager.GetSetupDescriptor(service).Do(s => AddMessageHandler(s, handlerType)); return service; }
+        /// <returns>Lazy&lt;IServiceBus&gt;.</returns>
+        public static Lazy<IServiceBus> AddMessageHandler(this Lazy<IServiceBus> service, Type handlerType)
+        { ServiceBusManager.GetSetupDescriptor(service).Do(s => AddMessageHandler(s, handlerType)); return service; }
 
         #endregion
 
@@ -237,26 +263,24 @@ namespace System.Abstract
         /// <typeparam name="TMessageHandler">The type of the message handler.</typeparam>
         /// <param name="bus">The bus.</param>
         public static void AddMessageHandlersByScan<TMessageHandler>(IServiceBus bus)
-            where TMessageHandler : class { AddMessageHandlersByScan(bus, typeof(TMessageHandler)); }
+            where TMessageHandler : class =>
+            AddMessageHandlersByScan(bus, typeof(TMessageHandler));
         /// <summary>
         /// Adds the message handlers by scan.
         /// </summary>
         /// <param name="bus">The bus.</param>
         /// <param name="handlerType">Type of the handler.</param>
+        /// <exception cref="InvalidOperationException">Unable find a message handler</exception>
         public static void AddMessageHandlersByScan(IServiceBus bus, Type handlerType)
-        {
-            var messageType = GetMessageTypeFromHandler(handlerType);
-            if (messageType == null)
-                throw new InvalidOperationException("Unable find a message handler");
-        }
+        { var messageType = GetMessageTypeFromHandler(handlerType) ?? throw new InvalidOperationException("Unable find a message handler"); }
 
-        //private IEnumerable<Type> GetTypesOfMessageHandlers(Type messageType)
+        //IEnumerable<Type> GetTypesOfMessageHandlers(Type messageType)
         //{
         //    return Items.Where(x => x.MessageType == messageType)
         //        .Select(x => x.MessageHandlerType);
         //}
 
-        private static IEnumerable<Type> GetMessageTypeFromHandler(Type messageHandlerType)
+        static IEnumerable<Type> GetMessageTypeFromHandler(Type messageHandlerType)
         {
             //var serviceMessageType = typeof(IServiceMessage);
             //return messageHandlerType.GetInterfaces()
@@ -287,9 +311,7 @@ namespace System.Abstract
         /// </summary>
         /// <param name="bus">The bus.</param>
         /// <param name="handlerType">Type of the handler.</param>
-        public static void AddMessageHandler(IServiceBus bus, Type handlerType)
-        {
-        }
+        public static void AddMessageHandler(IServiceBus bus, Type handlerType) { }
 
         //public static string ToString(this IServiceBusLocation location, Func<IServiceBusLocation, object, string> builder, object arg)
         //{

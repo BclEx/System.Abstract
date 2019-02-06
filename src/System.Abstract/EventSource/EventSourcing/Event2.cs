@@ -29,15 +29,15 @@ namespace System.Abstract.EventSourcing
     /// <summary>
     /// Event
     /// </summary>
+    /// <typeparam name="TData">The type of the t data.</typeparam>
+    /// <seealso cref="System.Abstract.EventSourcing.Event" />
     [Serializable]
     public abstract class Event<TData> : Event
     {
         /// <summary>
         /// Gets or sets the data.
         /// </summary>
-        /// <value>
-        /// The data.
-        /// </value>
+        /// <value>The data.</value>
         public TData Data { get; set; }
     }
 }

@@ -1,6 +1,6 @@
 ﻿
-Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio 2012
+Microsoft Visual Studio Solution File, Format Version 14.00
+# Visual Studio 2017
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "System.Abstract", "System.Abstract\System.Abstract.csproj", "{A44E9D89-BFF2-41A4-AADC-3C2BDFDAEEB1}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "System.Abstract.Core", "System.Abstract.Core\System.Abstract.Core.csproj", "{67854C97-9DDA-44F3-B32B-20AAA69CEA99}"

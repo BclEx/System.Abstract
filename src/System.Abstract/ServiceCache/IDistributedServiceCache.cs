@@ -29,7 +29,6 @@ namespace System.Abstract
     /// <summary>
     /// IDistributedServiceCache
     /// </summary>
-    public interface IDistributedServiceCache : IServiceCache
-    {
-    }
+    /// <seealso cref="System.Abstract.IServiceCache" />
+    public interface IDistributedServiceCache : IServiceCache { }
 }

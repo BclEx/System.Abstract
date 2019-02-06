@@ -37,6 +37,6 @@ namespace System.Abstract
         /// <value>
         /// The parent.
         /// </value>
-        T Parent { get; }
+        T Base { get; }
     }
 }

@@ -23,6 +23,7 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 THE SOFTWARE.
 */
 #endregion
+
 using System.Collections.Generic;
 
 namespace System.Abstract.EventSourcing
@@ -30,16 +31,18 @@ namespace System.Abstract.EventSourcing
     /// <summary>
     /// IBatchedAggregateRootSnapshotStore
     /// </summary>
+    /// <seealso cref="System.Abstract.EventSourcing.IAggregateRootSnapshotStore" />
     public interface IBatchedAggregateRootSnapshotStore : IAggregateRootSnapshotStore
     {
         /// <summary>
         /// Gets the latest snapshots.
         /// </summary>
         /// <typeparam name="TAggregateRoot">The type of the aggregate root.</typeparam>
-        /// <param name="aggregateIDs">The aggregate I ds.</param>
-        /// <returns></returns>
-        IEnumerable<AggregateTuple<AggregateRootSnapshot>> GetLatestSnapshots<TAggregateRoot>(IEnumerable<object> aggregateIDs)
+        /// <param name="aggregateIds">The aggregate Ids.</param>
+        /// <returns>IEnumerable&lt;AggregateTuple&lt;AggregateRootSnapshot&gt;&gt;.</returns>
+        IEnumerable<AggregateTuple<AggregateRootSnapshot>> GetLatestSnapshots<TAggregateRoot>(IEnumerable<object> aggregateIds)
             where TAggregateRoot : AggregateRoot;
+
         /// <summary>
         /// Saves the snapshots.
         /// </summary>

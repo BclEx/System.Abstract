@@ -23,6 +23,7 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 THE SOFTWARE.
 */
 #endregion
+
 using System.Collections.Generic;
 
 namespace System.Abstract.EventSourcing
@@ -36,13 +37,15 @@ namespace System.Abstract.EventSourcing
         /// Loads from history.
         /// </summary>
         /// <param name="events">The events.</param>
-        /// <returns></returns>
+        /// <returns><c>true</c> if XXXX, <c>false</c> otherwise.</returns>
         bool LoadFromHistory(IEnumerable<Event> events);
+
         /// <summary>
         /// Gets the uncommitted changes.
         /// </summary>
-        /// <returns></returns>
+        /// <returns>IEnumerable&lt;Event&gt;.</returns>
         IEnumerable<Event> GetUncommittedChanges();
+
         /// <summary>
         /// Marks the changes as committed.
         /// </summary>

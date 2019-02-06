@@ -35,18 +35,20 @@ namespace System.Abstract
         /// <summary>
         /// Gets the name.
         /// </summary>
+        /// <value>The name.</value>
         string Name { get; }
+
         /// <summary>
         /// Gets the specified name.
         /// </summary>
         /// <param name="name">The name.</param>
-        /// <returns></returns>
+        /// <returns>IServiceLog.</returns>
         IServiceLog Get(string name);
         /// <summary>
         /// Gets the specified name.
         /// </summary>
         /// <param name="type">The type.</param>
-        /// <returns></returns>
+        /// <returns>IServiceLog.</returns>
         IServiceLog Get(Type type);
 
         // log

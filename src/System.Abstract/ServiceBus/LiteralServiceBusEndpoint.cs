@@ -23,32 +23,28 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 THE SOFTWARE.
 */
 #endregion
-using System.Collections.Generic;
 
 namespace System.Abstract
 {
     /// <summary>
     /// LiteralServiceBusEndpoint
     /// </summary>
+    /// <seealso cref="System.Abstract.IServiceBusEndpoint" />
     public class LiteralServiceBusEndpoint : IServiceBusEndpoint
     {
         /// <summary>
         /// Initializes a new instance of the <see cref="LiteralServiceBusEndpoint" /> class.
         /// </summary>
         /// <param name="literal">The literal.</param>
+        /// <exception cref="ArgumentNullException">literal</exception>
         /// <exception cref="System.ArgumentNullException">literal</exception>
-        public LiteralServiceBusEndpoint(string literal)
-        {
-            if (literal == null)
-                throw new ArgumentNullException("literal");
-            Value = literal;
-        }
+        public LiteralServiceBusEndpoint(string literal) =>
+            Value = literal ?? throw new ArgumentNullException("literal");
+
         /// <summary>
         /// Gets the value.
         /// </summary>
-        /// <value>
-        /// The value.
-        /// </value>
+        /// <value>The value.</value>
         public string Value { get; private set; }
     }
 }

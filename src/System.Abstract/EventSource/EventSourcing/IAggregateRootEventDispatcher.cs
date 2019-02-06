@@ -23,6 +23,7 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 THE SOFTWARE.
 */
 #endregion
+
 using System.Collections.Generic;
 
 namespace System.Abstract.EventSourcing
@@ -38,10 +39,11 @@ namespace System.Abstract.EventSourcing
         /// <param name="aggregate">The aggregate.</param>
         /// <param name="e">The e.</param>
         void ApplyEvent(AggregateRoot aggregate, Event e);
+
         /// <summary>
         /// Gets the event types.
         /// </summary>
-        /// <returns></returns>
+        /// <returns>IEnumerable&lt;Type&gt;.</returns>
         IEnumerable<Type> GetEventTypes();
     }
 }

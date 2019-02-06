@@ -23,6 +23,7 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 THE SOFTWARE.
 */
 #endregion
+
 using System.Collections.Generic;
 using System.Reflection;
 
@@ -36,31 +37,27 @@ namespace System.Abstract
         /// <summary>
         /// Gets the name.
         /// </summary>
-        /// <value>
-        /// The name.
-        /// </value>
+        /// <value>The name.</value>
         string Name { get; }
+        
         /// <summary>
         /// Gets the name of the absolute.
         /// </summary>
-        /// <value>
-        /// The name of the absolute.
-        /// </value>
+        /// <value>The name of the absolute.</value>
         string AbsoluteName { get; }
+        
         /// <summary>
         /// Gets the use headers.
         /// </summary>
-        /// <value>
-        /// The use headers.
-        /// </value>
+        /// <value>The use headers.</value>
         bool UseHeaders { get; }
+        
         /// <summary>
         /// Gets the registrar.
         /// </summary>
-        /// <value>
-        /// The registrar.
-        /// </value>
+        /// <value>The registrar.</value>
         ServiceCacheRegistrar Registrar { get; }
+
         /// <summary>
         /// Attaches the registrar.
         /// </summary>
@@ -72,6 +69,7 @@ namespace System.Abstract
     /// <summary>
     /// ServiceCacheRegistration
     /// </summary>
+    /// <seealso cref="System.Abstract.IServiceCacheRegistration" />
     public class ServiceCacheRegistration : IServiceCacheRegistration
     {
         Dictionary<Type, List<HandlerAction>> _handlers = new Dictionary<Type, List<HandlerAction>>();
@@ -93,21 +91,19 @@ namespace System.Abstract
         /// <summary>
         /// HandlerContext
         /// </summary>
+        /// <typeparam name="TData">The type of the t data.</typeparam>
         public class HandlerContext<TData>
         {
             /// <summary>
             /// Gets or sets the get.
             /// </summary>
-            /// <value>
-            /// The get.
-            /// </value>
+            /// <value>The get.</value>
             public Func<TData> Get { get; set; }
+
             /// <summary>
             /// Gets or sets the update.
             /// </summary>
-            /// <value>
-            /// The update.
-            /// </value>
+            /// <value>The update.</value>
             public Action<TData> Update { get; set; }
         }
 
@@ -124,9 +120,7 @@ namespace System.Abstract
             /// <summary>
             /// Gets the message.
             /// </summary>
-            /// <value>
-            /// The message.
-            /// </value>
+            /// <value>The message.</value>
             internal object Message { get; set; }
 
             /// <summary>
@@ -137,7 +131,8 @@ namespace System.Abstract
             /// <param name="message">The message.</param>
             /// <param name="tag">The tag.</param>
             /// <param name="values">The values.</param>
-            public void ConsumerInvoke<TData>(HandlerContext<TData> ctx, object message, object tag, object[] values) { Action.Method.Invoke(Action.Target, new object[] { ctx, message, tag, values }); }
+            public void ConsumerInvoke<TData>(HandlerContext<TData> ctx, object message, object tag, object[] values) =>
+                Action.Method.Invoke(Action.Target, new object[] { ctx, message, tag, values });
             /// <summary>
             /// Consumers the invoke.
             /// </summary>
@@ -146,17 +141,18 @@ namespace System.Abstract
             /// <param name="registration">The registration.</param>
             /// <param name="tag">The tag.</param>
             /// <param name="header">The header.</param>
-            public void ConsumerInvoke(MethodInfo[] handlerContextInfos, IServiceCache cache, IServiceCacheRegistration registration, object tag, CacheItemHeader header) { _consumerInvokeInternalInfo.MakeGenericMethod(Action.TType).Invoke(this, new[] { handlerContextInfos, cache, registration, tag, header }); }
-            private void ConsumerInvokeInternal<TData>(MethodInfo[] handlerContextInfos, IServiceCache cache, IServiceCacheRegistration registration, object tag, CacheItemHeader header)
+            public void ConsumerInvoke(MethodInfo[] handlerContextInfos, IServiceCache cache, IServiceCacheRegistration registration, object tag, CacheItemHeader header) =>
+                _consumerInvokeInternalInfo.MakeGenericMethod(Action.TType).Invoke(this, new[] { handlerContextInfos, cache, registration, tag, header });
+            void ConsumerInvokeInternal<TData>(MethodInfo[] handlerContextInfos, IServiceCache cache, IServiceCacheRegistration registration, object tag, CacheItemHeader header)
             {
                 var getInfo = handlerContextInfos[0].MakeGenericMethod(Action.TType);
                 var updateInfo = handlerContextInfos[1].MakeGenericMethod(Action.TType);
-                var ctx = new ServiceCacheRegistration.HandlerContext<TData>
+                var ctx = new HandlerContext<TData>
                 {
                     Get = () => (TData)getInfo.Invoke(null, new[] { cache, registration, tag, header }),
                     Update = value => updateInfo.Invoke(null, new[] { cache, registration, tag, header, value }),
                 };
-                ConsumerInvoke<TData>(ctx, Message, tag, header.Values);
+                ConsumerInvoke(ctx, Message, tag, header.Values);
             }
 
             /// <summary>
@@ -168,7 +164,8 @@ namespace System.Abstract
             /// <param name="tag">The tag.</param>
             /// <param name="values">The values.</param>
             /// <returns></returns>
-            public object QueryInvoke<TData>(HandlerContext<TData> ctx, object message, object tag, object[] values) { return Action.Method.Invoke(Action.Target, new object[] { ctx, message, tag, values }); }
+            public object QueryInvoke<TData>(HandlerContext<TData> ctx, object message, object tag, object[] values) =>
+                Action.Method.Invoke(Action.Target, new object[] { ctx, message, tag, values });
             /// <summary>
             /// Queries the invoke.
             /// </summary>
@@ -178,17 +175,18 @@ namespace System.Abstract
             /// <param name="tag">The tag.</param>
             /// <param name="header">The header.</param>
             /// <returns></returns>
-            public object QueryInvoke(MethodInfo[] handlerContextInfos, IServiceCache cache, IServiceCacheRegistration registration, object tag, CacheItemHeader header) { return _queryInvokeInternalInfo.MakeGenericMethod(Action.TType).Invoke(this, new[] { handlerContextInfos, cache, registration, tag, header }); }
-            private object QueryInvokeInternal<TData>(MethodInfo[] handlerContextInfos, IServiceCache cache, IServiceCacheRegistration registration, object tag, CacheItemHeader header)
+            public object QueryInvoke(MethodInfo[] handlerContextInfos, IServiceCache cache, IServiceCacheRegistration registration, object tag, CacheItemHeader header) =>
+                _queryInvokeInternalInfo.MakeGenericMethod(Action.TType).Invoke(this, new[] { handlerContextInfos, cache, registration, tag, header });
+            object QueryInvokeInternal<TData>(MethodInfo[] handlerContextInfos, IServiceCache cache, IServiceCacheRegistration registration, object tag, CacheItemHeader header)
             {
                 var getInfo = handlerContextInfos[0].MakeGenericMethod(Action.TType);
                 var updateInfo = handlerContextInfos[1].MakeGenericMethod(Action.TType);
-                var ctx = new ServiceCacheRegistration.HandlerContext<TData>
+                var ctx = new HandlerContext<TData>
                 {
                     Get = () => (TData)getInfo.Invoke(null, new[] { cache, registration, tag, header }),
                     Update = value => updateInfo.Invoke(null, new[] { cache, registration, tag, header, value }),
                 };
-                return QueryInvoke<TData>(ctx, Message, tag, header.Values);
+                return QueryInvoke(ctx, Message, tag, header.Values);
             }
         }
 
@@ -205,8 +203,9 @@ namespace System.Abstract
             /// <param name="registration">The registration.</param>
             /// <param name="tag">The tag.</param>
             /// <param name="values">The values.</param>
-            /// <returns></returns>
+            /// <returns>T.</returns>
             T Get<T>(IServiceCache cache, IServiceCacheRegistration registration, object tag, object[] values);
+
             /// <summary>
             /// Sends the specified cache.
             /// </summary>
@@ -215,6 +214,7 @@ namespace System.Abstract
             /// <param name="tag">The tag.</param>
             /// <param name="messages">The messages.</param>
             void Send(IServiceCache cache, IServiceCacheRegistration registration, object tag, params object[] messages);
+
             /// <summary>
             /// Querys the specified cache.
             /// </summary>
@@ -223,8 +223,9 @@ namespace System.Abstract
             /// <param name="registration">The registration.</param>
             /// <param name="tag">The tag.</param>
             /// <param name="messages">The messages.</param>
-            /// <returns></returns>
+            /// <returns>IEnumerable&lt;T&gt;.</returns>
             IEnumerable<T> Query<T>(IServiceCache cache, IServiceCacheRegistration registration, object tag, params object[] messages);
+
             /// <summary>
             /// Removes the specified cache.
             /// </summary>
@@ -256,7 +257,8 @@ namespace System.Abstract
         /// <param name="builder">The builder.</param>
         /// <param name="cacheTags">The dependency array.</param>
         public ServiceCacheRegistration(string name, CacheItemBuilder builder, params string[] cacheTags)
-            : this(name, new CacheItemPolicy(), builder) { SetItemPolicyDependency(cacheTags); }
+            : this(name, new CacheItemPolicy(), builder) =>
+            SetItemPolicyDependency(cacheTags);
         /// <summary>
         /// Adds the data source.
         /// </summary>
@@ -264,7 +266,8 @@ namespace System.Abstract
         /// <param name="builder">The builder.</param>
         /// <param name="cacheTags">The dependency array.</param>
         public ServiceCacheRegistration(string name, CacheItemBuilder builder, Func<object, object[], string[]> cacheTags)
-            : this(name, new CacheItemPolicy(), builder) { SetItemPolicyDependency(cacheTags); }
+            : this(name, new CacheItemPolicy(), builder) =>
+            SetItemPolicyDependency(cacheTags);
         /// <summary>
         /// Adds the data source.
         /// </summary>
@@ -272,7 +275,8 @@ namespace System.Abstract
         /// <param name="builder">The builder.</param>
         /// <param name="dependency">The dependency.</param>
         public ServiceCacheRegistration(string name, CacheItemBuilder builder, CacheItemDependency dependency)
-            : this(name, new CacheItemPolicy(), builder) { SetItemPolicyDependency(dependency); }
+            : this(name, new CacheItemPolicy(), builder) =>
+            SetItemPolicyDependency(dependency);
         /// <summary>
         /// Adds the data source.
         /// </summary>
@@ -281,7 +285,8 @@ namespace System.Abstract
         /// <param name="builder">The builder.</param>
         /// <param name="cacheTags">The dependency array.</param>
         public ServiceCacheRegistration(string name, int minuteTimeout, CacheItemBuilder builder, params string[] cacheTags)
-            : this(name, new CacheItemPolicy(minuteTimeout), builder) { SetItemPolicyDependency(cacheTags); }
+            : this(name, new CacheItemPolicy(minuteTimeout), builder) =>
+            SetItemPolicyDependency(cacheTags);
         /// <summary>
         /// Adds the data source.
         /// </summary>
@@ -290,7 +295,8 @@ namespace System.Abstract
         /// <param name="builder">The builder.</param>
         /// <param name="cacheTags">The dependency array.</param>
         public ServiceCacheRegistration(string name, int minuteTimeout, CacheItemBuilder builder, Func<object, object[], string[]> cacheTags)
-            : this(name, new CacheItemPolicy(minuteTimeout), builder) { SetItemPolicyDependency(cacheTags); }
+            : this(name, new CacheItemPolicy(minuteTimeout), builder) =>
+            SetItemPolicyDependency(cacheTags);
         /// <summary>
         /// Adds the data source.
         /// </summary>
@@ -299,24 +305,26 @@ namespace System.Abstract
         /// <param name="builder">The builder.</param>
         /// <param name="dependency">The dependency.</param>
         public ServiceCacheRegistration(string name, int minuteTimeout, CacheItemBuilder builder, CacheItemDependency dependency)
-            : this(name, new CacheItemPolicy(minuteTimeout), builder) { SetItemPolicyDependency(dependency); }
+            : this(name, new CacheItemPolicy(minuteTimeout), builder) =>
+            SetItemPolicyDependency(dependency);
         /// <summary>
         /// Adds the data source.
         /// </summary>
         /// <param name="name">The key.</param>
         /// <param name="itemPolicy">The item policy.</param>
         /// <param name="builder">The builder.</param>
+        /// <exception cref="ArgumentNullException">name
+        /// or
+        /// builder
+        /// or
+        /// itemPolicy</exception>
         public ServiceCacheRegistration(string name, CacheItemPolicy itemPolicy, CacheItemBuilder builder)
         {
             if (string.IsNullOrEmpty(name))
-                throw new ArgumentNullException("name");
-            if (itemPolicy == null)
-                throw new ArgumentNullException("itemPolicy");
-            if (builder == null)
-                throw new ArgumentNullException("builder");
+                throw new ArgumentNullException(nameof(name));
             Name = name;
-            Builder = builder;
-            ItemPolicy = itemPolicy;
+            Builder = builder ?? throw new ArgumentNullException(nameof(builder));
+            ItemPolicy = itemPolicy ?? throw new ArgumentNullException(nameof(itemPolicy));
             Namespaces = new List<string>();
         }
         /// <summary>
@@ -327,7 +335,8 @@ namespace System.Abstract
         /// <param name="builder">The builder.</param>
         /// <param name="cacheTags">The dependency array.</param>
         public ServiceCacheRegistration(string name, CacheItemPolicy itemPolicy, CacheItemBuilder builder, params string[] cacheTags)
-            : this(name, itemPolicy, builder) { SetItemPolicyDependency(cacheTags); }
+            : this(name, itemPolicy, builder) =>
+            SetItemPolicyDependency(cacheTags);
         /// <summary>
         /// Adds the data source.
         /// </summary>
@@ -336,7 +345,8 @@ namespace System.Abstract
         /// <param name="builder">The builder.</param>
         /// <param name="cacheTags">The dependency array.</param>
         public ServiceCacheRegistration(string name, CacheItemPolicy itemPolicy, CacheItemBuilder builder, Func<object, object[], string[]> cacheTags)
-            : this(name, itemPolicy, builder) { SetItemPolicyDependency(cacheTags); }
+            : this(name, itemPolicy, builder) =>
+            SetItemPolicyDependency(cacheTags);
         /// <summary>
         /// Adds the data source.
         /// </summary>
@@ -345,46 +355,37 @@ namespace System.Abstract
         /// <param name="builder">The builder.</param>
         /// <param name="dependency">The dependency.</param>
         public ServiceCacheRegistration(string name, CacheItemPolicy itemPolicy, CacheItemBuilder builder, CacheItemDependency dependency)
-            : this(name, itemPolicy, builder) { SetItemPolicyDependency(dependency); }
+            : this(name, itemPolicy, builder) =>
+            SetItemPolicyDependency(dependency);
 
         /// <summary>
         /// Gets or sets the key.
         /// </summary>
-        /// <value>
-        /// The key.
-        /// </value>
+        /// <value>The key.</value>
         public string Name { get; set; }
 
         /// <summary>
         /// Gets or sets a value indicating whether [use headers].
         /// </summary>
-        /// <value>
-        ///   <c>true</c> if [use headers]; otherwise, <c>false</c>.
-        /// </value>
+        /// <value><c>true</c> if [use headers]; otherwise, <c>false</c>.</value>
         public bool UseHeaders { get; set; }
 
         /// <summary>
         /// Gets or sets the cache command.
         /// </summary>
-        /// <value>
-        /// The cache command.
-        /// </value>
+        /// <value>The cache command.</value>
         public CacheItemPolicy ItemPolicy { get; set; }
 
         /// <summary>
         /// Gets or sets the builder.
         /// </summary>
-        /// <value>
-        /// The builder.
-        /// </value>
+        /// <value>The builder.</value>
         public CacheItemBuilder Builder { get; set; }
 
         /// <summary>
         /// AbsoluteName
         /// </summary>
-        /// <value>
-        /// The name of the absolute.
-        /// </value>
+        /// <value>The name of the absolute.</value>
         public string AbsoluteName { get; private set; }
 
         /// <summary>
@@ -392,23 +393,24 @@ namespace System.Abstract
         /// </summary>
         /// <typeparam name="TMessage">The type of the message.</typeparam>
         /// <param name="action">The action.</param>
-        /// <returns></returns>
-        public ServiceCacheRegistration Consume<TMessage>(Action<HandlerContext<object>, TMessage, object, object[]> action) { return Consume<TMessage, object>(action); }
+        /// <returns>ServiceCacheRegistration.</returns>
+        public ServiceCacheRegistration Consume<TMessage>(Action<HandlerContext<object>, TMessage, object, object[]> action) =>
+            Consume<TMessage, object>(action);
         /// <summary>
         /// Consumeses the specified action.
         /// </summary>
         /// <typeparam name="TMessage">The type of the message.</typeparam>
         /// <typeparam name="TData">The type of the data.</typeparam>
         /// <param name="action">The action.</param>
-        /// <returns></returns>
+        /// <returns>ServiceCacheRegistration.</returns>
+        /// <exception cref="ArgumentNullException">action</exception>
         /// <exception cref="System.ArgumentNullException"></exception>
         public ServiceCacheRegistration Consume<TMessage, TData>(Action<HandlerContext<TData>, TMessage, object, object[]> action)
         {
             if (action == null)
                 throw new ArgumentNullException("action");
             UseHeaders = true;
-            List<HandlerAction> consumerActions;
-            if (!_handlers.TryGetValue(typeof(TMessage), out consumerActions))
+            if (!_handlers.TryGetValue(typeof(TMessage), out var consumerActions))
                 _handlers.Add(typeof(TMessage), consumerActions = new List<HandlerAction>());
             consumerActions.Add(new HandlerAction(typeof(TData), action.Method, action.Target));
             return this;
@@ -419,22 +421,23 @@ namespace System.Abstract
         /// </summary>
         /// <typeparam name="TMessage">The type of the message.</typeparam>
         /// <param name="action">The action.</param>
-        /// <returns></returns>
-        public ServiceCacheRegistration Query<TMessage>(Func<HandlerContext<object>, TMessage, object, object[], object> action) { return Query<TMessage, object>(action); }
+        /// <returns>ServiceCacheRegistration.</returns>
+        public ServiceCacheRegistration Query<TMessage>(Func<HandlerContext<object>, TMessage, object, object[], object> action) =>
+            Query<TMessage, object>(action);
         /// <summary>
         /// Queries the specified action.
         /// </summary>
         /// <typeparam name="TMessage">The type of the message.</typeparam>
         /// <typeparam name="TData">The type of the data.</typeparam>
         /// <param name="action">The action.</param>
-        /// <returns></returns>
+        /// <returns>ServiceCacheRegistration.</returns>
+        /// <exception cref="ArgumentNullException">action</exception>
         public ServiceCacheRegistration Query<TMessage, TData>(Func<HandlerContext<TData>, TMessage, object, object[], object> action)
         {
             if (action == null)
                 throw new ArgumentNullException("action");
             UseHeaders = true;
-            List<HandlerAction> consumerActions;
-            if (!_handlers.TryGetValue(typeof(TMessage), out consumerActions))
+            if (!_handlers.TryGetValue(typeof(TMessage), out var consumerActions))
                 _handlers.Add(typeof(TMessage), consumerActions = new List<HandlerAction>());
             consumerActions.Add(new HandlerAction(typeof(TData), action.Method, action.Target));
             return this;
@@ -450,9 +453,8 @@ namespace System.Abstract
         {
             if (messages == null)
                 throw new ArgumentNullException("messages");
-            List<HandlerAction> handlerActions;
             foreach (var message in messages)
-                if (_handlers.TryGetValue(message.GetType(), out handlerActions))
+                if (_handlers.TryGetValue(message.GetType(), out var handlerActions))
                     foreach (var handlerAction in handlerActions)
                         yield return new HandlerInfo { Message = message, Action = handlerAction };
         }
@@ -462,25 +464,19 @@ namespace System.Abstract
         /// <summary>
         /// Gets the registrar.
         /// </summary>
-        /// <value>
-        /// The registrar.
-        /// </value>
+        /// <value>The registrar.</value>
         public ServiceCacheRegistrar Registrar { get; internal set; }
 
         /// <summary>
         /// Gets the namespaces.
         /// </summary>
-        /// <value>
-        /// The namespaces.
-        /// </value>
+        /// <value>The namespaces.</value>
         public IEnumerable<string> Namespaces { get; private set; }
 
         /// <summary>
         /// Gets the names.
         /// </summary>
-        /// <value>
-        /// The names.
-        /// </value>
+        /// <value>The names.</value>
         public IEnumerable<string> Keys
         {
             get
@@ -507,7 +503,7 @@ namespace System.Abstract
 
         #endregion
 
-        private void SetItemPolicyDependency(string[] cacheTags)
+        void SetItemPolicyDependency(string[] cacheTags)
         {
             if (cacheTags != null && cacheTags.Length > 0)
             {
@@ -516,7 +512,7 @@ namespace System.Abstract
                 ItemPolicy.Dependency = (c, r, t, v) => cacheTags;
             }
         }
-        private void SetItemPolicyDependency(Func<object, object[], string[]> cacheTags)
+        void SetItemPolicyDependency(Func<object, object[], string[]> cacheTags)
         {
             if (cacheTags != null)
             {
@@ -525,7 +521,7 @@ namespace System.Abstract
                 ItemPolicy.Dependency = (c, r, t, v) => cacheTags(t, v);
             }
         }
-        private void SetItemPolicyDependency(CacheItemDependency dependency)
+        void SetItemPolicyDependency(CacheItemDependency dependency)
         {
             if (dependency != null)
             {

@@ -29,26 +29,26 @@ namespace System.Abstract
     /// <summary>
     /// ServiceManagerLoggerBase
     /// </summary>
+    /// <typeparam name="TLoggerFlags">The type of the t logger flags.</typeparam>
     public abstract class ServiceManagerLoggerBase<TLoggerFlags>
         where TLoggerFlags : struct
     {
         IServiceLog _log = null;
 
-        static ServiceManagerLoggerBase() { ServiceLogManager.EnsureRegistration(); }
+        static ServiceManagerLoggerBase() =>
+            ServiceLogManager.EnsureRegistration();
 
         /// <summary>
         /// Gets or sets the log.
         /// </summary>
-        /// <value>
-        /// The log.
-        /// </value>
+        /// <value>The log.</value>
         public IServiceLog Log
         {
             get
             {
                 if (_log != null)
                     return _log;
-                _log = ServiceLogManager.Lazy;
+                _log = ServiceLogManager.Current;
                 Started();
                 return _log;
             }
@@ -58,9 +58,7 @@ namespace System.Abstract
         /// <summary>
         /// Gets or sets the flags.
         /// </summary>
-        /// <value>
-        /// The flags.
-        /// </value>
+        /// <value>The flags.</value>
         public TLoggerFlags Flags { get; set; }
 
         /// <summary>

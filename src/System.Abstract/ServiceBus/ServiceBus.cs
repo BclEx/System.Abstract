@@ -23,7 +23,6 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 THE SOFTWARE.
 */
 #endregion
-using System.Collections.Generic;
 
 namespace System.Abstract
 {
@@ -42,46 +41,52 @@ namespace System.Abstract
         /// </summary>
         /// <typeparam name="TMessage">The type of the message.</typeparam>
         /// <param name="messageBuilder">The message builder.</param>
-        /// <returns></returns>
+        /// <returns>IServiceBusCallback.</returns>
         public static IServiceBusCallback Send<TMessage>(Action<TMessage> messageBuilder)
-            where TMessage : class { var serviceBus = ServiceBusManager.Lazy; return serviceBus.Send(null, serviceBus.CreateMessage<TMessage>(messageBuilder)); }
+            where TMessage : class
+        { var serviceBus = ServiceBusManager.Current; return serviceBus.Send(null, serviceBus.CreateMessage(messageBuilder)); }
         /// <summary>
         /// Sends the specified destination.
         /// </summary>
         /// <typeparam name="TMessage">The type of the message.</typeparam>
         /// <param name="destination">The destination.</param>
         /// <param name="messageBuilder">The message builder.</param>
-        /// <returns></returns>
+        /// <returns>IServiceBusCallback.</returns>
         public static IServiceBusCallback Send<TMessage>(string destination, Action<TMessage> messageBuilder)
-            where TMessage : class { var serviceBus = ServiceBusManager.Lazy; return serviceBus.Send(new LiteralServiceBusEndpoint(destination), serviceBus.CreateMessage<TMessage>(messageBuilder)); }
+            where TMessage : class
+        { var serviceBus = ServiceBusManager.Current; return serviceBus.Send(new LiteralServiceBusEndpoint(destination), serviceBus.CreateMessage(messageBuilder)); }
         /// <summary>
         /// Sends the specified destination.
         /// </summary>
         /// <typeparam name="TMessage">The type of the message.</typeparam>
         /// <param name="destination">The destination.</param>
         /// <param name="messageBuilder">The message builder.</param>
-        /// <returns></returns>
+        /// <returns>IServiceBusCallback.</returns>
         public static IServiceBusCallback Send<TMessage>(IServiceBusEndpoint destination, Action<TMessage> messageBuilder)
-            where TMessage : class { var serviceBus = ServiceBusManager.Lazy; return serviceBus.Send(destination, serviceBus.CreateMessage<TMessage>(messageBuilder)); }
+            where TMessage : class
+        { var serviceBus = ServiceBusManager.Current; return serviceBus.Send(destination, serviceBus.CreateMessage(messageBuilder)); }
         /// <summary>
         /// Sends the specified messages.
         /// </summary>
         /// <param name="messages">The messages.</param>
-        /// <returns></returns>
-        public static IServiceBusCallback Send(params object[] messages) { var serviceBus = ServiceBusManager.Lazy; return serviceBus.Send(null, messages); }
+        /// <returns>IServiceBusCallback.</returns>
+        public static IServiceBusCallback Send(params object[] messages) =>
+            ServiceBusManager.Current.Send(null, messages);
         /// <summary>
         /// Sends the specified destination.
         /// </summary>
         /// <param name="destination">The destination.</param>
         /// <param name="messages">The messages.</param>
-        /// <returns></returns>
-        public static IServiceBusCallback Send(string destination, params object[] messages) { var serviceBus = ServiceBusManager.Lazy; return serviceBus.Send(new LiteralServiceBusEndpoint(destination), messages); }
+        /// <returns>IServiceBusCallback.</returns>
+        public static IServiceBusCallback Send(string destination, params object[] messages) =>
+            ServiceBusManager.Current.Send(new LiteralServiceBusEndpoint(destination), messages);
         /// <summary>
         /// Sends the specified destination.
         /// </summary>
         /// <param name="destination">The destination.</param>
         /// <param name="messages">The messages.</param>
-        /// <returns></returns>
-        public static IServiceBusCallback Send(IServiceBusEndpoint destination, params object[] messages) { var serviceBus = ServiceBusManager.Lazy; return serviceBus.Send(destination, messages); }
+        /// <returns>IServiceBusCallback.</returns>
+        public static IServiceBusCallback Send(IServiceBusEndpoint destination, params object[] messages) =>
+            ServiceBusManager.Current.Send(destination, messages);
     }
 }

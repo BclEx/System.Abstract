@@ -40,17 +40,18 @@ namespace System.Abstract
         /// Infinite
         /// </summary>
         public static readonly CacheItemPolicy Infinite = new CacheItemPolicy(-1);
-        private DateTime _absoluteExpiration;
-        private TimeSpan _floatingAbsoluteExpiration;
+        DateTime _absoluteExpiration;
+        TimeSpan _floatingAbsoluteExpiration;
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="CacheItemPolicy"/> class.
+        /// Initializes a new instance of the <see cref="CacheItemPolicy" /> class.
         /// </summary>
         public CacheItemPolicy() { }
         /// <summary>
-        /// Initializes a new instance of the <see cref="CacheItemPolicy"/> class.
+        /// Initializes a new instance of the <see cref="CacheItemPolicy" /> class.
         /// </summary>
         /// <param name="floatingAbsoluteMinuteTimeout">The floating absolute minute timeout.</param>
+        /// <exception cref="ArgumentOutOfRangeException">floatingMinuteTimeout</exception>
         public CacheItemPolicy(int floatingAbsoluteMinuteTimeout)
         {
             if (floatingAbsoluteMinuteTimeout < -1)
@@ -71,6 +72,7 @@ namespace System.Abstract
         /// Gets or sets the DateTime instance that represent the absolute expiration of the item being added to cache.
         /// </summary>
         /// <value>The absolute expiration.</value>
+        /// <exception cref="InvalidOperationException">FloatingExpiration already set</exception>
         public DateTime AbsoluteExpiration
         {
             get
@@ -79,7 +81,7 @@ namespace System.Abstract
                     return DateTime.MinValue;
                 if (_absoluteExpiration == DateTime.MinValue && _floatingAbsoluteExpiration == TimeSpan.Zero)
                     return DateTime.Now.Add(new TimeSpan(1, 0, 0));
-                return (_floatingAbsoluteExpiration != TimeSpan.Zero ? DateTime.Now.Add(_floatingAbsoluteExpiration) : _absoluteExpiration);
+                return _floatingAbsoluteExpiration != TimeSpan.Zero ? DateTime.Now.Add(_floatingAbsoluteExpiration) : _absoluteExpiration;
             }
             set
             {
@@ -93,6 +95,8 @@ namespace System.Abstract
         /// Gets or sets the DateTime instance that represent the absolute expiration of the item being added to cache.
         /// </summary>
         /// <value>The absolute expiration.</value>
+        /// <exception cref="InvalidOperationException">AbsoluteExpiration already set</exception>
+        /// <exception cref="ArgumentOutOfRangeException">value</exception>
         public TimeSpan FloatingAbsoluteExpiration
         {
             get
@@ -126,14 +130,14 @@ namespace System.Abstract
         public CacheItemPriority Priority { get; set; }
 
         /// <summary>
-        /// Gets or sets the on CacheItemCreatedCallback instance that is invoked whenever the cached item associated with this 
+        /// Gets or sets the on CacheItemCreatedCallback instance that is invoked whenever the cached item associated with this
         /// instance of CacheCommand has been created for cache.
         /// </summary>
         /// <value>The on create callback.</value>
         public CacheEntryUpdateCallback UpdateCallback { get; set; }
 
         /// <summary>
-        /// Gets or sets the on CacheItemRemovedCallback instance that is invoked whenever the cached item associated with this 
+        /// Gets or sets the on CacheItemRemovedCallback instance that is invoked whenever the cached item associated with this
         /// instance of CacheCommand has been removed from cache.
         /// </summary>
         /// <value>The on remove callback.</value>

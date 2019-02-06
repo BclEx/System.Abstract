@@ -8,10 +8,8 @@ namespace System.Abstract.AbstractTests.ServiceCache
 		protected IServiceCache Cache { get; private set; }
 		protected abstract IServiceCache CreateServiceCache();
 
-        public AbstractServiceCacheTest()
-		{
+        public AbstractServiceCacheTest() =>
 			Cache = CreateServiceCache();
-		}
 
         //[TestMethod]
 		//public void CreateMessage_Should_Return_Valid_Instance()

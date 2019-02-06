@@ -26,8 +26,13 @@ THE SOFTWARE.
 
 namespace System.Abstract
 {
-	/// <summary>
-	/// CacheItemDependency
-	/// </summary>
+    /// <summary>
+    /// CacheItemDependency
+    /// </summary>
+    /// <param name="cache">The cache.</param>
+    /// <param name="registration">The registration.</param>
+    /// <param name="tag">The tag.</param>
+    /// <param name="values">The values.</param>
+    /// <returns>System.Object.</returns>
     public delegate object CacheItemDependency(IServiceCache cache, IServiceCacheRegistration registration, object tag, object[] values);
 }

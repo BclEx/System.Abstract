@@ -42,33 +42,30 @@ namespace System.Abstract
             /// Gets the service object of the specified type.
             /// </summary>
             /// <param name="serviceType">An object that specifies the type of service object to get.</param>
-            /// <returns>
-            /// A service object of type <paramref name="serviceType"/>.
+            /// <returns>A service object of type <paramref name="serviceType" />.
             /// -or-
-            /// null if there is no service object of type <paramref name="serviceType"/>.
-            /// </returns>
-            public object GetService(Type serviceType) { throw new NotImplementedException(); }
+            /// null if there is no service object of type <paramref name="serviceType" />.</returns>
+            /// <exception cref="NotImplementedException"></exception>
+            public object GetService(Type serviceType) => throw new NotImplementedException();
 
             // get
             /// <summary>
             /// Gets the name.
             /// </summary>
-            public string Name
-            {
-                get { return null; }
-            }
+            /// <value>The name.</value>
+            public string Name => null;
             /// <summary>
             /// Gets the specified name.
             /// </summary>
             /// <param name="name">The name.</param>
-            /// <returns></returns>
-            public IServiceLog Get(string name) { return this; }
+            /// <returns>IServiceLog.</returns>
+            public IServiceLog Get(string name) => this;
             /// <summary>
             /// Gets the specified name.
             /// </summary>
-            /// <param name="type"></param>
-            /// <returns></returns>
-            public IServiceLog Get(Type type) { return this; }
+            /// <param name="type">The type.</param>
+            /// <returns>IServiceLog.</returns>
+            public IServiceLog Get(Type type) => this;
 
             // log
             /// <summary>
@@ -125,12 +122,14 @@ namespace System.Abstract
         /// </summary>
         /// <typeparam name="T"></typeparam>
         /// <returns></returns>
-        public static IServiceLog Get<T>() { return (ServiceLogManager.Lazy ?? EmptyLazy).Value.Get<T>(); }
+        public static IServiceLog Get<T>() =>
+            (Lazy ?? EmptyLazy).Value.Get<T>();
         /// <summary>
         /// Gets the specified name.
         /// </summary>
         /// <param name="name">The name.</param>
         /// <returns></returns>
-        public static IServiceLog Get(string name) { return (ServiceLogManager.Lazy ?? EmptyLazy).Value.Get(name); }
+        public static IServiceLog Get(string name) =>
+            (Lazy ?? EmptyLazy).Value.Get(name); 
     }
 }

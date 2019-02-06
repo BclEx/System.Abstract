@@ -26,6 +26,7 @@ THE SOFTWARE.
 
 using System.IO;
 using System.Text;
+
 namespace System.Abstract
 {
     /// <summary>
@@ -42,7 +43,8 @@ namespace System.Abstract
         /// <param name="text">The text.</param>
         /// <returns></returns>
         public static T Des<T>(this ISerDes serDes, Type type, string text)
-            where T : class { return Des<T>(serDes, type, text, Encoding.Default); }
+            where T : class =>
+            Des<T>(serDes, type, text, Encoding.Default);
 
         /// <summary>
         /// Deserializes the specified type.
@@ -83,7 +85,8 @@ namespace System.Abstract
         /// <param name="graph">The graph.</param>
         /// <returns></returns>
         public static string Ser<T>(this ISerDes serDes, Type type, T graph)
-            where T : class { return Ser<T>(serDes, type, graph, Encoding.Default); }
+            where T : class =>
+            Ser(serDes, type, graph, Encoding.Default);
         /// <summary>
         /// Serializes the specified type.
         /// </summary>
@@ -98,11 +101,16 @@ namespace System.Abstract
         {
             using (var s = new MemoryStream())
             {
-                serDes.Ser<T>(type, s, graph);
+                NewMethod(serDes, type, graph, s);
                 s.Flush(); s.Position = 0;
                 return encoding.GetString(s.ToArray());
             }
         }
+
+        static void NewMethod<T>(ISerDes serDes, Type type, T graph, MemoryStream s)
+            where T : class =>
+            serDes.Ser(type, s, graph);
+
         /// <summary>
         /// Serializes the specified type to base64.
         /// </summary>
@@ -116,7 +124,7 @@ namespace System.Abstract
         {
             using (var s = new MemoryStream())
             {
-                serDes.Ser<T>(type, s, graph);
+                serDes.Ser(type, s, graph);
                 s.Flush(); s.Position = 0;
                 return Convert.ToBase64String(s.ToArray());
             }

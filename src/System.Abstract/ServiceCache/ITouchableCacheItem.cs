@@ -26,10 +26,10 @@ THE SOFTWARE.
 
 namespace System.Abstract
 {
-	/// <summary>
-	/// ITouchableCacheItem
-	/// </summary>
-	public interface ITouchableCacheItem
+    /// <summary>
+    /// ITouchableCacheItem
+    /// </summary>
+    public interface ITouchableCacheItem
 	{
         /// <summary>
         /// Touches the specified tag.
@@ -37,12 +37,13 @@ namespace System.Abstract
         /// <param name="tag">The tag.</param>
         /// <param name="names">The names.</param>
 		void Touch(object tag, string[] names);
+
         /// <summary>
         /// Makes the dependency.
         /// </summary>
         /// <param name="tag">The tag.</param>
         /// <param name="names">The names.</param>
-        /// <returns></returns>
+        /// <returns>System.Object.</returns>
 		object MakeDependency(object tag, string[] names);
 	}
 }

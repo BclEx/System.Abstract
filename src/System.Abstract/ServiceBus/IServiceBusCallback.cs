@@ -42,7 +42,7 @@ namespace System.Abstract
         /// </summary>
         /// <param name="callback">The callback.</param>
         /// <param name="state">The state.</param>
-        /// <returns></returns>
+        /// <returns>IAsyncResult.</returns>
         IAsyncResult Register(AsyncCallback callback, object state);
     }
 }

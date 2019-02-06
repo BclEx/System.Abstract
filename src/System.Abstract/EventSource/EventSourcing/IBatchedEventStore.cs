@@ -23,6 +23,7 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 THE SOFTWARE.
 */
 #endregion
+
 using System.Collections.Generic;
 
 namespace System.Abstract.EventSourcing
@@ -30,14 +31,16 @@ namespace System.Abstract.EventSourcing
     /// <summary>
     /// IBatchedEventStore
     /// </summary>
+    /// <seealso cref="System.Abstract.EventSourcing.IEventStore" />
     public interface IBatchedEventStore : IEventStore
     {
         /// <summary>
-        /// Gets the events by I ds.
+        /// Gets the events by Ids.
         /// </summary>
-        /// <param name="aggregateIDs">The aggregate I ds.</param>
-        /// <returns></returns>
-        IEnumerable<AggregateTuple<IEnumerable<Event>>> GetEventsByIDs(IEnumerable<AggregateTuple<int>> aggregateIDs);
+        /// <param name="aggregateIds">The aggregate Ids.</param>
+        /// <returns>IEnumerable&lt;AggregateTuple&lt;IEnumerable&lt;Event&gt;&gt;&gt;.</returns>
+        IEnumerable<AggregateTuple<IEnumerable<Event>>> GetEventsByIds(IEnumerable<AggregateTuple<int>> aggregateIds);
+
         /// <summary>
         /// Saves the events.
         /// </summary>

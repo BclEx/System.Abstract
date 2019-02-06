@@ -35,9 +35,7 @@ namespace System.Abstract
         /// LoggerFlags
         /// </summary>
         [Flags]
-        public enum LoggerFlags
-        {
-        }
+        public enum LoggerFlags { }
 
         /// <summary>
         /// Started.

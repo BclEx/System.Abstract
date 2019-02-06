@@ -48,7 +48,7 @@ namespace System.Abstract
         }
 
         // wrapper
-        public IServiceLocator Parent
+        public IServiceLocator Base
         {
             get { return _parent; }
         }

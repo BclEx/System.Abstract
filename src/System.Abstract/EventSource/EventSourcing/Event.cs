@@ -29,29 +29,24 @@ namespace System.Abstract.EventSourcing
     /// <summary>
     /// Event
     /// </summary>
+    /// <seealso cref="System.Abstract.IEvent" />
     [Serializable]
 	public abstract class Event : IEvent
     {
         /// <summary>
-        /// Gets or sets the aggregate ID.
+        /// Gets or sets the aggregate Id.
         /// </summary>
-        /// <value>
-        /// The aggregate ID.
-        /// </value>
-        public object AggregateID { get; set; }
+        /// <value>The aggregate Id.</value>
+        public object AggregateId { get; set; }
         /// <summary>
         /// Gets or sets the event date.
         /// </summary>
-        /// <value>
-        /// The event date.
-        /// </value>
+        /// <value>The event date.</value>
         public DateTime EventDate { get; set; }
         /// <summary>
         /// Gets or sets the event sequence.
         /// </summary>
-        /// <value>
-        /// The event sequence.
-        /// </value>
+        /// <value>The event sequence.</value>
         public int? EventSequence { get; set; }
     }
 }

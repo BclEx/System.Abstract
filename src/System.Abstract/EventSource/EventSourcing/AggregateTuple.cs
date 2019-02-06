@@ -29,126 +29,108 @@ namespace System.Abstract.EventSourcing
     /// <summary>
     /// AggregateTuple
     /// </summary>
+    /// <typeparam name="T1">The type of the t1.</typeparam>
     public class AggregateTuple<T1>
     {
         /// <summary>
         /// Gets or sets the aggregate ID.
         /// </summary>
-        /// <value>
-        /// The aggregate ID.
-        /// </value>
-        public object AggregateID { get; set; }
+        /// <value>The aggregate ID.</value>
+        public object AggregateId { get; set; }
         /// <summary>
         /// Gets or sets the item1.
         /// </summary>
-        /// <value>
-        /// The item1.
-        /// </value>
+        /// <value>The item1.</value>
         public T1 Item1 { get; set; }
     }
 
     /// <summary>
     /// AggregateTuple
     /// </summary>
+    /// <typeparam name="T1">The type of the t1.</typeparam>
+    /// <typeparam name="T2">The type of the t2.</typeparam>
     public class AggregateTuple<T1, T2>
     {
         /// <summary>
-        /// Gets or sets the aggregate ID.
+        /// Gets or sets the aggregate Id.
         /// </summary>
-        /// <value>
-        /// The aggregate ID.
-        /// </value>
-        public object AggregateID { get; set; }
+        /// <value>The aggregate Id.</value>
+        public object AggregateId { get; set; }
         /// <summary>
         /// Gets or sets the item1.
         /// </summary>
-        /// <value>
-        /// The item1.
-        /// </value>
+        /// <value>The item1.</value>
         public T1 Item1 { get; set; }
         /// <summary>
         /// Gets or sets the item2.
         /// </summary>
-        /// <value>
-        /// The item2.
-        /// </value>
+        /// <value>The item2.</value>
         public T2 Item2 { get; set; }
     }
 
     /// <summary>
     /// AggregateTuple
     /// </summary>
+    /// <typeparam name="T1">The type of the t1.</typeparam>
+    /// <typeparam name="T2">The type of the t2.</typeparam>
+    /// <typeparam name="T3">The type of the t3.</typeparam>
     public class AggregateTuple<T1, T2, T3>
     {
         /// <summary>
-        /// Gets or sets the aggregate ID.
+        /// Gets or sets the aggregate Id.
         /// </summary>
-        /// <value>
-        /// The aggregate ID.
-        /// </value>
-        public object AggregateID { get; set; }
+        /// <value>The aggregate Id.</value>
+        public object AggregateId { get; set; }
         /// <summary>
         /// Gets or sets the item1.
         /// </summary>
-        /// <value>
-        /// The item1.
-        /// </value>
+        /// <value>The item1.</value>
         public T1 Item1 { get; set; }
         /// <summary>
         /// Gets or sets the item2.
         /// </summary>
-        /// <value>
-        /// The item2.
-        /// </value>
+        /// <value>The item2.</value>
         public T2 Item2 { get; set; }
         /// <summary>
         /// Gets or sets the item3.
         /// </summary>
-        /// <value>
-        /// The item3.
-        /// </value>
+        /// <value>The item3.</value>
         public T3 Item3 { get; set; }
     }
 
     /// <summary>
     /// AggregateTuple
     /// </summary>
+    /// <typeparam name="T1">The type of the t1.</typeparam>
+    /// <typeparam name="T2">The type of the t2.</typeparam>
+    /// <typeparam name="T3">The type of the t3.</typeparam>
+    /// <typeparam name="T4">The type of the t4.</typeparam>
     public class AggregateTuple<T1, T2, T3, T4>
     {
         /// <summary>
-        /// Gets or sets the aggregate ID.
+        /// Gets or sets the aggregate Id.
         /// </summary>
-        /// <value>
-        /// The aggregate ID.
-        /// </value>
-        public object AggregateID { get; set; }
+        /// <value>The aggregate Id.</value>
+        public object AggregateId { get; set; }
         /// <summary>
         /// Gets or sets the item1.
         /// </summary>
-        /// <value>
-        /// The item1.
-        /// </value>
+        /// <value>The item1.</value>
         public T1 Item1 { get; set; }
         /// <summary>
         /// Gets or sets the item2.
         /// </summary>
-        /// <value>
-        /// The item2.
-        /// </value>
+        /// <value>The item2.</value>
         public T2 Item2 { get; set; }
         /// <summary>
         /// Gets or sets the item3.
         /// </summary>
-        /// <value>
-        /// The item3.
-        /// </value>
+        /// <value>The item3.</value>
         public T3 Item3 { get; set; }
         /// <summary>
         /// Gets or sets the item4.
         /// </summary>
-        /// <value>
-        /// The item4.
-        /// </value>
+        /// <value>The item4.</value>
         public T4 Item4 { get; set; }
     }
 }

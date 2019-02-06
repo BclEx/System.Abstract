@@ -23,6 +23,7 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 THE SOFTWARE.
 */
 #endregion
+
 using System.Collections.Generic;
 
 namespace System.Abstract
@@ -38,75 +39,62 @@ namespace System.Abstract
 
         public ServiceRegistrarNamespaceBehaviorWrapper(IServiceLocator parent, IServiceRegistrar registrar, string @namespace)
         {
-            if (parent == null)
-                throw new ArgumentNullException("parent");
             if (string.IsNullOrEmpty(@namespace))
                 throw new ArgumentNullException("@namespace");
-            _parent = parent;
+            _parent = parent ?? throw new ArgumentNullException("parent");
             _registrar = registrar;
             _namespace = @namespace;
         }
 
         // wrapper
-        public IServiceRegistrar Parent
-        {
-            get { return _registrar; }
-        }
+        public IServiceRegistrar Base => _registrar;
 
         // locator
-        public IServiceLocator Locator
-        {
-            get { return _parent; }
-        }
+        public IServiceLocator Locator => _parent;
 
         // enumerate
-        public bool HasRegistered<TService>() { return _registrar.HasRegistered<TService>(); }
-        public bool HasRegistered(Type serviceType) { return _registrar.HasRegistered(serviceType); }
-        public IEnumerable<ServiceRegistration> GetRegistrationsFor(Type serviceType) { return _registrar.GetRegistrationsFor(serviceType); }
-        public IEnumerable<ServiceRegistration> Registrations
-        {
-            get { return _registrar.Registrations; }
-        }
+        public bool HasRegistered<TService>() => _registrar.HasRegistered<TService>();
+        public bool HasRegistered(Type serviceType) => _registrar.HasRegistered(serviceType);
+        public IEnumerable<ServiceRegistration> GetRegistrationsFor(Type serviceType) => _registrar.GetRegistrationsFor(serviceType);
+        public IEnumerable<ServiceRegistration> Registrations => _registrar.Registrations;
 
         // register type
-        public ServiceRegistrarLifetime LifetimeForRegisters
-        {
-            get { return _registrar.LifetimeForRegisters; }
-        }
-        public void Register(Type serviceType) { _registrar.Register(serviceType, _namespace); }
-        public void Register(Type serviceType, string name) { _registrar.Register(serviceType, _namespace + "::" + name); }
+        public ServiceRegistrarLifetime LifetimeForRegisters => _registrar.LifetimeForRegisters;
+
+        public void Register(Type serviceType) => _registrar.Register(serviceType, _namespace);
+        public void Register(Type serviceType, string name) => _registrar.Register(serviceType, _namespace + "::" + name);
 
         // register implementation
         public void Register<TService, TImplementation>()
             where TService : class
-            where TImplementation : class, TService { _registrar.Register<TService, TImplementation>(_namespace); }
+            where TImplementation : class, TService => _registrar.Register<TService, TImplementation>(_namespace);
         public void Register<TService, TImplementation>(string name)
             where TService : class
-            where TImplementation : class, TService { _registrar.Register<TService, TImplementation>(_namespace + "::" + name); }
+            where TImplementation : class, TService => _registrar.Register<TService, TImplementation>(_namespace + "::" + name);
         public void Register<TService>(Type implementationType)
-            where TService : class { _registrar.Register(implementationType, _namespace); }
+            where TService : class => _registrar.Register(implementationType, _namespace);
         public void Register<TService>(Type implementationType, string name)
-            where TService : class { _registrar.Register(implementationType, _namespace + "::" + name); }
-        public void Register(Type serviceType, Type implementationType) { _registrar.Register(serviceType, implementationType, _namespace); }
-        public void Register(Type serviceType, Type implementationType, string name) { _registrar.Register(serviceType, implementationType, _namespace + "::" + name); }
+            where TService : class => _registrar.Register(implementationType, _namespace + "::" + name);
+        public void Register(Type serviceType, Type implementationType) => _registrar.Register(serviceType, implementationType, _namespace);
+        public void Register(Type serviceType, Type implementationType, string name) => _registrar.Register(serviceType, implementationType, _namespace + "::" + name);
 
         // register instance
         public void RegisterInstance<TService>(TService instance)
-            where TService : class { _registrar.RegisterInstance(instance, _namespace); }
+            where TService : class => _registrar.RegisterInstance(instance, _namespace);
         public void RegisterInstance<TService>(TService instance, string name)
-            where TService : class { _registrar.RegisterInstance(instance, _namespace + "::" + name); }
-        public void RegisterInstance(Type serviceType, object instance) { _registrar.RegisterInstance(serviceType, instance, _namespace); }
-        public void RegisterInstance(Type serviceType, object instance, string name) { _registrar.RegisterInstance(serviceType, instance, _namespace + "::" + name); }
+            where TService : class => _registrar.RegisterInstance(instance, _namespace + "::" + name);
+        public void RegisterInstance(Type serviceType, object instance) => _registrar.RegisterInstance(serviceType, instance, _namespace);
+        public void RegisterInstance(Type serviceType, object instance, string name) => _registrar.RegisterInstance(serviceType, instance, _namespace + "::" + name);
 
         // register method
         public void Register<TService>(Func<IServiceLocator, TService> factoryMethod)
-            where TService : class { throw new NotSupportedException(); }
+            where TService : class => throw new NotSupportedException();
         public void Register<TService>(Func<IServiceLocator, TService> factoryMethod, string name)
-            where TService : class { throw new NotSupportedException(); }
-        public void Register(Type serviceType, Func<IServiceLocator, object> factoryMethod) { throw new NotSupportedException(); }
-        public void Register(Type serviceType, Func<IServiceLocator, object> factoryMethod, string name) { throw new NotSupportedException(); }
+            where TService : class => throw new NotSupportedException();
+        public void Register(Type serviceType, Func<IServiceLocator, object> factoryMethod) => throw new NotSupportedException();
+        public void Register(Type serviceType, Func<IServiceLocator, object> factoryMethod, string name) => throw new NotSupportedException();
 
         // interceptor
-        public void RegisterInterceptor(IServiceLocatorInterceptor interceptor) { _registrar.RegisterInterceptor(interceptor); }
+        public void RegisterInterceptor(IServiceLocatorInterceptor interceptor) => _registrar.RegisterInterceptor(interceptor);
     }
 }

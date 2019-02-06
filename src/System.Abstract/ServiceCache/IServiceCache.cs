@@ -23,19 +23,22 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 THE SOFTWARE.
 */
 #endregion
+
 using System.Collections.Generic;
-using System.Linq;
 
 namespace System.Abstract
 {
-	/// <summary>
-	/// IServiceCache
-	/// </summary>
-	public interface IServiceCache : IServiceProvider
+    /// <summary>
+    /// IServiceCache
+    /// </summary>
+    /// <seealso cref="System.IServiceProvider" />
+    public interface IServiceCache : IServiceProvider
 	{
         /// <summary>
-        /// Gets or sets the <see cref="System.Object"/> with the specified name.
+        /// Gets or sets the <see cref="System.Object" /> with the specified name.
         /// </summary>
+        /// <param name="name">The name.</param>
+        /// <returns>System.Object.</returns>
 		object this[string name] { get; set; }
 
         /// <summary>
@@ -46,7 +49,7 @@ namespace System.Abstract
         /// <param name="itemPolicy">The item policy.</param>
         /// <param name="value">The value.</param>
         /// <param name="dispatch">The dispatch.</param>
-        /// <returns></returns>
+        /// <returns>System.Object.</returns>
         object Add(object tag, string name, CacheItemPolicy itemPolicy, object value, ServiceCacheByDispatcher dispatch);
 
         /// <summary>
@@ -54,9 +57,7 @@ namespace System.Abstract
         /// </summary>
         /// <param name="tag">The tag.</param>
         /// <param name="name">The name.</param>
-        /// <returns>
-        /// The cached item.
-        /// </returns>
+        /// <returns>The cached item.</returns>
 		object Get(object tag, string name);
         /// <summary>
         /// Gets the specified tag.
@@ -65,30 +66,30 @@ namespace System.Abstract
         /// <param name="name">The name.</param>
         /// <param name="registration">The registration.</param>
         /// <param name="header">The header.</param>
-        /// <returns></returns>
+        /// <returns>System.Object.</returns>
         object Get(object tag, string name, IServiceCacheRegistration registration, out CacheItemHeader header);
-
         /// <summary>
         /// Gets the specified tag.
         /// </summary>
         /// <param name="tag">The tag.</param>
         /// <param name="names">The names.</param>
-        /// <returns></returns>
+        /// <returns>System.Object.</returns>
 		object Get(object tag, IEnumerable<string> names);
         /// <summary>
         /// Gets the specified registration.
         /// </summary>
         /// <param name="tag">The tag.</param>
         /// <param name="registration">The registration.</param>
-        /// <returns></returns>
+        /// <returns>IEnumerable&lt;CacheItemHeader&gt;.</returns>
         IEnumerable<CacheItemHeader> Get(object tag, IServiceCacheRegistration registration);
+
         /// <summary>
         /// Tries the get.
         /// </summary>
         /// <param name="tag">The tag.</param>
         /// <param name="name">The name.</param>
         /// <param name="value">The value.</param>
-        /// <returns></returns>
+        /// <returns><c>true</c> if XXXX, <c>false</c> otherwise.</returns>
 		bool TryGet(object tag, string name, out object value);
 
         /// <summary>
@@ -97,9 +98,7 @@ namespace System.Abstract
         /// <param name="tag">The tag.</param>
         /// <param name="name">The name.</param>
         /// <param name="registration">The registration.</param>
-        /// <returns>
-        /// The item removed from the Cache. If the value in the key parameter is not found, returns null.
-        /// </returns>
+        /// <returns>The item removed from the Cache. If the value in the key parameter is not found, returns null.</returns>
         object Remove(object tag, string name, IServiceCacheRegistration registration);
 
         /// <summary>
@@ -110,12 +109,13 @@ namespace System.Abstract
         /// <param name="itemPolicy">The itemPolicy object.</param>
         /// <param name="value">The value to store in cache.</param>
         /// <param name="dispatch">The dispatch.</param>
-        /// <returns></returns>
+        /// <returns>System.Object.</returns>
         object Set(object tag, string name, CacheItemPolicy itemPolicy, object value, ServiceCacheByDispatcher dispatch);
 
-		/// <summary>
-		/// Settings
-		/// </summary>
-		ServiceCacheSettings Settings { get; }
+        /// <summary>
+        /// Settings
+        /// </summary>
+        /// <value>The settings.</value>
+        ServiceCacheSettings Settings { get; }
 	}
 }

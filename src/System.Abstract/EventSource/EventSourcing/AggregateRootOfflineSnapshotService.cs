@@ -23,7 +23,7 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 THE SOFTWARE.
 */
 #endregion
-using System.Linq;
+
 using System.Collections.Generic;
 
 namespace System.Abstract.EventSourcing
@@ -43,24 +43,24 @@ namespace System.Abstract.EventSourcing
     /// <summary>
     /// AggregateRootOfflineSnapshotService
     /// </summary>
+    /// <seealso cref="System.Abstract.EventSourcing.IAggregateRootOfflineSnapshotService" />
     public class AggregateRootOfflineSnapshotService : IAggregateRootOfflineSnapshotService
     {
         readonly IAggregateRootRepository _repository;
         readonly IOfflineSnaphotQuery _snaphotQuery;
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="AggregateRootOfflineSnapshotService"/> class.
+        /// Initializes a new instance of the <see cref="AggregateRootOfflineSnapshotService" /> class.
         /// </summary>
         /// <param name="repository">The repository.</param>
         /// <param name="snaphotQuery">The snaphot query.</param>
+        /// <exception cref="ArgumentNullException">repository
+        /// or
+        /// snaphotQuery</exception>
         public AggregateRootOfflineSnapshotService(IAggregateRootRepository repository, IOfflineSnaphotQuery snaphotQuery)
         {
-            if (repository == null)
-                throw new ArgumentNullException("repository");
-            if (snaphotQuery == null)
-                throw new ArgumentNullException("snaphotQuery");
-            _repository = repository;
-            _snaphotQuery = snaphotQuery;
+            _repository = repository ?? throw new ArgumentNullException("repository");
+            _snaphotQuery = snaphotQuery ?? throw new ArgumentNullException("snaphotQuery");
         }
 
         /// <summary>
@@ -71,7 +71,7 @@ namespace System.Abstract.EventSourcing
         {
             foreach (var item in _snaphotQuery.GetAggregatesToSnapshot(aggregateTypes))
             {
-                var aggregate = _repository.GetByID(item.Item1, item.AggregateID, AggregateRootQueryOptions.UseNullAggregates);
+                var aggregate = _repository.GetById(item.Item1, item.AggregateId, AggregateRootQueryOptions.UseNullAggregates);
                 if (aggregate != null)
                     _repository.MakeSnapshot(aggregate);
             }

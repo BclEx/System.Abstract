@@ -23,6 +23,7 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 THE SOFTWARE.
 */
 #endregion
+
 using System.Collections.Generic;
 
 namespace System.Abstract.EventSourcing
@@ -36,7 +37,7 @@ namespace System.Abstract.EventSourcing
         /// Gets the aggregates to snapshot.
         /// </summary>
         /// <param name="aggregateTypes">The aggregate types.</param>
-        /// <returns></returns>
+        /// <returns>IEnumerable&lt;AggregateTuple&lt;Type&gt;&gt;.</returns>
         IEnumerable<AggregateTuple<Type>> GetAggregatesToSnapshot(IEnumerable<Type> aggregateTypes);
     }
 }

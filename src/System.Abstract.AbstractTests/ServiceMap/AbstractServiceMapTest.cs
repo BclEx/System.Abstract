@@ -8,9 +8,13 @@ namespace System.Abstract.AbstractTests.ServiceMap
 		protected IServiceMap Map { get; private set; }
 		protected abstract IServiceMap CreateServiceMap();
 
-        public AbstractServiceMapTest()
-		{
+        public AbstractServiceMapTest() =>
             Map = CreateServiceMap();
-		}
+
+        public void Foo()
+        {
+            ServiceMapManager.SetProvider(() => null);
+            var service = ServiceMapManager.Current;
+        }
 	}
 }

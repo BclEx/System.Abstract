@@ -29,6 +29,7 @@ namespace System.Abstract
     /// <summary>
     /// IServiceBus
     /// </summary>
+    /// <seealso cref="System.IServiceProvider" />
     public interface IServiceBus : IServiceProvider
     {
         /// <summary>
@@ -36,16 +37,18 @@ namespace System.Abstract
         /// </summary>
         /// <typeparam name="TMessage">The type of the message.</typeparam>
         /// <param name="messageBuilder">The message builder.</param>
-        /// <returns></returns>
+        /// <returns>TMessage.</returns>
         TMessage CreateMessage<TMessage>(Action<TMessage> messageBuilder)
             where TMessage : class;
+
         /// <summary>
         /// Sends the specified destination.
         /// </summary>
         /// <param name="destination">The destination.</param>
         /// <param name="messages">The messages.</param>
-        /// <returns></returns>
+        /// <returns>IServiceBusCallback.</returns>
         IServiceBusCallback Send(IServiceBusEndpoint destination, params object[] messages);
+
         /// <summary>
         /// Replies the specified messages.
         /// </summary>

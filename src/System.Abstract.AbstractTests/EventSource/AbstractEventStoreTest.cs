@@ -9,10 +9,8 @@ namespace System.Abstract.AbstractTests
 		protected IEventStore EventStore { get; private set; }
 		protected abstract IEventStore CreateEventStore();
 
-        public AbstractEventStoreTest()
-		{
+        public AbstractEventStoreTest() =>
 			EventStore = CreateEventStore();
-		}
 
         [TestMethod]
 		public virtual void CreateMessage_Should_Return_Valid_Instance()

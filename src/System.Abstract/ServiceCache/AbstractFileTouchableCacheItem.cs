@@ -23,6 +23,7 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 THE SOFTWARE.
 */
 #endregion
+
 using System.Collections.Generic;
 using System.IO;
 using IODirectory = System.IO.Directory;
@@ -32,16 +33,16 @@ namespace System.Abstract
     /// <summary>
     /// AbstractFileTouchableCacheItem
     /// </summary>
+    /// <seealso cref="System.Abstract.ITouchableCacheItem" />
     public abstract class AbstractFileTouchableCacheItem : ITouchableCacheItem
     {
         static readonly object _lock = new object();
         IServiceCache _parent;
         ITouchableCacheItem _base;
         string _directory;
-        //Func<object, IEnumerable<string>, CacheItemDependency> _dependencyFactory;
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="AbstractFileTouchableCacheItem"/> class.
+        /// Initializes a new instance of the <see cref="AbstractFileTouchableCacheItem" /> class.
         /// </summary>
         /// <param name="parent">The parent.</param>
         /// <param name="base">The @base.</param>
@@ -89,17 +90,16 @@ namespace System.Abstract
         /// <summary>
         /// Gets or sets the directory.
         /// </summary>
-        /// <value>
-        /// The directory.
-        /// </value>
+        /// <value>The directory.</value>
+        /// <exception cref="ArgumentNullException">value</exception>
         public string Directory
         {
-            get { return _directory; }
+            get => _directory;
             set
             {
                 if (string.IsNullOrEmpty(value))
                     throw new ArgumentNullException("value");
-                _directory = (value.EndsWith("\\") ? value : value + "\\");
+                _directory = value.EndsWith("\\") ? value : value + "\\";
             }
         }
 
@@ -108,17 +108,16 @@ namespace System.Abstract
         /// </summary>
         /// <param name="tag">The tag.</param>
         /// <param name="names">The names.</param>
-        /// <returns></returns>
+        /// <returns>System.Object.</returns>
         public virtual object MakeDependency(object tag, string[] names)
         {
-            var baseDependency = (_base != null ? _base.MakeDependency(tag, names) : null);
+            var baseDependency = _base?.MakeDependency(tag, names);
             if (string.IsNullOrEmpty(Directory))
                 return baseDependency;
             //
             if (names == null || names.Length == 0)
                 return null;
-            string[] newNames;
-            EnsureKeysExist(tag, names, out newNames);
+            EnsureKeysExist(tag, names, out var newNames);
             return MakeDependencyInternal(tag, newNames, baseDependency);
         }
 
@@ -128,24 +127,26 @@ namespace System.Abstract
         /// <param name="tag">The tag.</param>
         /// <param name="names">The names.</param>
         /// <param name="baseDependency">The base dependency.</param>
-        /// <returns></returns>
+        /// <returns>System.Object.</returns>
         protected abstract object MakeDependencyInternal(object tag, string[] names, object baseDependency);
 
         /// <summary>
         /// Gets the name of the file path for.
         /// </summary>
         /// <param name="name">The name.</param>
-        /// <returns></returns>
-        protected virtual string GetFilePathForName(string name) { return Path.Combine(Directory, name + ".txt"); }
+        /// <returns>System.String.</returns>
+        protected virtual string GetFilePathForName(string name) =>
+            Path.Combine(Directory, name + ".txt");
 
         /// <summary>
         /// Writes the name of the body for.
         /// </summary>
         /// <param name="name">The name.</param>
         /// <param name="path">The path.</param>
-        protected virtual void WriteBodyForName(string name, string path) { File.WriteAllText(path, DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss") + "\r\n"); }
+        protected virtual void WriteBodyForName(string name, string path) =>
+            File.WriteAllText(path, $"{DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss")}\r\n");
 
-        private void EnsureKeysExist(object tag, string[] names, out string[] newNames)
+        void EnsureKeysExist(object tag, string[] names, out string[] newNames)
         {
             var newNames2 = new List<string>();
             lock (_lock)
@@ -177,9 +178,7 @@ namespace System.Abstract
         /// </summary>
         /// <param name="tag">The tag.</param>
         /// <param name="name">The name.</param>
-        /// <returns>
-        ///   <c>true</c> if this instance can touch the specified tag; otherwise, <c>false</c>.
-        /// </returns>
+        /// <returns><c>true</c> if this instance can touch the specified tag; otherwise, <c>false</c>.</returns>
         public virtual bool CanTouch(object tag, ref string name)
         {
             if (name == null || !name.StartsWith("#"))

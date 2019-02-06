@@ -52,14 +52,14 @@
   <ItemGroup>
     <Compile Include="+Polyfill\CoreExtensions+Lazy.cs" />
     <Compile Include="+Polyfill\ExceptionExtensions.cs" />
-    <Compile Include="+Polyfill\Lazy.cs" />
+    <Compile Include="+Polyfill35\Lazy.cs" />
     <Compile Include="+Polyfill\Reflection\AssemblyExtensions.cs" />
-    <Compile Include="+Polyfill\Runtime\Collections\HashHelpers.cs" />
-    <Compile Include="+Polyfill\Runtime\CompilerServices\ConditionalWeakTable.cs" />
-    <Compile Include="+Polyfill\Runtime\CompilerServices\DependentHandle.cs" />
+    <Compile Include="+Polyfill35\Runtime\Collections\HashHelpers.cs" />
+    <Compile Include="+Polyfill35\Runtime\CompilerServices\ConditionalWeakTable.cs" />
+    <Compile Include="+Polyfill35\Runtime\CompilerServices\DependentHandle.cs" />
     <Compile Include="+Polyfill\SR.cs" />
-    <Compile Include="+Polyfill\System_LazyDebugView.cs" />
-    <Compile Include="+Polyfill\Threading\LazyThreadSafetyMode.cs" />
+    <Compile Include="+Polyfill35\System_LazyDebugView.cs" />
+    <Compile Include="+Polyfill35\Threading\LazyThreadSafetyMode.cs" />
     <Compile Include="EventSource\EventBus.cs" />
     <Compile Include="EventSource\EventSource.cs" />
     <Compile Include="EventSource\EventSourceManager.cs" />
@@ -73,7 +73,7 @@
     <Compile Include="EventSource\EventSourcing\AggregateTuple.cs" />
     <Compile Include="EventSource\EventSourcing\Event.cs" />
     <Compile Include="EventSource\EventSourcing\Event2.cs" />
-    <Compile Include="EventSource\EventSourcing\EventSourcingExtensions.cs" />
+    <Compile Include="EventSource\EventSourcing\AbstractExtensions.cs" />
     <Compile Include="EventSource\EventSourcing\IAggregateRootEventDispatcher.cs" />
     <Compile Include="EventSource\EventSourcing\IAggregateRootSnapshotStore.cs" />
     <Compile Include="EventSource\EventSourcing\IAggregateRootStateAccessor.cs" />

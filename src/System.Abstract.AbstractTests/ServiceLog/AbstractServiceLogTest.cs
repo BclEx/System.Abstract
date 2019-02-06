@@ -8,9 +8,7 @@ namespace System.Abstract.AbstractTests.ServiceLog
 		protected IServiceLog Log { get; private set; }
 		protected abstract IServiceLog CreateServiceLog();
 
-        public AbstractServiceLogTest()
-		{
+        public AbstractServiceLogTest() =>
 			Log = CreateServiceLog();
-		}
 	}
 }

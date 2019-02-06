@@ -34,8 +34,9 @@ namespace System.Abstract.EventSourcing
         /// <summary>
         /// Gets the snapshot.
         /// </summary>
-        /// <returns></returns>
+        /// <returns>AggregateRootSnapshot.</returns>
         AggregateRootSnapshot GetSnapshot();
+
         /// <summary>
         /// Loads the snapshot.
         /// </summary>

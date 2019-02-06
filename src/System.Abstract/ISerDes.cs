@@ -23,6 +23,7 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 THE SOFTWARE.
 */
 #endregion
+
 using System.Collections.Generic;
 using System.IO;
 
@@ -51,6 +52,7 @@ namespace System.Abstract
         /// <returns></returns>
         IEnumerable<T> DesMany<T>(Type type, Stream s)
             where T : class;
+
         /// <summary>
         /// Serializes the specified type.
         /// </summary>

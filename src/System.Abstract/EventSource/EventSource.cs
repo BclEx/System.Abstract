@@ -23,6 +23,7 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 THE SOFTWARE.
 */
 #endregion
+
 using System.Abstract.EventSourcing;
 using System.Collections.Generic;
 
@@ -31,6 +32,7 @@ namespace System.Abstract
     /// <summary>
     /// IEventSource
     /// </summary>
+    /// <seealso cref="System.IServiceProvider" />
     public interface IEventSource : IServiceProvider
     {
         /// <summary>
@@ -39,13 +41,14 @@ namespace System.Abstract
         /// <typeparam name="T"></typeparam>
         /// <param name="arg">The arg.</param>
         /// <param name="serDes">The serDes.</param>
-        /// <returns></returns>
+        /// <returns>IAggregateRootRepository.</returns>
         IAggregateRootRepository MakeRepository<T>(T arg, ISerDes serDes);
     }
 
     /// <summary>
     /// EventSource
     /// </summary>
+    /// <seealso cref="System.Abstract.IEventSource" />
     public class EventSource : IEventSource, EventSourceManager.IRegisterWithLocator
     {
         readonly IEventStore _eventStore;
@@ -61,7 +64,7 @@ namespace System.Abstract
             /// <summary>
             /// Factory
             /// </summary>
-            public static Func<Type, AggregateRoot> Factory = (t => (AggregateRoot)Activator.CreateInstance(t));
+            public static Func<Type, AggregateRoot> Factory = t => (AggregateRoot)Activator.CreateInstance(t);
         }
 
         static EventSource() { EventSourceManager.EnsureRegistration(); }
@@ -77,25 +80,27 @@ namespace System.Abstract
             _eventStore = eventStore;
             _snapshotStore = snapshotStore;
             _eventDispatcher = eventDispatcher;
-            _factory = (factory ?? DefaultFactory.Factory);
+            _factory = factory ?? DefaultFactory.Factory;
         }
 
-        Action<IServiceLocator, string> EventSourceManager.IRegisterWithLocator.RegisterWithLocator
-        {
-            get { return (locator, name) => EventSourceManager.RegisterInstance<IEventSource>(this, locator, name); }
-        }
+        /// <summary>
+        /// Gets the register with locator.
+        /// </summary>
+        /// <value>The register with locator.</value>
+        Action<IServiceLocator, string> EventSourceManager.IRegisterWithLocator.RegisterWithLocator =>
+            (locator, name) => EventSourceManager.RegisterInstance<IEventSource>(this, locator, name);
 
         /// <summary>
         /// Gets the service object of the specified type.
         /// </summary>
         /// <param name="serviceType">An object that specifies the type of service object to get.</param>
-        /// <returns>
-        /// A service object of type <paramref name="serviceType" />.
+        /// <returns>A service object of type <paramref name="serviceType" />.
         /// -or-
-        /// null if there is no service object of type <paramref name="serviceType" />.
-        /// </returns>
+        /// null if there is no service object of type <paramref name="serviceType" />.</returns>
+        /// <exception cref="NotImplementedException"></exception>
         /// <exception cref="System.NotImplementedException"></exception>
-        public object GetService(Type serviceType) { throw new NotImplementedException(); }
+        public object GetService(Type serviceType) =>
+            throw new NotImplementedException();
 
         /// <summary>
         /// Makes the repository.
@@ -103,7 +108,8 @@ namespace System.Abstract
         /// <typeparam name="T"></typeparam>
         /// <param name="arg">The arg.</param>
         /// <param name="serDes">The serDes.</param>
-        /// <returns></returns>
-        public IAggregateRootRepository MakeRepository<T>(T arg, ISerDes serDes) { return new AggregateRootRepository(_eventStore, _snapshotStore, _eventDispatcher, _factory); }
+        /// <returns>IAggregateRootRepository.</returns>
+        public IAggregateRootRepository MakeRepository<T>(T arg, ISerDes serDes) =>
+            new AggregateRootRepository(_eventStore, _snapshotStore, _eventDispatcher, _factory);
     }
 }

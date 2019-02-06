@@ -1,6 +1,7 @@
 #region Foreign-License
 // .Net40 Polyfill
 #endregion
+
 using System.Globalization;
 
 namespace System

@@ -34,13 +34,12 @@ namespace System.Abstract
         /// <summary>
         /// Gets or sets the item.
         /// </summary>
-        /// <value>
-        /// The item.
-        /// </value>
+        /// <value>The item.</value>
         public string Item { get; set; }
         /// <summary>
         /// Values
         /// </summary>
+        /// <value>The values.</value>
         public object[] Values { get; set; }
     }
 }

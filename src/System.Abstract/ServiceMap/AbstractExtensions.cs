@@ -38,27 +38,86 @@ namespace System.Abstract
         /// </summary>
         /// <typeparam name="T"></typeparam>
         /// <param name="service">The cache.</param>
-        /// <returns></returns>
+        /// <returns>T.</returns>
         public static T BehaveAs<T>(this IServiceMap service)
             where T : class, IServiceMap
         {
             IServiceWrapper<IServiceMap> serviceWrapper;
             do
             {
-                serviceWrapper = (service as IServiceWrapper<IServiceMap>);
+                serviceWrapper = service as IServiceWrapper<IServiceMap>;
                 if (serviceWrapper != null)
-                    service = serviceWrapper.Parent;
+                    service = serviceWrapper.Base;
             } while (serviceWrapper != null);
-            return (service as T);
+            return service as T;
         }
 
         #endregion
 
         #region Lazy Setup
 
-        public static Lazy<IServiceMap> RegisterWithServiceLocator<T>(this Lazy<IServiceMap> service, string name = null, IServiceLocator locator = null)
-            where T : class, IServiceMap { ServiceMapManager.GetSetupDescriptor(service).RegisterWithServiceLocator<T>(service, name, locator); return service; }
-        public static Lazy<IServiceMap> RegisterWithServiceLocator(this Lazy<IServiceMap> service, Type serviceType, string name = null, IServiceLocator locator = null) { ServiceMapManager.GetSetupDescriptor(service).RegisterWithServiceLocator(service, serviceType, name, locator); return service; }
+        /// <summary>
+        /// Registers the with service locator.
+        /// </summary>
+        /// <typeparam name="T"></typeparam>
+        /// <param name="service">The service.</param>
+        /// <param name="name">The name.</param>
+        /// <returns>Lazy&lt;IServiceMap&gt;.</returns>
+        public static Lazy<IServiceMap> RegisterWithServiceLocator<T>(this Lazy<IServiceMap> service, string name = null)
+            where T : class, IServiceMap
+        { ServiceMapManager.GetSetupDescriptor(service).RegisterWithServiceLocator<T>(service, ServiceLocatorManager.Current, name); return service; }
+        /// <summary>
+        /// Registers the with service locator.
+        /// </summary>
+        /// <typeparam name="T"></typeparam>
+        /// <param name="service">The service.</param>
+        /// <param name="locator">The locator.</param>
+        /// <param name="name">The name.</param>
+        /// <returns>Lazy&lt;IServiceMap&gt;.</returns>
+        public static Lazy<IServiceMap> RegisterWithServiceLocator<T>(this Lazy<IServiceMap> service, IServiceLocator locator = null, string name = null)
+            where T : class, IServiceMap
+        { ServiceMapManager.GetSetupDescriptor(service).RegisterWithServiceLocator<T>(service, locator, name); return service; }
+        /// <summary>
+        /// Registers the with service locator.
+        /// </summary>
+        /// <typeparam name="T"></typeparam>
+        /// <param name="service">The service.</param>
+        /// <param name="locator">The locator.</param>
+        /// <param name="name">The name.</param>
+        /// <returns>Lazy&lt;IServiceMap&gt;.</returns>
+        public static Lazy<IServiceMap> RegisterWithServiceLocator<T>(this Lazy<IServiceMap> service, Lazy<IServiceLocator> locator = null, string name = null)
+            where T : class, IServiceMap
+        { ServiceMapManager.GetSetupDescriptor(service).RegisterWithServiceLocator<T>(service, locator, name); return service; }
+
+        /// <summary>
+        /// Registers the with service locator.
+        /// </summary>
+        /// <param name="service">The service.</param>
+        /// <param name="serviceType">Type of the service.</param>
+        /// <param name="name">The name.</param>
+        /// <returns>Lazy&lt;IServiceMap&gt;.</returns>
+        public static Lazy<IServiceMap> RegisterWithServiceLocator(this Lazy<IServiceMap> service, Type serviceType, string name = null)
+        { ServiceMapManager.GetSetupDescriptor(service).RegisterWithServiceLocator(service, serviceType, ServiceLocatorManager.Current, name); return service; }
+        /// <summary>
+        /// Registers the with service locator.
+        /// </summary>
+        /// <param name="service">The service.</param>
+        /// <param name="serviceType">Type of the service.</param>
+        /// <param name="locator">The locator.</param>
+        /// <param name="name">The name.</param>
+        /// <returns>Lazy&lt;IServiceMap&gt;.</returns>
+        public static Lazy<IServiceMap> RegisterWithServiceLocator(this Lazy<IServiceMap> service, Type serviceType, IServiceLocator locator = null, string name = null)
+        { ServiceMapManager.GetSetupDescriptor(service).RegisterWithServiceLocator(service, serviceType, locator, name); return service; }
+        /// <summary>
+        /// Registers the with service locator.
+        /// </summary>
+        /// <param name="service">The service.</param>
+        /// <param name="serviceType">Type of the service.</param>
+        /// <param name="locator">The locator.</param>
+        /// <param name="name">The name.</param>
+        /// <returns>Lazy&lt;IServiceMap&gt;.</returns>
+        public static Lazy<IServiceMap> RegisterWithServiceLocator(this Lazy<IServiceMap> service, Type serviceType, Lazy<IServiceLocator> locator = null, string name = null)
+        { ServiceMapManager.GetSetupDescriptor(service).RegisterWithServiceLocator(service, serviceType, locator, name); return service; }
 
         #endregion
     }

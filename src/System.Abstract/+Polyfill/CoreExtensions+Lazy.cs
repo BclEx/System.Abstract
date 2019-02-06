@@ -23,6 +23,7 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 THE SOFTWARE.
 */
 #endregion
+
 using System.Reflection;
 
 namespace System
@@ -38,10 +39,10 @@ namespace System
         /// <returns></returns>
         public static Lazy<T> HookValueFactory<T>(this Lazy<T> lazy, Func<Func<T>, T> valueFactory) { LazyHelper<T>.HookValueFactory(lazy, valueFactory); return lazy; }
 
-        private class LazyHelper<T>
+        class LazyHelper<T>
         {
-            private static readonly object _lock = new object();
-            private static readonly FieldInfo _valueFactoryField = typeof(Lazy<T>).GetField("m_valueFactory", BindingFlags.NonPublic | BindingFlags.Instance);
+            static readonly object _lock = new object();
+            static readonly FieldInfo _valueFactoryField = typeof(Lazy<T>).GetField("m_valueFactory", BindingFlags.NonPublic | BindingFlags.Instance);
 
             public static void HookValueFactory(Lazy<T> lazy, Func<Func<T>, T> valueFactory)
             {

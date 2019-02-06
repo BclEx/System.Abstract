@@ -26,62 +26,70 @@ THE SOFTWARE.
 
 namespace System.Abstract
 {
-	/// <summary>
-	/// ServiceCacheSettings
-	/// </summary>
-	public class ServiceCacheSettings
-	{
+    /// <summary>
+    /// ServiceCacheSettings
+    /// </summary>
+    public class ServiceCacheSettings
+    {
         /// <summary>
-        /// Initializes a new instance of the <see cref="ServiceCacheSettings"/> class.
+        /// Initializes a new instance of the <see cref="ServiceCacheSettings" /> class.
         /// </summary>
 		public ServiceCacheSettings()
-		{
-			RegionMarker = "@";
+        {
+            RegionMarker = "@";
             //RegistrationDispatcher = new DefaultServiceCacheRegistrationDispatcher();
             Options = ServiceCacheOptions.UseDBNullWithRegistrations;
-		}
+        }
         /// <summary>
-        /// Initializes a new instance of the <see cref="ServiceCacheSettings"/> class.
+        /// Initializes a new instance of the <see cref="ServiceCacheSettings" /> class.
         /// </summary>
         /// <param name="touchable">The touchable.</param>
 		public ServiceCacheSettings(ITouchableCacheItem touchable)
-			: this() { Touchable = touchable; }
+            : this() =>
+            Touchable = touchable;
 
-		/// <summary>
-		/// Gets or sets the RegionMarker.
-		/// </summary>
-		public string RegionMarker { get; set; }
+        /// <summary>
+        /// Gets or sets the RegionMarker.
+        /// </summary>
+        /// <value>The region marker.</value>
+        public string RegionMarker { get; set; }
 
-		/// <summary>
-		/// Gets or sets the options.
-		/// </summary>
-		public ServiceCacheOptions Options { get; set; }
+        /// <summary>
+        /// Gets or sets the options.
+        /// </summary>
+        /// <value>The options.</value>
+        public ServiceCacheOptions Options { get; set; }
 
-		/// <summary>
-		/// Gets or sets the registration dispatcher.
-		/// </summary>
-		public ServiceCacheRegistration.IDispatcher RegistrationDispatcher { get; set; }
+        /// <summary>
+        /// Gets or sets the registration dispatcher.
+        /// </summary>
+        /// <value>The registration dispatcher.</value>
+        public ServiceCacheRegistration.IDispatcher RegistrationDispatcher { get; set; }
 
-		/// <summary>
-		/// Gets or sets the touchable.
-		/// </summary>
-		public ITouchableCacheItem Touchable { get; set; }
+        /// <summary>
+        /// Gets or sets the touchable.
+        /// </summary>
+        /// <value>The touchable.</value>
+        public ITouchableCacheItem Touchable { get; set; }
 
-		/// <summary>
-		/// Tries to get the region.
-		/// </summary>
-		public bool TryGetRegion(ref string name, out string regionName)
-		{
-			var index = name.IndexOf(RegionMarker);
-			if (index == -1)
-			{
-				regionName = null;
-				return false;
-			}
-			var originalName = name;
-			regionName = originalName.Substring(0, index);
-			name = originalName.Substring(index + RegionMarker.Length);
-			return true;
-		}
-	}
+        /// <summary>
+        /// Tries to get the region.
+        /// </summary>
+        /// <param name="name">The name.</param>
+        /// <param name="regionName">Name of the region.</param>
+        /// <returns><c>true</c> if XXXX, <c>false</c> otherwise.</returns>
+        public bool TryGetRegion(ref string name, out string regionName)
+        {
+            var index = name.IndexOf(RegionMarker);
+            if (index == -1)
+            {
+                regionName = null;
+                return false;
+            }
+            var originalName = name;
+            regionName = originalName.Substring(0, index);
+            name = originalName.Substring(index + RegionMarker.Length);
+            return true;
+        }
+    }
 }

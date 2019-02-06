@@ -23,11 +23,9 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 THE SOFTWARE.
 */
 #endregion
-using System.Linq;
+
 using System.Collections.Generic;
-using System.Linq.Expressions;
-using System.Collections.ObjectModel;
-using System.Threading;
+using System.Linq;
 
 namespace System.Abstract.EventSourcing
 {
@@ -37,14 +35,17 @@ namespace System.Abstract.EventSourcing
     public interface IAggregateRoot
     {
         /// <summary>
-        /// Gets the aggregate ID.
+        /// Gets the aggregate Id.
         /// </summary>
-        object AggregateID { get; }
+        /// <value>The aggregate identifier.</value>
+        object AggregateId { get; }
     }
 
     /// <summary>
     /// AggregateRoot
     /// </summary>
+    /// <seealso cref="System.Abstract.EventSourcing.IAggregateRoot" />
+    /// <seealso cref="System.Abstract.EventSourcing.IAggregateRootStateAccessor" />
     public abstract class AggregateRoot : IAggregateRoot, IAggregateRootStateAccessor
     {
         /// <summary>
@@ -55,86 +56,77 @@ namespace System.Abstract.EventSourcing
         IAggregateRootEventDispatcher _eventDispatcher;
         bool _useStorageBasedSequencing;
 
-        private class EmptyAggregateRootEventDispatcher : IAggregateRootEventDispatcher
+        class EmptyAggregateRootEventDispatcher : IAggregateRootEventDispatcher
         {
             public void ApplyEvent(AggregateRoot aggregate, Event e) { }
-            public IEnumerable<Type> GetEventTypes() { return null; }
+            public IEnumerable<Type> GetEventTypes() => null;
         }
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="AggregateRoot"/> class.
+        /// Initializes a new instance of the <see cref="AggregateRoot" /> class.
         /// </summary>
         public AggregateRoot() { }
         /// <summary>
-        /// Initializes a new instance of the <see cref="AggregateRoot"/> class.
+        /// Initializes a new instance of the <see cref="AggregateRoot" /> class.
         /// </summary>
         /// <param name="options">The options.</param>
-        public AggregateRoot(AggregateRootOptions options)
-        {
-            _useStorageBasedSequencing = ((options & AggregateRootOptions.UseStorageBasedSequencing) != 0);
-        }
+        public AggregateRoot(AggregateRootOptions options) =>
+            _useStorageBasedSequencing = (options & AggregateRootOptions.UseStorageBasedSequencing) != 0;
 
         /// <summary>
-        /// Gets or sets the aggregate ID.
+        /// Gets or sets the aggregate Id.
         /// </summary>
-        /// <value>
-        /// The aggregate ID.
-        /// </value>
-        public object AggregateID { get; protected set; }
+        /// <value>The aggregate Id.</value>
+        public object AggregateId { get; protected set; }
+
         /// <summary>
         /// Gets the last event date.
         /// </summary>
+        /// <value>The last event date.</value>
         protected internal DateTime LastEventDate { get; private set; }
+
         /// <summary>
         /// Gets the last event sequence.
         /// </summary>
+        /// <value>The last event sequence.</value>
         protected internal int LastEventSequence { get; private set; }
 
         /// <summary>
         /// Gets or sets the event dispatcher.
         /// </summary>
-        /// <value>
-        /// The event dispatcher.
-        /// </value>
+        /// <value>The event dispatcher.</value>
+        /// <exception cref="ArgumentNullException">value</exception>
         protected IAggregateRootEventDispatcher EventDispatcher
         {
-            get { return _eventDispatcher; }
-            set
-            {
-                if (value == null)
-                    throw new ArgumentNullException("value");
-                _eventDispatcher = value;
-            }
+            get => _eventDispatcher;
+            set => _eventDispatcher = value ?? throw new ArgumentNullException("value");
         }
 
         /// <summary>
         /// Applies the event.
         /// </summary>
         /// <param name="e">The e.</param>
+        /// <exception cref="ArgumentNullException">e</exception>
+        /// <exception cref="InvalidOperationException">EventDispatcher must be set first.</exception>
         protected void ApplyEvent(Event e)
         {
             if (e == null)
                 throw new ArgumentNullException("e");
             if (_eventDispatcher == null)
                 throw new InvalidOperationException("EventDispatcher must be set first.");
-            e.AggregateID = AggregateID;
+            e.AggregateId = AggregateId;
             e.EventDate = DateTime.Now;
             if (!_useStorageBasedSequencing)
                 e.EventSequence = ++LastEventSequence;
             _eventDispatcher.ApplyEvent(this, e);
-            _changes.Add(e); // trackAsChange
+            _changes.Add(e);
         }
 
         /// <summary>
         /// Gets a value indicating whether this instance has changed.
         /// </summary>
-        /// <value>
-        /// 	<c>true</c> if this instance has changed; otherwise, <c>false</c>.
-        /// </value>
-        public bool HasChanged
-        {
-            get { return (_changes.Count > 0); }
-        }
+        /// <value><c>true</c> if this instance has changed; otherwise, <c>false</c>.</value>
+        public bool HasChanged => _changes.Count > 0;
 
         #region Access State
 
@@ -153,7 +145,7 @@ namespace System.Abstract.EventSourcing
             if (lastEvent != null)
             {
                 LastEventDate = lastEvent.EventDate;
-                LastEventSequence = (int)(lastEvent.EventSequence ?? 0);
+                LastEventSequence = lastEvent.EventSequence ?? 0;
                 return true;
             }
             LastEventDate = DateTime.Now;
@@ -161,9 +153,9 @@ namespace System.Abstract.EventSourcing
             return false;
         }
 
-        IEnumerable<Event> IAggregateRootStateAccessor.GetUncommittedChanges() { return _changes; }
+        IEnumerable<Event> IAggregateRootStateAccessor.GetUncommittedChanges() => _changes;
 
-        void IAggregateRootStateAccessor.MarkChangesAsCommitted() { _changes.Clear(); }
+        void IAggregateRootStateAccessor.MarkChangesAsCommitted() => _changes.Clear();
 
         #endregion
     }

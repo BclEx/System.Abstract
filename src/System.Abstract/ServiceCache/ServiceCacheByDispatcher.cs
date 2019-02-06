@@ -53,10 +53,12 @@ namespace System.Abstract
         /// Registration
         /// </summary>
         public IServiceCacheRegistration Registration;
+
         /// <summary>
         /// Values
         /// </summary>
         public object[] Values;
+
         /// <summary>
         /// Header
         /// </summary>

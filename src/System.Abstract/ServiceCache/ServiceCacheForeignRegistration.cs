@@ -32,15 +32,13 @@ namespace System.Abstract
     public class ServiceCacheForeignRegistration : IServiceCacheRegistration
     {
         /// <summary>
-        /// Initializes a new instance of the <see cref="ServiceCacheForeignRegistration"/> class.
+        /// Initializes a new instance of the <see cref="ServiceCacheForeignRegistration" /> class.
         /// </summary>
         /// <param name="name">The name.</param>
-        public ServiceCacheForeignRegistration(string name)
-        {
+        public ServiceCacheForeignRegistration(string name) =>
             Name = name;
-        }
         /// <summary>
-        /// Initializes a new instance of the <see cref="ServiceCacheForeignRegistration"/> class.
+        /// Initializes a new instance of the <see cref="ServiceCacheForeignRegistration" /> class.
         /// </summary>
         /// <param name="name">The name.</param>
         /// <param name="foreignType">Type of the foreign.</param>
@@ -55,47 +53,37 @@ namespace System.Abstract
         /// <summary>
         /// Gets the name of the absolute.
         /// </summary>
-        /// <value>
-        /// The name of the absolute.
-        /// </value>
+        /// <value>The name of the absolute.</value>
         public string AbsoluteName { get; internal set; }
+
         /// <summary>
         /// Gets the use headers.
         /// </summary>
-        /// <value>
-        /// The use headers.
-        /// </value>
+        /// <value>The use headers.</value>
         public bool UseHeaders { get { return false; } }
+
         /// <summary>
         /// Gets the registrar.
         /// </summary>
-        /// <value>
-        /// The registrar.
-        /// </value>
+        /// <value>The registrar.</value>
         public ServiceCacheRegistrar Registrar { get; internal set; }
 
         /// <summary>
         /// Gets or sets the name.
         /// </summary>
-        /// <value>
-        /// The name.
-        /// </value>
+        /// <value>The name.</value>
         public string Name { get; set; }
 
         /// <summary>
         /// Gets or sets the foreign type.
         /// </summary>
-        /// <value>
-        /// The type of the foreign.
-        /// </value>
+        /// <value>The type of the foreign.</value>
         public Type ForeignType { get; set; }
 
         /// <summary>
         /// Gets or sets the name of the foreign.
         /// </summary>
-        /// <value>
-        /// The name of the foreign.
-        /// </value>
+        /// <value>The name of the foreign.</value>
         public string ForeignName { get; set; }
 
         /// <summary>

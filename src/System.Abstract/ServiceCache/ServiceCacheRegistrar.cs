@@ -23,6 +23,7 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 THE SOFTWARE.
 */
 #endregion
+
 using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
@@ -33,11 +34,9 @@ namespace System.Abstract
     /// <summary>
     /// ServiceCacheRegistrar
     /// </summary>
-    /// <remarks>
-    /// [Wrap]SC\\{Anchor.FullName}::{Registration.Name}[#]
+    /// <remarks>[Wrap]SC\\{Anchor.FullName}::{Registration.Name}[#]
     /// ServiceCacheRegistrar._namePrefix - SC\\{Anchor.FullName}::
-    /// Registration.AbsoluteName = SC\\{Anchor.FullName}::{Registration.Name}
-    /// </remarks>
+    /// Registration.AbsoluteName = SC\\{Anchor.FullName}::{Registration.Name}</remarks>
     public class ServiceCacheRegistrar
     {
         static ReaderWriterLockSlim _rwLock = new ReaderWriterLockSlim();
@@ -62,25 +61,23 @@ namespace System.Abstract
         /// Gets this instance.
         /// </summary>
         /// <typeparam name="TAnchor">The type of the anchor.</typeparam>
-        /// <returns></returns>
-        public static ServiceCacheRegistrar Get<TAnchor>() { return Get(typeof(TAnchor)); }
+        /// <returns>ServiceCacheRegistrar.</returns>
+        public static ServiceCacheRegistrar Get<TAnchor>() =>
+            Get(typeof(TAnchor));
         /// <summary>
         /// Gets the specified anchor type.
         /// </summary>
         /// <param name="anchorType">Type of the anchor.</param>
-        /// <returns></returns>
+        /// <returns>ServiceCacheRegistrar.</returns>
         public static ServiceCacheRegistrar Get(Type anchorType)
-        {
-            ServiceCacheRegistrar registrar;
-            TryGet(anchorType, out registrar, true);
-            return registrar;
-        }
+        { TryGet(anchorType, out var registrar, true); return registrar; }
 
         /// <summary>
         /// Registers all below.
         /// </summary>
         /// <typeparam name="T"></typeparam>
-        public static void RegisterAllBelow<T>() { RegisterAllBelow(typeof(T)); }
+        public static void RegisterAllBelow<T>() =>
+            RegisterAllBelow(typeof(T));
         /// <summary>
         /// Registers all below.
         /// </summary>
@@ -102,9 +99,7 @@ namespace System.Abstract
         /// <summary>
         /// Gets the type of the anchor.
         /// </summary>
-        /// <value>
-        /// The type of the anchor.
-        /// </value>
+        /// <value>The type of the anchor.</value>
         public Type AnchorType { get; private set; }
 
         /// <summary>
@@ -113,7 +108,8 @@ namespace System.Abstract
         /// <param name="name">The registration name.</param>
         /// <param name="builder">The builder.</param>
         /// <param name="cacheTags">The cache tags.</param>
-        public void Register(string name, CacheItemBuilder builder, params string[] cacheTags) { Register(new ServiceCacheRegistration(name, new CacheItemPolicy(60), builder, cacheTags)); }
+        public void Register(string name, CacheItemBuilder builder, params string[] cacheTags) =>
+            Register(new ServiceCacheRegistration(name, new CacheItemPolicy(60), builder, cacheTags));
         /// <summary>
         /// Registers the specified registration.
         /// </summary>
@@ -121,7 +117,8 @@ namespace System.Abstract
         /// <param name="minuteTimeout">The minute timeout.</param>
         /// <param name="builder">The builder.</param>
         /// <param name="cacheTags">The cache tags.</param>
-        public void Register(string name, int minuteTimeout, CacheItemBuilder builder, params string[] cacheTags) { Register(new ServiceCacheRegistration(name, new CacheItemPolicy(minuteTimeout), builder, cacheTags)); }
+        public void Register(string name, int minuteTimeout, CacheItemBuilder builder, params string[] cacheTags) =>
+            Register(new ServiceCacheRegistration(name, new CacheItemPolicy(minuteTimeout), builder, cacheTags));
         /// <summary>
         /// Registers the specified registration.
         /// </summary>
@@ -129,15 +126,23 @@ namespace System.Abstract
         /// <param name="itemPolicy">The cache command.</param>
         /// <param name="builder">The builder.</param>
         /// <param name="cacheTags">The cache tags.</param>
-        public void Register(string name, CacheItemPolicy itemPolicy, CacheItemBuilder builder, params string[] cacheTags) { Register(new ServiceCacheRegistration(name, itemPolicy, builder, cacheTags)); }
+        public void Register(string name, CacheItemPolicy itemPolicy, CacheItemBuilder builder, params string[] cacheTags) =>
+            Register(new ServiceCacheRegistration(name, itemPolicy, builder, cacheTags));
         /// <summary>
         /// Registers the specified registration.
         /// </summary>
         /// <param name="registration">The registration.</param>
+        /// <exception cref="ArgumentNullException">registration
+        /// or
+        /// registration.Name</exception>
+        /// <exception cref="InvalidOperationException"></exception>
+        /// <exception cref="ArgumentException">registration
+        /// or
+        /// registration</exception>
         public void Register(IServiceCacheRegistration registration)
         {
             if (registration == null)
-                throw new ArgumentNullException("registration");
+                throw new ArgumentNullException(nameof(registration));
             _setRwLock.EnterWriteLock();
             try
             {
@@ -146,11 +151,11 @@ namespace System.Abstract
                 // add
                 var registrationName = registration.Name;
                 if (string.IsNullOrEmpty(registrationName))
-                    throw new ArgumentNullException("registration.Name");
+                    throw new ArgumentNullException(nameof(registration.Name));
                 if (registrationName.IndexOf("::") > -1)
-                    throw new ArgumentException(string.Format(Local.ScopeCharacterNotAllowedA, registrationName), "registration");
+                    throw new ArgumentException(string.Format(Local.ScopeCharacterNotAllowedA, registrationName), nameof(registration));
                 if (_setAsName.ContainsKey(registrationName))
-                    throw new ArgumentException(string.Format(Local.RedefineNameA, registrationName), "registration");
+                    throw new ArgumentException(string.Format(Local.RedefineNameA, registrationName), nameof(registration));
                 _setAsName.Add(registrationName, registration);
                 _set.Add(registration);
                 // link-in
@@ -177,9 +182,7 @@ namespace System.Abstract
         /// Determines whether the specified key contains key.
         /// </summary>
         /// <param name="registration">The registration.</param>
-        /// <returns>
-        ///   <c>true</c> if the specified key contains key; otherwise, <c>false</c>.
-        /// </returns>
+        /// <returns><c>true</c> if the specified key contains key; otherwise, <c>false</c>.</returns>
         public bool Contains(IServiceCacheRegistration registration)
         {
             _setRwLock.EnterReadLock();
@@ -190,9 +193,7 @@ namespace System.Abstract
         /// Determines whether the specified name has been registered.
         /// </summary>
         /// <param name="name">The name.</param>
-        /// <returns>
-        ///   <c>true</c> if the specified name has been registered; otherwise, <c>false</c>.
-        /// </returns>
+        /// <returns><c>true</c> if the specified name has been registered; otherwise, <c>false</c>.</returns>
         public bool Contains(string name)
         {
             _setRwLock.EnterReadLock();
@@ -204,7 +205,7 @@ namespace System.Abstract
         /// Removes the specified registration.
         /// </summary>
         /// <param name="registration">The registration.</param>
-        /// <returns></returns>
+        /// <returns><c>true</c> if XXXX, <c>false</c> otherwise.</returns>
         public bool Remove(IServiceCacheRegistration registration)
         {
             _setRwLock.EnterWriteLock();
@@ -215,7 +216,7 @@ namespace System.Abstract
         /// Removes the specified registration.
         /// </summary>
         /// <param name="name">The registration name.</param>
-        /// <returns></returns>
+        /// <returns><c>true</c> if XXXX, <c>false</c> otherwise.</returns>
         public bool Remove(string name)
         {
             _setRwLock.EnterWriteLock();
@@ -223,10 +224,11 @@ namespace System.Abstract
             finally { _setRwLock.ExitWriteLock(); }
         }
 
-        internal IEnumerable<IServiceCacheRegistration> All
-        {
-            get { return _set; }
-        }
+        /// <summary>
+        /// Gets all.
+        /// </summary>
+        /// <value>All.</value>
+        internal IEnumerable<IServiceCacheRegistration> All => _set;
 
         /// <summary>
         /// Tries the get.
@@ -234,7 +236,8 @@ namespace System.Abstract
         /// <param name="anchorType">Type of the anchor.</param>
         /// <param name="registrar">The registrar.</param>
         /// <param name="createIfRequired">if set to <c>true</c> [create if required].</param>
-        /// <returns></returns>
+        /// <returns><c>true</c> if XXXX, <c>false</c> otherwise.</returns>
+        /// <exception cref="ArgumentNullException">anchorType</exception>
         public static bool TryGet(Type anchorType, out ServiceCacheRegistrar registrar, bool createIfRequired)
         {
             if (anchorType == null)
@@ -267,7 +270,8 @@ namespace System.Abstract
         /// <param name="registration">The registration.</param>
         /// <param name="recurses">The recurses.</param>
         /// <param name="foundRegistration">The found registration.</param>
-        /// <returns></returns>
+        /// <returns><c>true</c> if XXXX, <c>false</c> otherwise.</returns>
+        /// <exception cref="InvalidOperationException"></exception>
         public static bool TryGetValue(IServiceCacheRegistration registration, ref int recurses, out IServiceCacheRegistration foundRegistration)
         {
             _rwLock.EnterReadLock();
@@ -277,8 +281,7 @@ namespace System.Abstract
                 if (registrar != null)
                 {
                     // local check
-                    var foreignRegistration = (registration as ServiceCacheForeignRegistration);
-                    if (foreignRegistration == null)
+                    if (!(registration is ServiceCacheForeignRegistration foreignRegistration))
                     {
                         foundRegistration = registration;
                         return true;
@@ -304,14 +307,14 @@ namespace System.Abstract
         /// <param name="registrationName">Name of the registration.</param>
         /// <param name="recurses">The recurses.</param>
         /// <param name="foundRegistration">The found registration.</param>
-        /// <returns></returns>
+        /// <returns><c>true</c> if XXXX, <c>false</c> otherwise.</returns>
+        /// <exception cref="InvalidOperationException"></exception>
         public static bool TryGetValue(Type anchorType, string registrationName, ref int recurses, out IServiceCacheRegistration foundRegistration)
         {
             _rwLock.EnterReadLock();
             try
             {
-                ServiceCacheRegistrar registrar;
-                if (_items.TryGetValue(anchorType, out registrar))
+                if (_items.TryGetValue(anchorType, out var registrar))
                 {
                     // registration locals
                     var setRwLock = registrar._setRwLock;
@@ -319,12 +322,10 @@ namespace System.Abstract
                     setRwLock.EnterReadLock();
                     try
                     {
-                        IServiceCacheRegistration registration;
-                        if (setAsId.TryGetValue(registrationName, out registration))
+                        if (setAsId.TryGetValue(registrationName, out var registration))
                         {
                             // local check
-                            var foreignRegistration = (registration as ServiceCacheForeignRegistration);
-                            if (foreignRegistration == null)
+                            if (!(registration is ServiceCacheForeignRegistration foreignRegistration))
                             {
                                 foundRegistration = registration;
                                 return true;

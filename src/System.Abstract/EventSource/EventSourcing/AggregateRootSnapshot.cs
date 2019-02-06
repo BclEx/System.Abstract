@@ -36,36 +36,32 @@ namespace System.Abstract.EventSourcing
         /// </summary>
         public AggregateRootSnapshot() { }
         /// <summary>
-        /// Initializes a new instance of the <see cref="AggregateRootSnapshot"/> class.
+        /// Initializes a new instance of the <see cref="AggregateRootSnapshot" /> class.
         /// </summary>
         /// <param name="aggregate">The aggregate.</param>
         public AggregateRootSnapshot(AggregateRoot aggregate)
         {
-            AggregateID = aggregate.AggregateID;
+            AggregateId = aggregate.AggregateId;
             LastEventDate = aggregate.LastEventDate;
             LastEventSequence = aggregate.LastEventSequence;
         }
 
         /// <summary>
-        /// Gets or sets the aggregate ID.
+        /// Gets or sets the aggregate Id.
         /// </summary>
-        /// <value>
-        /// The aggregate ID.
-        /// </value>
-        public object AggregateID { get; set; }
+        /// <value>The aggregate Id.</value>
+        public object AggregateId { get; set; }
+
         /// <summary>
         /// Gets or sets the last event date.
         /// </summary>
-        /// <value>
-        /// The last event date.
-        /// </value>
+        /// <value>The last event date.</value>
         public DateTime LastEventDate { get; set; }
+
         /// <summary>
         /// Gets or sets the last event sequence.
         /// </summary>
-        /// <value>
-        /// The last event sequence.
-        /// </value>
+        /// <value>The last event sequence.</value>
         public int LastEventSequence { get; set; }
     }
 }

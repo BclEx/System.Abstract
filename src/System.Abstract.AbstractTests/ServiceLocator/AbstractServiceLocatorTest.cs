@@ -9,6 +9,7 @@ namespace System.Abstract.AbstractTests.ServiceLocator
     {
         protected IServiceLocator Locator { get; private set; }
         protected IServiceRegistrar Registrar { get; private set; }
+
         protected abstract IServiceLocator CreateServiceLocator();
 
         public AbstractServiceLocatorTest()

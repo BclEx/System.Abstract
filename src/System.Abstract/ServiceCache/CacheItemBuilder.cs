@@ -27,7 +27,10 @@ THE SOFTWARE.
 namespace System.Abstract
 {
     /// <summary>
-	/// CacheItemBuilder
+    /// CacheItemBuilder
     /// </summary>
+    /// <param name="tag">The tag.</param>
+    /// <param name="values">The values.</param>
+    /// <returns>System.Object.</returns>
     public delegate object CacheItemBuilder(object tag, object[] values);
 }
