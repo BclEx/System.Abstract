@@ -23,6 +23,7 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 THE SOFTWARE.
 */
 #endregion
+
 using System;
 using System.Abstract;
 using System.Collections.Generic;
@@ -34,6 +35,7 @@ namespace Contoso.Abstract
     /// <summary>
     /// WcfSerDes
     /// </summary>
+    /// <seealso cref="System.Abstract.ISerDes" />
     public class WcfSerDes : ISerDes
     {
         /// <summary>
@@ -42,19 +44,17 @@ namespace Contoso.Abstract
         /// <typeparam name="T"></typeparam>
         /// <param name="type">The type.</param>
         /// <param name="s">The s.</param>
-        /// <returns></returns>
-        /// <exception cref="System.ArgumentNullException">
-        /// type
+        /// <returns>T.</returns>
+        /// <exception cref="System.ArgumentNullException">type
         /// or
-        /// s
-        /// </exception>
+        /// s</exception>
         public T Des<T>(Type type, Stream s)
             where T : class
         {
             if (type == null)
-                throw new ArgumentNullException("type");
+                throw new ArgumentNullException(nameof(type));
             if (s == null)
-                throw new ArgumentNullException("s");
+                throw new ArgumentNullException(nameof(s));
             var serializer = new DataContractSerializer(type);
             return (serializer.ReadObject(s) as T);
         }
@@ -65,19 +65,17 @@ namespace Contoso.Abstract
         /// <typeparam name="T"></typeparam>
         /// <param name="type">The type.</param>
         /// <param name="s">The s.</param>
-        /// <returns></returns>
-        /// <exception cref="System.ArgumentNullException">
-        /// type
+        /// <returns>IEnumerable&lt;T&gt;.</returns>
+        /// <exception cref="System.ArgumentNullException">type
         /// or
-        /// s
-        /// </exception>
+        /// s</exception>
         public IEnumerable<T> DesMany<T>(Type type, Stream s)
             where T : class
         {
             if (type == null)
-                throw new ArgumentNullException("type");
+                throw new ArgumentNullException(nameof(type));
             if (s == null)
-                throw new ArgumentNullException("s");
+                throw new ArgumentNullException(nameof(s));
             var serializer = new DataContractSerializer(type);
             return (serializer.ReadObject(s) as IEnumerable<T>);
         }
@@ -89,22 +87,20 @@ namespace Contoso.Abstract
         /// <param name="type">The type.</param>
         /// <param name="s">The s.</param>
         /// <param name="graph">The graph.</param>
-        /// <exception cref="System.ArgumentNullException">
-        /// type
+        /// <exception cref="System.ArgumentNullException">type
         /// or
         /// s
         /// or
-        /// graph
-        /// </exception>
+        /// graph</exception>
         public void Ser<T>(Type type, Stream s, T graph)
             where T : class
         {
             if (type == null)
-                throw new ArgumentNullException("type");
+                throw new ArgumentNullException(nameof(type));
             if (s == null)
-                throw new ArgumentNullException("s");
+                throw new ArgumentNullException(nameof(s));
             if (graph == null)
-                throw new ArgumentNullException("graph");
+                throw new ArgumentNullException(nameof(graph));
             var serializer = new DataContractSerializer(type);
             serializer.WriteObject(s, graph);
         }
@@ -116,22 +112,20 @@ namespace Contoso.Abstract
         /// <param name="type">The type.</param>
         /// <param name="s">The s.</param>
         /// <param name="graphs">The graphs.</param>
-        /// <exception cref="System.ArgumentNullException">
-        /// type
+        /// <exception cref="System.ArgumentNullException">type
         /// or
         /// s
         /// or
-        /// graphs
-        /// </exception>
+        /// graphs</exception>
         public void SerMany<T>(Type type, Stream s, IEnumerable<T> graphs)
             where T : class
         {
             if (type == null)
-                throw new ArgumentNullException("type");
+                throw new ArgumentNullException(nameof(type));
             if (s == null)
-                throw new ArgumentNullException("s");
+                throw new ArgumentNullException(nameof(s));
             if (graphs == null)
-                throw new ArgumentNullException("graphs");
+                throw new ArgumentNullException(nameof(graphs));
             var serializer = new DataContractSerializer(type);
             serializer.WriteObject(s, graphs);
         }

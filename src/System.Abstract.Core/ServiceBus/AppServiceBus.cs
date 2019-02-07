@@ -56,40 +56,46 @@ namespace Contoso.Abstract
         IAppServiceBus Add(Type messageHandlerType);
     }
 
+    /// <summary>
+    /// Class AppServiceBus.
+    /// </summary>
+    /// <seealso cref="Contoso.Abstract.IAppServiceBus" />
     /// <remark>
     /// An application service bus implementation
     /// </remark>
     /// <example>
-    /// <code>
-    /// ServiceBusManager.SetProvider(() => new AppServiceBus()
-    ///         .Add(Handler1)
-    ///         .Add(Handler2))
-    ///     .RegisterWithServiceLocator();
-    /// ServiceBusManager.Send&lt;Message1&gt;(x => x.Body = "Message");
-    /// </code>
+    ///  <code>
+    ///ServiceBusManager.SetProvider(() =&gt; new AppServiceBus()
+    ///.Add(Handler1)
+    ///.Add(Handler2))
+    ///.RegisterWithServiceLocator();
+    ///ServiceBusManager.Send&lt;Message1&gt;(x =&gt; x.Body = "Message");
+    ///</code>
     /// </example>
     public class AppServiceBus : Collection<AppServiceBusRegistration>, IAppServiceBus, ServiceBusManager.IRegisterWithLocator
     {
         readonly Func<Type, IServiceMessageHandler<object>> _messageHandlerFactory;
         readonly Func<IServiceLocator> _locator;
 
-        static AppServiceBus() => ServiceBusManager.EnsureRegistration(); 
         /// <summary>
-        /// Initializes a new instance of the <see cref="AppServiceBus"/> class.
+        /// Initializes a new instance of the <see cref="AppServiceBus" /> class.
         /// </summary>
         public AppServiceBus()
             : this(t => (IServiceMessageHandler<object>)Activator.CreateInstance(t), () => ServiceLocatorManager.Current) { }
         /// <summary>
-        /// Initializes a new instance of the <see cref="AppServiceBus"/> class.
+        /// Initializes a new instance of the <see cref="AppServiceBus" /> class.
         /// </summary>
         /// <param name="messageHandlerFactory">The message handler factory.</param>
         public AppServiceBus(Func<Type, IServiceMessageHandler<object>> messageHandlerFactory)
             : this(messageHandlerFactory, () => ServiceLocatorManager.Current) { }
         /// <summary>
-        /// Initializes a new instance of the <see cref="AppServiceBus"/> class.
+        /// Initializes a new instance of the <see cref="AppServiceBus" /> class.
         /// </summary>
         /// <param name="messageHandlerFactory">The message handler factory.</param>
         /// <param name="locator">The locator.</param>
+        /// <exception cref="ArgumentNullException">messageHandlerFactory
+        /// or
+        /// locator</exception>
         public AppServiceBus(Func<Type, IServiceMessageHandler<object>> messageHandlerFactory, Func<IServiceLocator> locator)
         {
             _messageHandlerFactory = messageHandlerFactory ?? throw new ArgumentNullException(nameof(messageHandlerFactory));
@@ -159,7 +165,7 @@ namespace Contoso.Abstract
         public IServiceBusCallback Send(IServiceBusEndpoint destination, params object[] messages)
         {
             if (messages == null)
-                throw new ArgumentNullException("messages");
+                throw new ArgumentNullException(nameof(messages));
             foreach (var message in messages)
                 foreach (var type in GetTypesOfMessageHandlers(message.GetType()))
                     HandleTheMessage(type, message);
@@ -204,6 +210,6 @@ namespace Contoso.Abstract
         /// <param name="value">The value.</param>
         /// <exception cref="NotImplementedException"></exception>
         public void Return<T>(T value) =>
-            throw new NotImplementedException(); 
+            throw new NotImplementedException();
     }
 }

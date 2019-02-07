@@ -23,6 +23,7 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 THE SOFTWARE.
 */
 #endregion
+
 using System.Collections.Generic;
 using System.IO;
 
@@ -39,20 +40,18 @@ namespace System.Abstract
         /// <typeparam name="T"></typeparam>
         /// <param name="type">The type.</param>
         /// <param name="s">The s.</param>
-        /// <returns></returns>
-        /// <exception cref="System.ArgumentNullException">
-        /// type
+        /// <returns>T.</returns>
+        /// <exception cref="System.ArgumentNullException">type
         /// or
-        /// s
-        /// </exception>
+        /// s</exception>
         /// <exception cref="System.NotImplementedException"></exception>
         public T Des<T>(Type type, Stream s)
             where T : class
         {
             if (type == null)
-                throw new ArgumentNullException("type");
+                throw new ArgumentNullException(nameof(type));
             if (s == null)
-                throw new ArgumentNullException("s");
+                throw new ArgumentNullException(nameof(s));
             throw new NotImplementedException();
         }
 
@@ -62,20 +61,18 @@ namespace System.Abstract
         /// <typeparam name="T"></typeparam>
         /// <param name="type">The type.</param>
         /// <param name="s">The s.</param>
-        /// <returns></returns>
-        /// <exception cref="System.ArgumentNullException">
-        /// type
+        /// <returns>IEnumerable&lt;T&gt;.</returns>
+        /// <exception cref="System.ArgumentNullException">type
         /// or
-        /// s
-        /// </exception>
+        /// s</exception>
         /// <exception cref="System.NotImplementedException"></exception>
         public IEnumerable<T> DesMany<T>(Type type, Stream s)
             where T : class
         {
             if (type == null)
-                throw new ArgumentNullException("type");
+                throw new ArgumentNullException(nameof(type));
             if (s == null)
-                throw new ArgumentNullException("s");
+                throw new ArgumentNullException(nameof(s));
             throw new NotImplementedException();
         }
 
@@ -86,24 +83,22 @@ namespace System.Abstract
         /// <param name="type">The type.</param>
         /// <param name="s">The s.</param>
         /// <param name="graph">The graph.</param>
-        /// <exception cref="System.ArgumentNullException">
-        /// type
+        /// <exception cref="System.ArgumentNullException">type
         /// or
         /// s
         /// or
-        /// graph
-        /// </exception>
+        /// graph</exception>
         /// <exception cref="System.NotImplementedException"></exception>
         public void Ser<T>(Type type, Stream s, T graph)
             where T : class
         {
             if (type == null)
-                throw new ArgumentNullException("type");
+                throw new ArgumentNullException(nameof(type));
             if (s == null)
-                throw new ArgumentNullException("s");
+                throw new ArgumentNullException(nameof(s));
             if (graph == null)
-                throw new ArgumentNullException("graph");
-            throw new NotImplementedException();;
+                throw new ArgumentNullException(nameof(graph));
+            throw new NotImplementedException();
         }
 
         /// <summary>
@@ -125,11 +120,11 @@ namespace System.Abstract
             where T : class
         {
             if (type == null)
-                throw new ArgumentNullException("type");
+                throw new ArgumentNullException(nameof(type));
             if (s == null)
-                throw new ArgumentNullException("s");
+                throw new ArgumentNullException(nameof(s));
             if (graphs == null)
-                throw new ArgumentNullException("graphs");
+                throw new ArgumentNullException(nameof(graphs));
             throw new NotImplementedException();
         }
     }

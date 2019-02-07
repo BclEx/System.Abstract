@@ -23,6 +23,7 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 THE SOFTWARE.
 */
 #endregion
+
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
@@ -33,6 +34,7 @@ namespace System.Abstract
     /// <summary>
     /// BinarySerDes
     /// </summary>
+    /// <seealso cref="System.Abstract.ISerDes" />
     public class BinarySerDes : ISerDes
     {
         readonly BinaryFormatter _binaryFormatter = new BinaryFormatter();
@@ -43,20 +45,18 @@ namespace System.Abstract
         /// <typeparam name="T"></typeparam>
         /// <param name="type">The type.</param>
         /// <param name="s">The s.</param>
-        /// <returns></returns>
-        /// <exception cref="System.ArgumentNullException">
-        /// type
+        /// <returns>T.</returns>
+        /// <exception cref="System.ArgumentNullException">type
         /// or
-        /// s
-        /// </exception>
+        /// s</exception>
         public T Des<T>(Type type, Stream s)
             where T : class
         {
             if (type == null)
-                throw new ArgumentNullException("type");
+                throw new ArgumentNullException(nameof(type));
             if (s == null)
-                throw new ArgumentNullException("s");
-            return (_binaryFormatter.Deserialize(s) as T);
+                throw new ArgumentNullException(nameof(s));
+            return _binaryFormatter.Deserialize(s) as T;
         }
 
         /// <summary>
@@ -65,19 +65,17 @@ namespace System.Abstract
         /// <typeparam name="T"></typeparam>
         /// <param name="type">The type.</param>
         /// <param name="s">The s.</param>
-        /// <returns></returns>
-        /// <exception cref="System.ArgumentNullException">
-        /// type
+        /// <returns>IEnumerable&lt;T&gt;.</returns>
+        /// <exception cref="System.ArgumentNullException">type
         /// or
-        /// s
-        /// </exception>
+        /// s</exception>
         public IEnumerable<T> DesMany<T>(Type type, Stream s)
             where T : class
         {
             if (type == null)
-                throw new ArgumentNullException("type");
+                throw new ArgumentNullException(nameof(type));
             if (s == null)
-                throw new ArgumentNullException("s");
+                throw new ArgumentNullException(nameof(s));
             var graphs = (_binaryFormatter.Deserialize(s) as List<object>);
             if (graphs == null)
                 return null;
@@ -91,22 +89,20 @@ namespace System.Abstract
         /// <param name="type">The type.</param>
         /// <param name="s">The s.</param>
         /// <param name="graph">The graph.</param>
-        /// <exception cref="System.ArgumentNullException">
-        /// type
+        /// <exception cref="System.ArgumentNullException">type
         /// or
         /// s
         /// or
-        /// graph
-        /// </exception>
+        /// graph</exception>
         public void Ser<T>(Type type, Stream s, T graph)
             where T : class
         {
             if (type == null)
-                throw new ArgumentNullException("type");
+                throw new ArgumentNullException(nameof(type));
             if (s == null)
-                throw new ArgumentNullException("s");
+                throw new ArgumentNullException(nameof(s));
             if (graph == null)
-                throw new ArgumentNullException("graph");
+                throw new ArgumentNullException(nameof(graph));
             _binaryFormatter.Serialize(s, graph);
         }
 
@@ -117,22 +113,20 @@ namespace System.Abstract
         /// <param name="type">The type.</param>
         /// <param name="s">The s.</param>
         /// <param name="graphs">The graphs.</param>
-        /// <exception cref="System.ArgumentNullException">
-        /// type
+        /// <exception cref="System.ArgumentNullException">type
         /// or
         /// s
         /// or
-        /// graphs
-        /// </exception>
+        /// graphs</exception>
         public void SerMany<T>(Type type, Stream s, IEnumerable<T> graphs)
             where T : class
         {
             if (type == null)
-                throw new ArgumentNullException("type");
+                throw new ArgumentNullException(nameof(type));
             if (s == null)
-                throw new ArgumentNullException("s");
+                throw new ArgumentNullException(nameof(s));
             if (graphs == null)
-                throw new ArgumentNullException("graphs");
+                throw new ArgumentNullException(nameof(graphs));
             var x = new List<object>(graphs.ToArray());
             _binaryFormatter.Serialize(s, x);
         }

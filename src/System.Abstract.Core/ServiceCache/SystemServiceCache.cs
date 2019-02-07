@@ -23,19 +23,20 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 THE SOFTWARE.
 */
 #endregion
-#if NET45
+
+#if !NET35
 using System;
-using System.Linq;
 using System.Abstract;
 using System.Collections.Generic;
+using System.Linq;
 using SystemCaching = System.Runtime.Caching;
-using System.Collections.ObjectModel;
 
 namespace Contoso.Abstract
 {
     /// <summary>
     /// ISystemServiceCache
     /// </summary>
+    /// <seealso cref="System.Abstract.IServiceCache" />
     public interface ISystemServiceCache : IServiceCache
     {
         /// <summary>
@@ -55,22 +56,21 @@ namespace Contoso.Abstract
     /// <summary>
     /// SystemServiceCache
     /// </summary>
-    public class SystemServiceCache : ISystemServiceCache, ServiceCacheManager.ISetupRegistration
+    public class SystemServiceCache : ISystemServiceCache, ServiceCacheManager.IRegisterWithLocator
     {
-        static SystemServiceCache() { ServiceCacheManager.EnsureRegistration(); }
         /// <summary>
-        /// Initializes a new instance of the <see cref="SystemServiceCache"/> class.
+        /// Initializes a new instance of the <see cref="SystemServiceCache" /> class.
         /// </summary>
         public SystemServiceCache()
             : this(SystemCaching.MemoryCache.Default) { }
         /// <summary>
-        /// Initializes a new instance of the <see cref="SystemServiceCache"/> class.
+        /// Initializes a new instance of the <see cref="SystemServiceCache" /> class.
         /// </summary>
         /// <param name="name">The name.</param>
         public SystemServiceCache(string name)
             : this(new SystemCaching.MemoryCache(name)) { }
         /// <summary>
-        /// Initializes a new instance of the <see cref="SystemServiceCache"/> class.
+        /// Initializes a new instance of the <see cref="SystemServiceCache" /> class.
         /// </summary>
         /// <param name="cache">The cache.</param>
         public SystemServiceCache(SystemCaching.ObjectCache cache)
@@ -79,10 +79,8 @@ namespace Contoso.Abstract
             Settings = new ServiceCacheSettings(new DefaultFileTouchableCacheItem(this, new DefaultTouchableCacheItem(this, null)));
         }
 
-        Action<IServiceLocator, string> ServiceCacheManager.ISetupRegistration.DefaultServiceRegistrar
-        {
-            get { return (locator, name) => ServiceCacheManager.RegisterInstance<ISystemServiceCache>(this, locator, name); }
-        }
+        Action<IServiceLocator, string> ServiceCacheManager.IRegisterWithLocator.RegisterWithLocator =>
+            (locator, name) => ServiceCacheManager.RegisterInstance<ISystemServiceCache>(this, name, locator);
 
         /// <summary>
         /// Gets the service object of the specified type.
@@ -98,8 +96,8 @@ namespace Contoso.Abstract
         /// </summary>
         public object this[string name]
         {
-            get { return Get(null, name); }
-            set { Set(null, name, CacheItemPolicy.Default, value, ServiceCacheByDispatcher.Empty); }
+            get => Get(null, name);
+            set => Set(null, name, CacheItemPolicy.Default, value, ServiceCacheByDispatcher.Empty);
         }
 
         /// <summary>
@@ -110,16 +108,14 @@ namespace Contoso.Abstract
         /// <param name="itemPolicy">The item policy.</param>
         /// <param name="value">The value.</param>
         /// <param name="dispatch">The dispatch.</param>
-        /// <returns></returns>
+        /// <returns>System.Object.</returns>
+        /// <exception cref="System.ArgumentNullException">itemPolicy</exception>
         public object Add(object tag, string name, CacheItemPolicy itemPolicy, object value, ServiceCacheByDispatcher dispatch)
         {
             if (itemPolicy == null)
-                throw new ArgumentNullException("itemPolicy");
-            var updateCallback = itemPolicy.UpdateCallback;
-            if (updateCallback != null)
-                updateCallback(name, value);
-            string regionName;
-            Settings.TryGetRegion(ref name, out regionName);
+                throw new ArgumentNullException(nameof(itemPolicy));
+            itemPolicy.UpdateCallback?.Invoke(name, value);
+            Settings.TryGetRegion(ref name, out var regionName);
             //
             value = Cache.Add(name, value, GetCacheDependency(tag, itemPolicy, dispatch), regionName);
             var registration = dispatch.Registration;
@@ -139,13 +135,10 @@ namespace Contoso.Abstract
         /// </summary>
         /// <param name="tag">The tag.</param>
         /// <param name="name">The name.</param>
-        /// <returns>
-        /// The cached item.
-        /// </returns>
+        /// <returns>The cached item.</returns>
         public object Get(object tag, string name)
         {
-            string regionName;
-            Settings.TryGetRegion(ref name, out regionName);
+            Settings.TryGetRegion(ref name, out var regionName);
             return Cache.Get(name, regionName);
         }
         /// <summary>
@@ -155,15 +148,14 @@ namespace Contoso.Abstract
         /// <param name="name">The name.</param>
         /// <param name="registration">The registration.</param>
         /// <param name="header">The header.</param>
-        /// <returns></returns>
-        /// <exception cref="System.ArgumentNullException"></exception>
+        /// <returns>System.Object.</returns>
+        /// <exception cref="System.ArgumentNullException">registration</exception>
         public object Get(object tag, string name, IServiceCacheRegistration registration, out CacheItemHeader header)
         {
             if (registration == null)
-                throw new ArgumentNullException("registration");
-            string regionName;
-            Settings.TryGetRegion(ref name, out regionName);
-            header = (registration.UseHeaders ? (CacheItemHeader)Cache.Get(name + "#", regionName) : null);
+                throw new ArgumentNullException(nameof(registration));
+            Settings.TryGetRegion(ref name, out var regionName);
+            header = registration.UseHeaders ? (CacheItemHeader)Cache.Get(name + "#", regionName) : null;
             return Cache.Get(name, regionName);
         }
         /// <summary>
@@ -171,27 +163,30 @@ namespace Contoso.Abstract
         /// </summary>
         /// <param name="tag">The tag.</param>
         /// <param name="names">The names.</param>
-        /// <returns></returns>
-        public object Get(object tag, IEnumerable<string> names) { return Cache.GetValues(null, names.ToArray()); }
+        /// <returns>System.Object.</returns>
+        public object Get(object tag, IEnumerable<string> names) =>
+            Cache.GetValues(null, names.ToArray());
         /// <summary>
         /// Gets the specified tag.
         /// </summary>
         /// <param name="tag">The tag.</param>
         /// <param name="regionName">Name of the region.</param>
         /// <param name="names">The names.</param>
-        /// <returns></returns>
-        public object Get(object tag, string regionName, IEnumerable<string> names) { return Cache.GetValues(regionName, names.ToArray()); }
+        /// <returns>System.Object.</returns>
+        public object Get(object tag, string regionName, IEnumerable<string> names) =>
+            Cache.GetValues(regionName, names.ToArray());
         /// <summary>
         /// Gets the specified registration.
         /// </summary>
         /// <param name="tag">The tag.</param>
         /// <param name="registration">The registration.</param>
-        /// <returns></returns>
+        /// <returns>IEnumerable&lt;CacheItemHeader&gt;.</returns>
+        /// <exception cref="System.ArgumentNullException">registration</exception>
         /// <exception cref="System.NotImplementedException"></exception>
         public IEnumerable<CacheItemHeader> Get(object tag, IServiceCacheRegistration registration)
         {
             if (registration == null)
-                throw new ArgumentNullException("registration");
+                throw new ArgumentNullException(nameof(registration));
             throw new NotImplementedException();
         }
 
@@ -201,11 +196,10 @@ namespace Contoso.Abstract
         /// <param name="tag">The tag.</param>
         /// <param name="name">The name.</param>
         /// <param name="value">The value.</param>
-        /// <returns></returns>
+        /// <returns><c>true</c> if XXXX, <c>false</c> otherwise.</returns>
         public bool TryGet(object tag, string name, out object value)
         {
-            string regionName;
-            Settings.TryGetRegion(ref name, out regionName);
+            Settings.TryGetRegion(ref name, out var regionName);
             var cacheItem = Cache.GetCacheItem(name, regionName);
             if (cacheItem != null)
             {
@@ -224,16 +218,14 @@ namespace Contoso.Abstract
         /// <param name="itemPolicy">The itemPolicy object.</param>
         /// <param name="value">The value to store in cache.</param>
         /// <param name="dispatch">The dispatch.</param>
-        /// <returns></returns>
+        /// <returns>System.Object.</returns>
+        /// <exception cref="System.ArgumentNullException">itemPolicy</exception>
         public object Set(object tag, string name, CacheItemPolicy itemPolicy, object value, ServiceCacheByDispatcher dispatch)
         {
             if (itemPolicy == null)
                 throw new ArgumentNullException("itemPolicy");
-            var updateCallback = itemPolicy.UpdateCallback;
-            if (updateCallback != null)
-                updateCallback(name, value);
-            string regionName;
-            Settings.TryGetRegion(ref name, out regionName);
+            itemPolicy.UpdateCallback?.Invoke(name, value);
+            Settings.TryGetRegion(ref name, out var regionName);
             //
             Cache.Set(name, value, GetCacheDependency(tag, itemPolicy, dispatch), regionName);
             var registration = dispatch.Registration;
@@ -254,13 +246,10 @@ namespace Contoso.Abstract
         /// <param name="tag">The tag.</param>
         /// <param name="name">The name.</param>
         /// <param name="registration">The registration.</param>
-        /// <returns>
-        /// The item removed from the Cache. If the value in the key parameter is not found, returns null.
-        /// </returns>
+        /// <returns>The item removed from the Cache. If the value in the key parameter is not found, returns null.</returns>
         public object Remove(object tag, string name, IServiceCacheRegistration registration)
         {
-            string regionName;
-            Settings.TryGetRegion(ref name, out regionName);
+            Settings.TryGetRegion(ref name, out var regionName);
             if (registration != null && registration.UseHeaders)
                 Cache.Remove(name + "#", regionName);
             return Cache.Remove(name, regionName);
@@ -269,6 +258,7 @@ namespace Contoso.Abstract
         /// <summary>
         /// Settings
         /// </summary>
+        /// <value>The settings.</value>
         public ServiceCacheSettings Settings { get; private set; }
 
         #region TouchableCacheItem
@@ -276,12 +266,14 @@ namespace Contoso.Abstract
         /// <summary>
         /// DefaultTouchableCacheItem
         /// </summary>
+        /// <seealso cref="System.Abstract.ITouchableCacheItem" />
         public class DefaultTouchableCacheItem : ITouchableCacheItem
         {
-            private SystemServiceCache _parent;
-            private ITouchableCacheItem _base;
+            SystemServiceCache _parent;
+            ITouchableCacheItem _base;
+
             /// <summary>
-            /// Initializes a new instance of the <see cref="DefaultTouchableCacheItem"/> class.
+            /// Initializes a new instance of the <see cref="DefaultTouchableCacheItem" /> class.
             /// </summary>
             /// <param name="parent">The parent.</param>
             /// <param name="base">The @base.</param>
@@ -301,8 +293,7 @@ namespace Contoso.Abstract
                 foreach (var name in names)
                 {
                     var touchName = name;
-                    string regionName;
-                    settings.TryGetRegion(ref touchName, out regionName);
+                    settings.TryGetRegion(ref touchName, out var regionName);
                     cache.Set(touchName, string.Empty, ServiceCache.InfiniteAbsoluteExpiration, regionName);
                 }
                 if (_base != null)
@@ -314,20 +305,20 @@ namespace Contoso.Abstract
             /// </summary>
             /// <param name="tag">The tag.</param>
             /// <param name="names">The names.</param>
-            /// <returns></returns>
+            /// <returns>System.Object.</returns>
             public object MakeDependency(object tag, string[] names)
             {
                 if (names == null || names.Length == 0)
                     return null;
                 var changeMonitors = new[] { _parent.Cache.CreateCacheEntryChangeMonitor(names) };
-                return (_base == null ? changeMonitors : changeMonitors.Union(_base.MakeDependency(tag, names) as IEnumerable<SystemCaching.ChangeMonitor>));
+                return _base == null ? changeMonitors : changeMonitors.Union(_base.MakeDependency(tag, names) as IEnumerable<SystemCaching.ChangeMonitor>);
             }
         }
 
         /// <summary>
         /// DefaultFileTouchableCacheItem
         /// </summary>
-        public class DefaultFileTouchableCacheItem : ServiceCache.FileTouchableCacheItemBase
+        public class DefaultFileTouchableCacheItem : AbstractFileTouchableCacheItem
         {
             /// <summary>
             /// Initializes a new instance of the <see cref="DefaultFileTouchableCacheItem"/> class.
@@ -344,7 +335,8 @@ namespace Contoso.Abstract
             /// <param name="names">The names.</param>
             /// <param name="baseDependency">The base dependency.</param>
             /// <returns></returns>
-            protected override object MakeDependencyInternal(object tag, string[] names, object baseDependency) { return new SystemCaching.HostFileChangeMonitor(names.Select(x => GetFilePathForName(x)).ToArray()); }
+            protected override object MakeDependencyInternal(object tag, string[] names, object baseDependency) =>
+                new SystemCaching.HostFileChangeMonitor(names.Select(x => GetFilePathForName(x)).ToArray());
         }
 
         #endregion
@@ -354,25 +346,22 @@ namespace Contoso.Abstract
         /// <summary>
         /// Gets the cache.
         /// </summary>
+        /// <value>The cache.</value>
         public SystemCaching.ObjectCache Cache { get; private set; }
 
         #endregion
 
-        private SystemCaching.CacheItemPolicy GetCacheDependency(object tag, CacheItemPolicy itemPolicy, ServiceCacheByDispatcher dispatch)
+        SystemCaching.CacheItemPolicy GetCacheDependency(object tag, CacheItemPolicy itemPolicy, ServiceCacheByDispatcher dispatch)
         {
             // item priority
             SystemCaching.CacheItemPriority itemPriority;
             switch (itemPolicy.Priority)
             {
-                case CacheItemPriority.NotRemovable:
-                    itemPriority = SystemCaching.CacheItemPriority.NotRemovable;
-                    break;
-                default:
-                    itemPriority = SystemCaching.CacheItemPriority.Default;
-                    break;
+                case CacheItemPriority.NotRemovable: itemPriority = SystemCaching.CacheItemPriority.NotRemovable; break;
+                default: itemPriority = SystemCaching.CacheItemPriority.Default; break;
             }
-            var removedCallback = (itemPolicy.RemovedCallback != null ? new SystemCaching.CacheEntryRemovedCallback(x => { itemPolicy.RemovedCallback(x.CacheItem.Key, x.CacheItem.Value); }) : null);
-            var updateCallback = (itemPolicy.UpdateCallback != null ? new SystemCaching.CacheEntryUpdateCallback(x => { itemPolicy.UpdateCallback(x.UpdatedCacheItem.Key, x.UpdatedCacheItem.Value); }) : null);
+            var removedCallback = itemPolicy.RemovedCallback != null ? new SystemCaching.CacheEntryRemovedCallback(x => { itemPolicy.RemovedCallback(x.CacheItem.Key, x.CacheItem.Value); }) : null;
+            var updateCallback = itemPolicy.UpdateCallback != null ? new SystemCaching.CacheEntryUpdateCallback(x => { itemPolicy.UpdateCallback(x.UpdatedCacheItem.Key, x.UpdatedCacheItem.Value); }) : null;
             var newItemPolicy = new SystemCaching.CacheItemPolicy
             {
                 AbsoluteExpiration = itemPolicy.AbsoluteExpiration,
@@ -391,15 +380,15 @@ namespace Contoso.Abstract
             return newItemPolicy;
         }
 
-        private IEnumerable<SystemCaching.ChangeMonitor> GetCacheDependency(object tag, CacheItemDependency dependency, ServiceCacheByDispatcher dispatch)
+        IEnumerable<SystemCaching.ChangeMonitor> GetCacheDependency(object tag, CacheItemDependency dependency, ServiceCacheByDispatcher dispatch)
         {
             object value;
             if (dependency == null || (value = dependency(this, dispatch.Registration, tag, dispatch.Values)) == null)
                 return null;
             //
-            var names = (value as string[]);
+            var names = value as string[];
             var touchable = Settings.Touchable;
-            return ((touchable != null && names != null ? touchable.MakeDependency(tag, names) : value) as IEnumerable<SystemCaching.ChangeMonitor>);
+            return (touchable != null && names != null ? touchable.MakeDependency(tag, names) : value) as IEnumerable<SystemCaching.ChangeMonitor>;
         }
     }
 }

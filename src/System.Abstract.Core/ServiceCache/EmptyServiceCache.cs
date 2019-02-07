@@ -23,6 +23,7 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 THE SOFTWARE.
 */
 #endregion
+
 using System;
 using System.Linq;
 using System.Abstract;
@@ -33,29 +34,26 @@ namespace Contoso.Abstract
     /// <summary>
     /// IEmptyServiceCache
     /// </summary>
-    public interface IEmptyServiceCache : IServiceCache
-    {
-    }
+    /// <seealso cref="System.Abstract.IServiceCache" />
+    public interface IEmptyServiceCache : IServiceCache { }
 
     /// <summary>
     /// EmptyServiceCache
     /// </summary>
+    /// <seealso cref="Contoso.Abstract.IEmptyServiceCache" />
     /// <remark>
     /// Provides a static dictionary adapter for the service cache sub-system.
-    ///   </remark>
-    ///   <example>
+    /// </remark>
+    /// <example>
     /// ServiceCacheManager.SetProvider(() =&gt; new EmptyServiceCache())
-    ///   </example>
+    /// </example>
     public class EmptyServiceCache : IEmptyServiceCache, ServiceCacheManager.IRegisterWithLocator
     {
-        static EmptyServiceCache() { ServiceCacheManager.EnsureRegistration(); }
         /// <summary>
-        /// Initializes a new instance of the <see cref="EmptyServiceCache"/> class.
+        /// Initializes a new instance of the <see cref="EmptyServiceCache" /> class.
         /// </summary>
-        public EmptyServiceCache()
-        {
+        public EmptyServiceCache() =>
             Settings = new ServiceCacheSettings();
-        }
 
         Action<IServiceLocator, string> ServiceCacheManager.IRegisterWithLocator.RegisterWithLocator =>
             (locator, name) => ServiceCacheManager.RegisterInstance<IEmptyServiceCache>(this, name, locator);
@@ -64,20 +62,21 @@ namespace Contoso.Abstract
         /// Gets the service object of the specified type.
         /// </summary>
         /// <param name="serviceType">An object that specifies the type of service object to get.</param>
-        /// <returns>
-        /// A service object of type <paramref name="serviceType"/>.
+        /// <returns>A service object of type <paramref name="serviceType" />.
         /// -or-
-        /// null if there is no service object of type <paramref name="serviceType"/>.
-        /// </returns>
-        public object GetService(Type serviceType) { throw new NotImplementedException(); }
+        /// null if there is no service object of type <paramref name="serviceType" />.</returns>
+        /// <exception cref="NotImplementedException"></exception>
+        public object GetService(Type serviceType) => throw new NotImplementedException();
 
         /// <summary>
-        /// Gets or sets the <see cref="System.Object"/> with the specified name.
+        /// Gets or sets the <see cref="System.Object" /> with the specified name.
         /// </summary>
+        /// <param name="name">The name.</param>
+        /// <returns>System.Object.</returns>
         public object this[string name]
         {
-            get { return Get(null, name); }
-            set { Set(null, name, CacheItemPolicy.Default, value, ServiceCacheByDispatcher.Empty); }
+            get => Get(null, name);
+            set => Set(null, name, CacheItemPolicy.Default, value, ServiceCacheByDispatcher.Empty);
         }
 
         /// <summary>
@@ -89,23 +88,15 @@ namespace Contoso.Abstract
         /// <param name="value">The value to store in cache.</param>
         /// <param name="dispatch">Not used</param>
         /// <returns>Last value that what in cache.</returns>
-        public object Add(object tag, string name, CacheItemPolicy itemPolicy, object value, ServiceCacheByDispatcher dispatch)
-        {
-            return null;
-        }
+        public object Add(object tag, string name, CacheItemPolicy itemPolicy, object value, ServiceCacheByDispatcher dispatch) => null;
 
         /// <summary>
         /// Gets the item from cache associated with the key provided.
         /// </summary>
         /// <param name="tag">The tag.</param>
         /// <param name="name">The key.</param>
-        /// <returns>
-        /// The cached item.
-        /// </returns>
-        public object Get(object tag, string name)
-        {
-            return null;
-        }
+        /// <returns>The cached item.</returns>
+        public object Get(object tag, string name) => null;
         /// <summary>
         /// Gets the specified tag.
         /// </summary>
@@ -113,7 +104,7 @@ namespace Contoso.Abstract
         /// <param name="name">The name.</param>
         /// <param name="registration">The registration.</param>
         /// <param name="header">The header.</param>
-        /// <returns></returns>
+        /// <returns>System.Object.</returns>
         /// <exception cref="System.ArgumentNullException"></exception>
         public object Get(object tag, string name, IServiceCacheRegistration registration, out CacheItemHeader header)
         {
@@ -125,22 +116,16 @@ namespace Contoso.Abstract
         /// </summary>
         /// <param name="tag">The tag.</param>
         /// <param name="names">The names.</param>
-        /// <returns></returns>
-        public object Get(object tag, IEnumerable<string> names)
-        {
-            return null;
-        }
+        /// <returns>System.Object.</returns>
+        public object Get(object tag, IEnumerable<string> names) => null;
         /// <summary>
         /// Gets the specified registration.
         /// </summary>
         /// <param name="tag">The tag.</param>
         /// <param name="registration">The registration.</param>
-        /// <returns></returns>
+        /// <returns>IEnumerable&lt;CacheItemHeader&gt;.</returns>
         /// <exception cref="System.NotImplementedException"></exception>
-        public IEnumerable<CacheItemHeader> Get(object tag, IServiceCacheRegistration registration)
-        {
-            return Enumerable.Empty<CacheItemHeader>();
-        }
+        public IEnumerable<CacheItemHeader> Get(object tag, IServiceCacheRegistration registration) => Enumerable.Empty<CacheItemHeader>();
 
         /// <summary>
         /// Tries the get.
@@ -148,7 +133,7 @@ namespace Contoso.Abstract
         /// <param name="tag">The tag.</param>
         /// <param name="name">The name.</param>
         /// <param name="value">The value.</param>
-        /// <returns></returns>
+        /// <returns><c>true</c> if XXXX, <c>false</c> otherwise.</returns>
         public bool TryGet(object tag, string name, out object value) { value = null; return false; }
 
         /// <summary>
@@ -158,12 +143,9 @@ namespace Contoso.Abstract
         /// <param name="name">The name used to identify the item in cache.</param>
         /// <param name="itemPolicy">The itemPolicy defining caching policies.</param>
         /// <param name="value">The value to store in cache.</param>
-        /// <param name="dispatch"></param>
-        /// <returns></returns>
-        public object Set(object tag, string name, CacheItemPolicy itemPolicy, object value, ServiceCacheByDispatcher dispatch)
-        {
-            return value;
-        }
+        /// <param name="dispatch">The dispatch.</param>
+        /// <returns>System.Object.</returns>
+        public object Set(object tag, string name, CacheItemPolicy itemPolicy, object value, ServiceCacheByDispatcher dispatch) => value;
 
         /// <summary>
         /// Removes from cache the item associated with the key provided.
@@ -171,17 +153,13 @@ namespace Contoso.Abstract
         /// <param name="tag">The tag.</param>
         /// <param name="name">The key.</param>
         /// <param name="registration">The registration.</param>
-        /// <returns>
-        /// The item removed from the Cache. If the value in the key parameter is not found, returns null.
-        /// </returns>
-        public object Remove(object tag, string name, IServiceCacheRegistration registration)
-        {
-            return null;
-        }
+        /// <returns>The item removed from the Cache. If the value in the key parameter is not found, returns null.</returns>
+        public object Remove(object tag, string name, IServiceCacheRegistration registration) => null;
 
         /// <summary>
         /// Settings
         /// </summary>
+        /// <value>The settings.</value>
         public ServiceCacheSettings Settings { get; private set; }
 
         #region Domain-specific

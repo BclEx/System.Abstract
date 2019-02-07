@@ -33,38 +33,36 @@ namespace System.Abstract
     /// </summary>
     internal struct ServiceCacheNamespaceBehaviorWrapper : IServiceWrapper<IServiceCache>, IServiceCache
     {
-        IServiceCache _parent;
+        IServiceCache _base;
         string _namespace;
 
-        public ServiceCacheNamespaceBehaviorWrapper(IServiceCache parent, string @namespace)
+        public ServiceCacheNamespaceBehaviorWrapper(IServiceCache @base, string @namespace)
         {
-            if (string.IsNullOrEmpty(@namespace))
-                throw new ArgumentNullException("@namespace");
-            _parent = parent ?? throw new ArgumentNullException("parent");
-            _namespace = @namespace;
+            _base = @base ?? throw new ArgumentNullException(nameof(@base));
+            _namespace = @namespace ?? throw new ArgumentNullException(nameof(@namespace));
         }
 
         // wrapper
-        public IServiceCache Base => _parent;
+        public IServiceCache Base => _base;
 
-        public object GetService(Type serviceType) => _parent.GetService(serviceType);
+        public object GetService(Type serviceType) => _base.GetService(serviceType);
 
         public object this[string name]
         {
-            get => _parent[_namespace + name];
-            set => _parent[_namespace + name] = value;
+            get => _base[_namespace + name];
+            set => _base[_namespace + name] = value;
         }
-        public object Add(object tag, string name, CacheItemPolicy itemPolicy, object value, ServiceCacheByDispatcher dispatch) => _parent.Add(tag, _namespace + name, itemPolicy, value, dispatch);
-        public object Get(object tag, string name) => _parent.Get(tag, _namespace + name);
-        public object Get(object tag, string name, IServiceCacheRegistration registration, out CacheItemHeader header) => _parent.Get(tag, _namespace + name, registration, out header);
-        public object Get(object tag, IEnumerable<string> names) => _parent.Get(tag, names);
-        public IEnumerable<CacheItemHeader> Get(object tag, IServiceCacheRegistration registration) => _parent.Get(tag, registration);
-        public bool TryGet(object tag, string name, out object value) => _parent.TryGet(tag, name, out value);
-        public object Remove(object tag, string name, IServiceCacheRegistration registration) => _parent.Remove(tag, _namespace + name, registration);
-        public object Set(object tag, string name, CacheItemPolicy itemPolicy, object value, ServiceCacheByDispatcher dispatch) => _parent.Add(tag, _namespace + name, itemPolicy, value, dispatch);
-        public void Touch(object tag, params string[] names) => _parent.Touch(tag, names);
+        public object Add(object tag, string name, CacheItemPolicy itemPolicy, object value, ServiceCacheByDispatcher dispatch) => _base.Add(tag, _namespace + name, itemPolicy, value, dispatch);
+        public object Get(object tag, string name) => _base.Get(tag, _namespace + name);
+        public object Get(object tag, string name, IServiceCacheRegistration registration, out CacheItemHeader header) => _base.Get(tag, _namespace + name, registration, out header);
+        public object Get(object tag, IEnumerable<string> names) => _base.Get(tag, names);
+        public IEnumerable<CacheItemHeader> Get(object tag, IServiceCacheRegistration registration) => _base.Get(tag, registration);
+        public bool TryGet(object tag, string name, out object value) => _base.TryGet(tag, name, out value);
+        public object Remove(object tag, string name, IServiceCacheRegistration registration) => _base.Remove(tag, _namespace + name, registration);
+        public object Set(object tag, string name, CacheItemPolicy itemPolicy, object value, ServiceCacheByDispatcher dispatch) => _base.Add(tag, _namespace + name, itemPolicy, value, dispatch);
+        public void Touch(object tag, params string[] names) => _base.Touch(tag, names);
 
         public string Namespace => _namespace;
-        public ServiceCacheSettings Settings => _parent.Settings;
+        public ServiceCacheSettings Settings => _base.Settings;
     }
 }

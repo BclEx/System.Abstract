@@ -1,6 +1,5 @@
-﻿using System;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
-using System.Abstract.Fakes;
+﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
+using Moq;
 using System.Abstract.AbstractTests.ServiceBus;
 
 namespace System.Abstract.Tests.ServiceBus
@@ -13,11 +12,13 @@ namespace System.Abstract.Tests.ServiceBus
         {
             var verify = false;
             var message = new TestMessage { Body = "Body" };
-            var serviceBus = new StubIServiceBus
+            var mock = new Mock<IServiceBus>();
+            mock.Setup(x => x.Send(It.IsAny<IServiceBusEndpoint>(), It.IsAny<object[]>())).Callback<IServiceBusEndpoint, object[]>((e, a) =>
             {
-                SendIServiceBusEndpointObjectArray = (e, a) => { verify = (e != null && a[0] == message); return null; },
-            };
-            serviceBus.CreateMessageOf1ActionOfM0<TestMessage>(messageBuilder => message);
+                verify = e != null && a[0] == message;
+            }).Returns((IServiceBusCallback)null);
+            mock.Setup(x => x.CreateMessage(It.IsAny<Action<TestMessage>>())).Returns(message);
+            var serviceBus = mock.Object;
             //
             serviceBus.Send<TestMessage>(new LiteralServiceBusEndpoint("dest"), x => x.Body = "...");
             //
@@ -29,11 +30,13 @@ namespace System.Abstract.Tests.ServiceBus
         {
             var verify = false;
             var message = new TestMessage { Body = "Body" };
-            var serviceBus = new StubIServiceBus
+            var mock = new Mock<IServiceBus>();
+            mock.Setup(x => x.Send(It.IsAny<IServiceBusEndpoint>(), It.IsAny<object[]>())).Callback<IServiceBusEndpoint, object[]>((e, a) =>
             {
-                SendIServiceBusEndpointObjectArray = (e, a) => { verify = (a[0] == message); return null; },
-            };
-            serviceBus.CreateMessageOf1ActionOfM0<TestMessage>(messageBuilder => message);
+                verify = e == null && a[0] == message;
+            }).Returns((IServiceBusCallback)null);
+            mock.Setup(x => x.CreateMessage(It.IsAny<Action<TestMessage>>())).Returns(message);
+            var serviceBus = mock.Object;
             //
             serviceBus.Send<TestMessage>(x => x.Body = "...");
             //
@@ -45,11 +48,13 @@ namespace System.Abstract.Tests.ServiceBus
         {
             var verify = false;
             var message = new TestMessage { Body = "Body" };
-            var serviceBus = new StubIServiceBus
+            var mock = new Mock<IServiceBus>();
+            mock.Setup(x => x.Send(It.IsAny<IServiceBusEndpoint>(), It.IsAny<object[]>())).Callback<IServiceBusEndpoint, object[]>((e, a) =>
             {
-                SendIServiceBusEndpointObjectArray = (e, a) => { verify = (a[0] == message); return null; },
-            };
-            serviceBus.CreateMessageOf1ActionOfM0<TestMessage>(messageBuilder => message);
+                verify = e != null && a[0] == message;
+            }).Returns((IServiceBusCallback)null);
+            mock.Setup(x => x.CreateMessage(It.IsAny<Action<TestMessage>>())).Returns(message);
+            var serviceBus = mock.Object;
             //
             serviceBus.Send<TestMessage>("dest", x => x.Body = "...");
             //
@@ -61,10 +66,12 @@ namespace System.Abstract.Tests.ServiceBus
         {
             var verify = false;
             var messages = new[] { new TestMessage { Body = "Body" } };
-            var serviceBus = new StubIServiceBus
+            var mock = new Mock<IServiceBus>();
+            mock.Setup(x => x.Send(It.IsAny<IServiceBusEndpoint>(), It.IsAny<object[]>())).Callback<IServiceBusEndpoint, object[]>((e, a) =>
             {
-                SendIServiceBusEndpointObjectArray = (e, a) => { verify = (a == messages); return null; },
-            };
+                verify = e == null && a == messages;
+            }).Returns((IServiceBusCallback)null);
+            var serviceBus = mock.Object;
             //
             serviceBus.Send(messages);
             //
@@ -76,10 +83,12 @@ namespace System.Abstract.Tests.ServiceBus
         {
             var verify = false;
             var messages = new[] { new TestMessage { Body = "Body" } };
-            var serviceBus = new StubIServiceBus
+            var mock = new Mock<IServiceBus>();
+            mock.Setup(x => x.Send(It.IsAny<IServiceBusEndpoint>(), It.IsAny<object[]>())).Callback<IServiceBusEndpoint, object[]>((e, a) =>
             {
-                SendIServiceBusEndpointObjectArray = (e, a) => { verify = (a == messages); return null; },
-            };
+                verify = e != null && a == messages;
+            }).Returns((IServiceBusCallback)null);
+            var serviceBus = mock.Object;
             //
             serviceBus.Send("dest", messages);
             //

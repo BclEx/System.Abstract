@@ -23,6 +23,7 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 THE SOFTWARE.
 */
 #endregion
+
 using System;
 
 namespace Contoso.Micro
@@ -30,22 +31,20 @@ namespace Contoso.Micro
     /// <summary>
     /// JsonSerializableAttribute
     /// </summary>
+    /// <seealso cref="System.Attribute" />
     [AttributeUsage(AttributeTargets.Class | AttributeTargets.Interface | AttributeTargets.Struct, Inherited = true)]
     public class JsonSerializableAttribute : Attribute
     {
         /// <summary>
         /// Gets or sets the serialize as.
         /// </summary>
-        /// <value>
-        /// The serialize as.
-        /// </value>
+        /// <value>The serialize as.</value>
         public JsonValueType SerializeAs { get; set; }
+
         /// <summary>
         /// Gets or sets the format.
         /// </summary>
-        /// <value>
-        /// The format.
-        /// </value>
+        /// <value>The format.</value>
         public string Format { get; set; }
     }
 }

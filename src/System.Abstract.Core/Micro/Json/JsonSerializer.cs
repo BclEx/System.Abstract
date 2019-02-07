@@ -23,6 +23,7 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 THE SOFTWARE.
 */
 #endregion
+
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -35,28 +36,28 @@ using JsonSerializationException = System.Exception;
 namespace Contoso.Micro
 {
     /// <summary>
-    /// 
+    /// JsonSerializer
     /// </summary>
     public abstract class JsonSerializer
     {
-        private static readonly Type[] _numberTypes = new[] { 
-            typeof(byte), typeof(sbyte), typeof(short), typeof(ushort), typeof(int), typeof(uint), typeof(long), typeof(ulong), typeof(IntPtr), typeof(UIntPtr), typeof(float), typeof(double), typeof(decimal), 
+        static readonly Type[] _numberTypes = new[] {
+            typeof(byte), typeof(sbyte), typeof(short), typeof(ushort), typeof(int), typeof(uint), typeof(long), typeof(ulong), typeof(IntPtr), typeof(UIntPtr), typeof(float), typeof(double), typeof(decimal),
             typeof(byte?), typeof(sbyte?), typeof(short?), typeof(ushort?), typeof(int?), typeof(uint?), typeof(long?), typeof(ulong?), typeof(IntPtr?), typeof(UIntPtr?), typeof(float?), typeof(double?), typeof(decimal?)
         };
-        private static readonly Type[] _stringTypes = new[] { 
+        static readonly Type[] _stringTypes = new[] {
             typeof(string), typeof(char), typeof(DateTime), typeof(TimeSpan), typeof(Guid), typeof(Uri), typeof(StringBuilder), typeof(UriBuilder),
-            typeof(char?), typeof(DateTime?), typeof(TimeSpan?), typeof(Guid?) 
+            typeof(char?), typeof(DateTime?), typeof(TimeSpan?), typeof(Guid?)
         };
-        private static Dictionary<Type, JsonSerializer> _serializers = new Dictionary<Type, JsonSerializer>();
-        private static Dictionary<Type, JsonSerializer> _arraySerializers = new Dictionary<Type, JsonSerializer>();
+        static Dictionary<Type, JsonSerializer> _serializers = new Dictionary<Type, JsonSerializer>();
+        static Dictionary<Type, JsonSerializer> _arraySerializers = new Dictionary<Type, JsonSerializer>();
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="JsonSerializer"/> class.
+        /// Initializes a new instance of the <see cref="JsonSerializer" /> class.
         /// </summary>
         protected JsonSerializer()
             : this(JsonValueType.Object, null) { }
         /// <summary>
-        /// Initializes a new instance of the <see cref="JsonSerializer"/> class.
+        /// Initializes a new instance of the <see cref="JsonSerializer" /> class.
         /// </summary>
         /// <param name="serializerType">Type of the serializer.</param>
         /// <param name="defaultFormat">The default format.</param>
@@ -73,11 +74,11 @@ namespace Contoso.Micro
             if (serializeAs == JsonValueType.Unknown && serializableAttribute != null)
                 serializeAs = serializableAttribute.SerializeAs;
             if (serializeAs == JsonValueType.Boolean || (serializeAs == JsonValueType.Unknown && t == typeof(Boolean)))
-                return (serializableAttribute == null ? new JsonBooleanSerializer() : new JsonBooleanSerializer(serializableAttribute.Format));
+                return serializableAttribute == null ? new JsonBooleanSerializer() : new JsonBooleanSerializer(serializableAttribute.Format);
             else if (serializeAs == JsonValueType.Number || (serializeAs == JsonValueType.Unknown && (Array.IndexOf(_numberTypes, t) >= 0 || t.IsEnum)))
-                return (serializableAttribute == null ? new JsonNumberSerializer() : new JsonNumberSerializer(serializableAttribute.Format));
+                return serializableAttribute == null ? new JsonNumberSerializer() : new JsonNumberSerializer(serializableAttribute.Format);
             else if (serializeAs == JsonValueType.String || (serializeAs == JsonValueType.Unknown && Array.IndexOf(_stringTypes, t) >= 0))
-                return (serializableAttribute == null ? new JsonStringSerializer() : new JsonStringSerializer(serializableAttribute.Format));
+                return serializableAttribute == null ? new JsonStringSerializer() : new JsonStringSerializer(serializableAttribute.Format);
             else if ((serializeAs == JsonValueType.Array || serializeAs == JsonValueType.Unknown) && t.GetInterface("IEnumerable`1") != null)
             {
                 Type elementType;
@@ -112,20 +113,19 @@ namespace Contoso.Micro
         /// <summary>
         /// Gets the type of the serializer.
         /// </summary>
-        /// <value>
-        /// The type of the serializer.
-        /// </value>
+        /// <value>The type of the serializer.</value>
         public virtual JsonValueType SerializerType { get; private set; }
         /// <summary>
         /// Gets the default format.
         /// </summary>
+        /// <value>The default format.</value>
         public virtual string DefaultFormat { get; private set; }
 
         internal abstract object BaseDeserialize(TextReader r, string path);
 
-        internal void BaseSerialize(TextWriter w, object obj) { BaseSerialize(w, obj, JsonOptions.None, null, 0); }
-        internal void BaseSerialize(TextWriter w, object obj, JsonOptions options) { BaseSerialize(w, obj, JsonOptions.None, null, 0); }
-        internal void BaseSerialize(TextWriter w, object obj, JsonOptions options, string format) { BaseSerialize(w, obj, options, format, 0); }
+        internal void BaseSerialize(TextWriter w, object obj) => BaseSerialize(w, obj, JsonOptions.None, null, 0);
+        internal void BaseSerialize(TextWriter w, object obj, JsonOptions options) => BaseSerialize(w, obj, JsonOptions.None, null, 0);
+        internal void BaseSerialize(TextWriter w, object obj, JsonOptions options, string format) => BaseSerialize(w, obj, options, format, 0);
         internal abstract void BaseSerialize(TextWriter w, object obj, JsonOptions options, string format, int tabDepth);
     }
 }

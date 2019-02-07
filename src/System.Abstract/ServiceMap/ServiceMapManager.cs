@@ -29,10 +29,9 @@ namespace System.Abstract
     /// <summary>
     /// ServiceMapManager
     /// </summary>
-    public class ServiceMapManager : ServiceManagerBase<IServiceMap, ServiceMapManagerLogger>
+    public class ServiceMapManager : ServiceManagerBase<IServiceMap, ServiceMapManager, ServiceMapManagerLogger>
     {
-        static ServiceMapManager()
-        {
+        static ServiceMapManager() =>
             Registration = new ServiceRegistration
             {
                 OnSetup = (service, descriptor) =>
@@ -52,19 +51,9 @@ namespace System.Abstract
                 {
                     RegisterInstance(service, name, locator);
                     // specific registration
-                    var setupRegistration = (service as IRegisterWithLocator);
-                    if (setupRegistration != null)
+                    if (service is IRegisterWithLocator setupRegistration)
                         setupRegistration.RegisterWithLocator(locator, name);
                 },
             };
-            // default provider
-            if (Lazy == null && DefaultServiceProvider != null)
-                SetProvider(DefaultServiceProvider);
-        }
-
-        /// <summary>
-        /// Ensures the registration.
-        /// </summary>
-        public static void EnsureRegistration() { }
     }
 }

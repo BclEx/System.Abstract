@@ -23,6 +23,7 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 THE SOFTWARE.
 */
 #endregion
+
 using System;
 using System.IO;
 using System.Text;
@@ -107,7 +108,7 @@ namespace Contoso.Micro.Internal
         {
             var c = ReadNextChar(r, ignoreWhitespace);
             if (c != expected)
-                throw new JsonDeserializationException(string.Format("Expected '{0}'", expected));
+                throw new JsonDeserializationException($"Expected '{expected}'");
         }
 
         public static int ReadNOptional(TextReader r, int max, bool ignoreWhitespace, char optional)
@@ -168,10 +169,8 @@ namespace Contoso.Micro.Internal
                 var val = Array.IndexOf(_radixTable, char.ToLowerInvariant(c));
                 if (val == -1 || val >= radix)
                 {
-                    if (digitCount < minDigits)
-                        throw new JsonDeserializationException("Expected Digit");
-                    else
-                        break;
+                    if (digitCount < minDigits) throw new JsonDeserializationException("Expected Digit");
+                    else break;
                 }
                 else
                 {
@@ -189,13 +188,13 @@ namespace Contoso.Micro.Internal
 
         public static bool PeekIsNull(TextReader r, bool ignoreWhitespace, string path)
         {
-            var c = JsonParserUtil.PeekNextChar(r, ignoreWhitespace);
+            var c = PeekNextChar(r, ignoreWhitespace);
             if (char.ToLowerInvariant(c) == 'n')
             {
                 r.Read();
                 if (char.ToLowerInvariant((char)r.Read()) == 'u' && char.ToLowerInvariant((char)r.Read()) == 'l' && char.ToLowerInvariant((char)r.Read()) == 'l')
                     return true;
-                throw new JsonDeserializationException(string.Format("Expected 'null' at '{0}'", path));
+                throw new JsonDeserializationException($"Expected 'null' at '{path}'");
             }
             return false;
         }

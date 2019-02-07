@@ -34,6 +34,7 @@ namespace Contoso.Abstract.EventSourcing
     /// <summary>
     /// MemoryEventStore
     /// </summary>
+    /// <seealso cref="System.Abstract.EventSourcing.IEventStore" />
     public class MemoryEventStore : IEventStore
     {
         readonly List<Event> _events = new List<Event>();

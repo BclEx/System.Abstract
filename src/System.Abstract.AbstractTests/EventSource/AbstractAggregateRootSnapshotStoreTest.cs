@@ -9,10 +9,8 @@ namespace System.Abstract.AbstractTests
 		protected IAggregateRootSnapshotStore AggregateRootSnapshotStore { get; private set; }
 		protected abstract IAggregateRootSnapshotStore CreateAggregateRootSnapshotStore();
 
-        public AbstractAggregateRootSnapshotStoreTest()
-		{
+        public AbstractAggregateRootSnapshotStoreTest() =>
 			AggregateRootSnapshotStore = CreateAggregateRootSnapshotStore();
-		}
 
         [TestMethod]
 		public virtual void CreateMessage_Should_Return_Valid_Instance()

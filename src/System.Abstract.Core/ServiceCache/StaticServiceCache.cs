@@ -23,6 +23,7 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 THE SOFTWARE.
 */
 #endregion
+
 using System;
 using System.Linq;
 using System.Abstract;
@@ -30,6 +31,10 @@ using System.Collections.Generic;
 
 namespace Contoso.Abstract
 {
+    /// <summary>
+    /// Interface IStaticServiceCache
+    /// </summary>
+    /// <seealso cref="System.Abstract.IServiceCache" />
     /// <remark>
     /// An static dictionary specific service cache interface
     /// </remark>
@@ -38,6 +43,7 @@ namespace Contoso.Abstract
         /// <summary>
         /// Gets the cache.
         /// </summary>
+        /// <value>The cache.</value>
         Dictionary<string, object> Cache { get; }
     }
 
@@ -45,24 +51,22 @@ namespace Contoso.Abstract
     /// <summary>
     /// StaticServiceCache
     /// </summary>
+    /// <seealso cref="Contoso.Abstract.IStaticServiceCache" />
     /// <remark>
     /// Provides a static dictionary adapter for the service cache sub-system.
-    ///   </remark>
-    ///   <example>
+    /// </remark>
+    /// <example>
     /// ServiceCacheManager.SetProvider(() =&gt; new StaticServiceCache())
-    ///   </example>
+    /// </example>
     public class StaticServiceCache : IStaticServiceCache, ServiceCacheManager.IRegisterWithLocator
     {
         static readonly Dictionary<string, object> _cache = new Dictionary<string, object>();
 
-        static StaticServiceCache() { ServiceCacheManager.EnsureRegistration(); }
         /// <summary>
         /// Initializes a new instance of the <see cref="StaticServiceCache"/> class.
         /// </summary>
-        public StaticServiceCache()
-        {
+        public StaticServiceCache() =>
             Settings = new ServiceCacheSettings(new DefaultFileTouchableCacheItem(this, new DefaultTouchableCacheItem(this, null)));
-        }
 
         Action<IServiceLocator, string> ServiceCacheManager.IRegisterWithLocator.RegisterWithLocator =>
             (locator, name) => ServiceCacheManager.RegisterInstance<IStaticServiceCache>(this, name, locator);
@@ -71,20 +75,21 @@ namespace Contoso.Abstract
         /// Gets the service object of the specified type.
         /// </summary>
         /// <param name="serviceType">An object that specifies the type of service object to get.</param>
-        /// <returns>
-        /// A service object of type <paramref name="serviceType"/>.
+        /// <returns>A service object of type <paramref name="serviceType" />.
         /// -or-
-        /// null if there is no service object of type <paramref name="serviceType"/>.
-        /// </returns>
+        /// null if there is no service object of type <paramref name="serviceType" />.</returns>
+        /// <exception cref="NotImplementedException"></exception>
         public object GetService(Type serviceType) { throw new NotImplementedException(); }
 
         /// <summary>
-        /// Gets or sets the <see cref="System.Object"/> with the specified name.
+        /// Gets or sets the <see cref="System.Object" /> with the specified name.
         /// </summary>
+        /// <param name="name">The name.</param>
+        /// <returns>System.Object.</returns>
         public object this[string name]
         {
-            get { return Get(null, name); }
-            set { Set(null, name, CacheItemPolicy.Default, value, ServiceCacheByDispatcher.Empty); }
+            get => Get(null, name);
+            set => Set(null, name, CacheItemPolicy.Default, value, ServiceCacheByDispatcher.Empty);
         }
 
         /// <summary>
@@ -99,8 +104,7 @@ namespace Contoso.Abstract
         public object Add(object tag, string name, CacheItemPolicy itemPolicy, object value, ServiceCacheByDispatcher dispatch)
         {
             // TODO: Throw on dependency or other stuff not supported by this simple system
-            object lastValue;
-            if (!_cache.TryGetValue(name, out lastValue))
+            if (!_cache.TryGetValue(name, out var lastValue))
             {
                 _cache[name] = value;
                 var registration = dispatch.Registration;
@@ -123,11 +127,8 @@ namespace Contoso.Abstract
         /// <returns>
         /// The cached item.
         /// </returns>
-        public object Get(object tag, string name)
-        {
-            object value;
-            return (_cache.TryGetValue(name, out value) ? value : null);
-        }
+        public object Get(object tag, string name) =>
+            _cache.TryGetValue(name, out var value) ? value : null;
         /// <summary>
         /// Gets the specified tag.
         /// </summary>
@@ -140,21 +141,21 @@ namespace Contoso.Abstract
         public object Get(object tag, string name, IServiceCacheRegistration registration, out CacheItemHeader header)
         {
             if (registration == null)
-                throw new ArgumentNullException("registration");
-            object value;
-            header = (registration.UseHeaders && _cache.TryGetValue(name + "#", out value) ? (CacheItemHeader)value : null);
-            return (_cache.TryGetValue(name, out value) ? value : null);
+                throw new ArgumentNullException(nameof(registration));
+            header = registration.UseHeaders && _cache.TryGetValue(name + "#", out var value) ? (CacheItemHeader)value : null;
+            return _cache.TryGetValue(name, out value) ? value : null;
         }
         /// <summary>
         /// Gets the specified tag.
         /// </summary>
         /// <param name="tag">The tag.</param>
         /// <param name="names">The names.</param>
-        /// <returns></returns>
+        /// <returns>System.Object.</returns>
+        /// <exception cref="ArgumentNullException">names</exception>
         public object Get(object tag, IEnumerable<string> names)
         {
             if (names == null)
-                throw new ArgumentNullException("names");
+                throw new ArgumentNullException(nameof(names));
             return names.Select(name => new { name, value = Get(null, name) }).ToDictionary(x => x.name, x => x.value);
         }
         /// <summary>
@@ -162,12 +163,13 @@ namespace Contoso.Abstract
         /// </summary>
         /// <param name="tag">The tag.</param>
         /// <param name="registration">The registration.</param>
-        /// <returns></returns>
+        /// <returns>IEnumerable&lt;CacheItemHeader&gt;.</returns>
+        /// <exception cref="ArgumentNullException">registration</exception>
         /// <exception cref="System.NotImplementedException"></exception>
         public IEnumerable<CacheItemHeader> Get(object tag, IServiceCacheRegistration registration)
         {
             if (registration == null)
-                throw new ArgumentNullException("registration");
+                throw new ArgumentNullException(nameof(registration));
             var registrationName = registration.AbsoluteName + "#";
             CacheItemHeader value;
             var e = _cache.GetEnumerator();
@@ -175,7 +177,7 @@ namespace Contoso.Abstract
             {
                 var current = e.Current;
                 var key = current.Key;
-                if (key == null || !key.EndsWith(registrationName) || (value = (current.Value as CacheItemHeader)) == null)
+                if (key == null || !key.EndsWith(registrationName) || (value = current.Value as CacheItemHeader) == null)
                     continue;
                 yield return value;
             }
@@ -187,8 +189,9 @@ namespace Contoso.Abstract
         /// <param name="tag">The tag.</param>
         /// <param name="name">The name.</param>
         /// <param name="value">The value.</param>
-        /// <returns></returns>
-        public bool TryGet(object tag, string name, out object value) { return _cache.TryGetValue(name, out value); }
+        /// <returns><c>true</c> if XXXX, <c>false</c> otherwise.</returns>
+        public bool TryGet(object tag, string name, out object value) =>
+            _cache.TryGetValue(name, out value);
 
         /// <summary>
         /// Adds an object into cache based on the parameters provided.
@@ -197,8 +200,8 @@ namespace Contoso.Abstract
         /// <param name="name">The name used to identify the item in cache.</param>
         /// <param name="itemPolicy">The itemPolicy defining caching policies.</param>
         /// <param name="value">The value to store in cache.</param>
-        /// <param name="dispatch"></param>
-        /// <returns></returns>
+        /// <param name="dispatch">The dispatch.</param>
+        /// <returns>System.Object.</returns>
         public object Set(object tag, string name, CacheItemPolicy itemPolicy, object value, ServiceCacheByDispatcher dispatch)
         {
             _cache[name] = value;
@@ -218,13 +221,10 @@ namespace Contoso.Abstract
         /// <param name="tag">The tag.</param>
         /// <param name="name">The key.</param>
         /// <param name="registration">The registration.</param>
-        /// <returns>
-        /// The item removed from the Cache. If the value in the key parameter is not found, returns null.
-        /// </returns>
+        /// <returns>The item removed from the Cache. If the value in the key parameter is not found, returns null.</returns>
         public object Remove(object tag, string name, IServiceCacheRegistration registration)
         {
-            object value;
-            if (_cache.TryGetValue(name, out value))
+            if (_cache.TryGetValue(name, out var value))
             {
                 if (registration != null && registration.UseHeaders)
                     _cache.Remove(name + "#");
@@ -237,6 +237,7 @@ namespace Contoso.Abstract
         /// <summary>
         /// Settings
         /// </summary>
+        /// <value>The settings.</value>
         public ServiceCacheSettings Settings { get; private set; }
 
         #region TouchableCacheItem
@@ -244,10 +245,11 @@ namespace Contoso.Abstract
         /// <summary>
         /// DefaultTouchableCacheItem
         /// </summary>
+        /// <seealso cref="System.Abstract.ITouchableCacheItem" />
         public class DefaultTouchableCacheItem : ITouchableCacheItem
         {
-            private StaticServiceCache _parent;
-            private ITouchableCacheItem _base;
+            readonly StaticServiceCache _parent;
+            readonly ITouchableCacheItem _base;
             /// <summary>
             /// Initializes a new instance of the <see cref="DefaultTouchableCacheItem"/> class.
             /// </summary>
@@ -274,7 +276,8 @@ namespace Contoso.Abstract
             /// </summary>
             /// <param name="tag">The tag.</param>
             /// <param name="names">The names.</param>
-            /// <returns></returns>
+            /// <returns>System.Object.</returns>
+            /// <exception cref="NotSupportedException"></exception>
             public object MakeDependency(object tag, string[] names)
             {
                 if (names == null || names.Length == 0)
@@ -286,10 +289,11 @@ namespace Contoso.Abstract
         /// <summary>
         /// DefaultFileTouchableCacheItem
         /// </summary>
+        /// <seealso cref="System.Abstract.AbstractFileTouchableCacheItem" />
         public class DefaultFileTouchableCacheItem : AbstractFileTouchableCacheItem
         {
             /// <summary>
-            /// Initializes a new instance of the <see cref="DefaultFileTouchableCacheItem"/> class.
+            /// Initializes a new instance of the <see cref="DefaultFileTouchableCacheItem" /> class.
             /// </summary>
             /// <param name="parent">The parent.</param>
             /// <param name="base">The @base.</param>
@@ -302,8 +306,8 @@ namespace Contoso.Abstract
             /// <param name="tag">The tag.</param>
             /// <param name="names">The names.</param>
             /// <param name="baseDependency">The base dependency.</param>
-            /// <returns></returns>
-            protected override object MakeDependencyInternal(object tag, string[] names, object baseDependency) { return null; }
+            /// <returns>System.Object.</returns>
+            protected override object MakeDependencyInternal(object tag, string[] names, object baseDependency) => null;
         }
 
         #endregion
@@ -313,10 +317,9 @@ namespace Contoso.Abstract
         /// <summary>
         /// Gets the cache.
         /// </summary>
-        public Dictionary<string, object> Cache
-        {
-            get { return _cache; }
-        }
+        /// <value>The cache.</value>
+        public Dictionary<string, object> Cache =>
+            _cache;
 
         #endregion
     }

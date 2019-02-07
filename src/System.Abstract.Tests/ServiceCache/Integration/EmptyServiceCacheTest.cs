@@ -7,6 +7,7 @@ namespace System.Abstract.Tests.ServiceCache.Integration
     [TestClass]
     public class EmptyServiceCacheTest : AbstractServiceCacheTest
     {
-        protected override IServiceCache CreateServiceCache() { return new EmptyServiceCache(); }
+        protected override IServiceCache CreateServiceCache() =>
+            new EmptyServiceCache();
     }
 }

@@ -23,6 +23,7 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 THE SOFTWARE.
 */
 #endregion
+
 using System;
 using System.Abstract;
 using System.IO;
@@ -33,6 +34,7 @@ namespace Contoso.Abstract
     /// <summary>
     /// IStreamLogServiceLog
     /// </summary>
+    /// <seealso cref="System.Abstract.IServiceLog" />
     public interface IStreamLogServiceLog : IServiceLog
     {
         /// <summary>
@@ -44,9 +46,10 @@ namespace Contoso.Abstract
     /// <summary>
     /// StreamServiceLog
     /// </summary>
+    /// <seealso cref="Contoso.Abstract.IStreamLogServiceLog" />
+    /// <seealso cref="System.IDisposable" />
     public class StreamServiceLog : IStreamLogServiceLog, IDisposable, ServiceLogManager.IRegisterWithLocator
     {
-        static StreamServiceLog() { ServiceLogManager.EnsureRegistration(); }
         /// <summary>
         /// Initializes a new instance of the <see cref="StreamServiceLog"/> class.
         /// </summary>
@@ -55,7 +58,7 @@ namespace Contoso.Abstract
         public StreamServiceLog(string name, Stream s)
             : this(name, new StreamWriter(s)) { }
         /// <summary>
-        /// Initializes a new instance of the <see cref="StreamServiceLog"/> class.
+        /// Initializes a new instance of the <see cref="StreamServiceLog" /> class.
         /// </summary>
         /// <param name="name">The name.</param>
         /// <param name="sw">The sw.</param>
@@ -66,7 +69,7 @@ namespace Contoso.Abstract
             Log = sw;
         }
         /// <summary>
-        /// Initializes a new instance of the <see cref="StreamServiceLog"/> class.
+        /// Initializes a new instance of the <see cref="StreamServiceLog" /> class.
         /// </summary>
         /// <param name="name">The name.</param>
         /// <param name="s">The s.</param>
@@ -74,7 +77,7 @@ namespace Contoso.Abstract
         public StreamServiceLog(string name, Stream s, Encoding encoding)
             : this(name, new StreamWriter(s, encoding)) { }
         /// <summary>
-        /// Initializes a new instance of the <see cref="StreamServiceLog"/> class.
+        /// Initializes a new instance of the <see cref="StreamServiceLog" /> class.
         /// </summary>
         /// <param name="name">The name.</param>
         /// <param name="s">The s.</param>
@@ -84,7 +87,7 @@ namespace Contoso.Abstract
             : this(name, new StreamWriter(s, encoding, bufferSize)) { }
         /// <summary>
         /// Releases unmanaged resources and performs other cleanup operations before the
-        /// <see cref="StreamServiceLog"/> is reclaimed by garbage collection.
+        /// <see cref="StreamServiceLog" /> is reclaimed by garbage collection.
         /// </summary>
         ~StreamServiceLog()
         {
@@ -112,38 +115,43 @@ namespace Contoso.Abstract
         /// Gets the service object of the specified type.
         /// </summary>
         /// <param name="serviceType">An object that specifies the type of service object to get.</param>
-        /// <returns>
-        /// A service object of type <paramref name="serviceType"/>.
+        /// <returns>A service object of type <paramref name="serviceType" />.
         /// -or-
-        /// null if there is no service object of type <paramref name="serviceType"/>.
-        /// </returns>
-        public object GetService(Type serviceType) { throw new NotImplementedException(); }
+        /// null if there is no service object of type <paramref name="serviceType" />.</returns>
+        /// <exception cref="System.NotImplementedException"></exception>
+        public object GetService(Type serviceType) => throw new NotImplementedException();
 
         // get
         /// <summary>
         /// Gets the name.
         /// </summary>
+        /// <value>The name.</value>
         public string Name { get; private set; }
+
         /// <summary>
         /// Gets the specified name.
         /// </summary>
         /// <param name="name">The name.</param>
-        /// <returns></returns>
+        /// <returns>IServiceLog.</returns>
+        /// <exception cref="System.ArgumentNullException">name</exception>
+        /// <exception cref="System.NotSupportedException">A StreamServiceLog does not support child loggers</exception>
         public IServiceLog Get(string name)
         {
             if (string.IsNullOrEmpty(name))
-                throw new ArgumentNullException("name");
+                throw new ArgumentNullException(nameof(name));
             throw new NotSupportedException("A StreamServiceLog does not support child loggers");
         }
         /// <summary>
         /// Gets the specified name.
         /// </summary>
-        /// <param name="type"></param>
-        /// <returns></returns>
+        /// <param name="type">The type.</param>
+        /// <returns>IServiceLog.</returns>
+        /// <exception cref="System.ArgumentNullException">type</exception>
+        /// <exception cref="System.NotSupportedException">A StreamServiceLog does not support child loggers</exception>
         public IServiceLog Get(Type type)
         {
             if (type == null)
-                throw new ArgumentNullException("type");
+                throw new ArgumentNullException(nameof(type));
             throw new NotSupportedException("A StreamServiceLog does not support child loggers");
         }
 
@@ -154,13 +162,14 @@ namespace Contoso.Abstract
         /// <param name="level">The level.</param>
         /// <param name="ex">The ex.</param>
         /// <param name="s">The s.</param>
+        /// <exception cref="System.NullReferenceException">Log</exception>
         public void Write(ServiceLogLevel level, Exception ex, string s)
         {
             if (Log == null)
-                throw new NullReferenceException("Log");
-            Log.WriteLine("[{0}] '{1}' {2} {3}", level, Name, s);
+                throw new NullReferenceException(nameof(Log));
+            Log.WriteLine($"[{level}] '{Name}' {s}");
             if (ex != null)
-                Log.WriteLine("{0}: {1} {2}", ex.GetType().FullName, ex.Message, ex.StackTrace);
+                Log.WriteLine($"{ex.GetType().FullName}: {ex.Message} {ex.StackTrace}");
         }
 
         #region Domain-specific
@@ -168,6 +177,7 @@ namespace Contoso.Abstract
         /// <summary>
         /// Gets the log.
         /// </summary>
+        /// <value>The log.</value>
         public StreamWriter Log { get; private set; }
 
         #endregion

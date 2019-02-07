@@ -34,10 +34,9 @@ namespace System.Abstract
     /// <summary>
     /// ServiceCacheManager
     /// </summary>
-    public class ServiceCacheManager : ServiceManagerBase<IServiceCache, ServiceCacheManagerLogger>
+    public class ServiceCacheManager : ServiceManagerBase<IServiceCache, ServiceCacheManager, ServiceCacheManagerLogger>
     {
-        static ServiceCacheManager()
-        {
+        static ServiceCacheManager() =>
             Registration = new ServiceRegistration
             {
                 OnSetup = (service, descriptor) =>
@@ -63,14 +62,5 @@ namespace System.Abstract
                         setupRegistration.RegisterWithLocator(locator, name);
                 },
             };
-            // default provider
-            if (Current == null && DefaultServiceProvider != null)
-                SetProvider(DefaultServiceProvider);
-        }
-
-        /// <summary>
-        /// Ensures the registration.
-        /// </summary>
-        public static void EnsureRegistration() { }
     }
 }

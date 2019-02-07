@@ -29,7 +29,7 @@ namespace System.Abstract
     /// <summary>
     /// ServiceLogManager
     /// </summary>
-    public class ServiceLogManager : ServiceManagerBase<IServiceLog, ServiceLogManagerLogger>
+    public class ServiceLogManager : ServiceManagerBase<IServiceLog, ServiceLogManager, ServiceLogManagerLogger>
     {
         #region EmptyServiceLog
 
@@ -89,8 +89,7 @@ namespace System.Abstract
         /// </summary>
         public static readonly Lazy<IServiceLog> EmptyLazy = new Lazy<IServiceLog>(() => Empty);
 
-        static ServiceLogManager()
-        {
+        static ServiceLogManager() =>
             Registration = new ServiceRegistration
             {
                 OnSetup = (service, descriptor) =>
@@ -107,15 +106,6 @@ namespace System.Abstract
                             action(service);
                 },
             };
-            // default provider
-            if (Lazy == null && DefaultServiceProvider != null)
-                SetProvider(DefaultServiceProvider);
-        }
-
-        /// <summary>
-        /// Ensures the registration.
-        /// </summary>
-        public static void EnsureRegistration() { }
 
         /// <summary>
         /// Gets this instance.

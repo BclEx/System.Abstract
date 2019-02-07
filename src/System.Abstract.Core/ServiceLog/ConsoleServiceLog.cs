@@ -23,6 +23,7 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 THE SOFTWARE.
 */
 #endregion
+
 using System;
 using System.Abstract;
 using System.IO;
@@ -32,22 +33,24 @@ namespace Contoso.Abstract
     /// <summary>
     /// IConsoleServiceLog
     /// </summary>
+    /// <seealso cref="System.Abstract.IServiceLog" />
     public interface IConsoleServiceLog : IServiceLog
     {
         /// <summary>
         /// Gets the log.
         /// </summary>
+        /// <value>The log.</value>
         TextWriter Log { get; }
     }
 
     /// <summary>
     /// ConsoleServiceLog
     /// </summary>
+    /// <seealso cref="Contoso.Abstract.IConsoleServiceLog" />
     public class ConsoleServiceLog : IConsoleServiceLog, ServiceLogManager.IRegisterWithLocator
     {
-        static ConsoleServiceLog() { ServiceLogManager.EnsureRegistration(); }
         /// <summary>
-        /// Initializes a new instance of the <see cref="ConsoleServiceLog"/> class.
+        /// Initializes a new instance of the <see cref="ConsoleServiceLog" /> class.
         /// </summary>
         /// <param name="name">The name.</param>
         public ConsoleServiceLog(string name)
@@ -63,38 +66,41 @@ namespace Contoso.Abstract
         /// Gets the service object of the specified type.
         /// </summary>
         /// <param name="serviceType">An object that specifies the type of service object to get.</param>
-        /// <returns>
-        /// A service object of type <paramref name="serviceType"/>.
+        /// <returns>A service object of type <paramref name="serviceType" />.
         /// -or-
-        /// null if there is no service object of type <paramref name="serviceType"/>.
-        /// </returns>
-        public object GetService(Type serviceType) { throw new NotImplementedException(); }
+        /// null if there is no service object of type <paramref name="serviceType" />.</returns>
+        /// <exception cref="System.NotImplementedException"></exception>
+        public object GetService(Type serviceType) => throw new NotImplementedException();
 
         // get
         /// <summary>
         /// Gets the name.
         /// </summary>
+        /// <value>The name.</value>
         public string Name { get; private set; }
+
         /// <summary>
         /// Gets the specified name.
         /// </summary>
         /// <param name="name">The name.</param>
-        /// <returns></returns>
+        /// <returns>IServiceLog.</returns>
+        /// <exception cref="System.ArgumentNullException">name</exception>
         public IServiceLog Get(string name)
         {
             if (string.IsNullOrEmpty(name))
-                throw new ArgumentNullException("name");
+                throw new ArgumentNullException(nameof(name));
             return new ConsoleServiceLog(name);
         }
         /// <summary>
         /// Gets the specified name.
         /// </summary>
-        /// <param name="type"></param>
-        /// <returns></returns>
+        /// <param name="type">The type.</param>
+        /// <returns>IServiceLog.</returns>
+        /// <exception cref="System.ArgumentNullException">type</exception>
         public IServiceLog Get(Type type)
         {
             if (type == null)
-                throw new ArgumentNullException("type");
+                throw new ArgumentNullException(nameof(type));
             return new ConsoleServiceLog(type.Name);
         }
 
@@ -105,13 +111,14 @@ namespace Contoso.Abstract
         /// <param name="level">The level.</param>
         /// <param name="ex">The ex.</param>
         /// <param name="s">The s.</param>
+        /// <exception cref="System.NullReferenceException">Log</exception>
         public void Write(ServiceLogLevel level, Exception ex, string s)
         {
             if (Log == null)
                 throw new NullReferenceException("Log");
-            Log.WriteLine("[{0}] '{1}' {2}", level, Name, s);
+            Log.WriteLine($"[{level}] '{Name}' {s}");
             if (ex != null)
-                Log.WriteLine("{0}: {1} {2}", ex.GetType().FullName, ex.Message, ex.StackTrace);
+                Log.WriteLine($"{ex.GetType().FullName}: {ex.Message} {ex.StackTrace}");
         }
 
         #region Domain-specific
@@ -119,9 +126,7 @@ namespace Contoso.Abstract
         /// <summary>
         /// Gets or sets the log.
         /// </summary>
-        /// <value>
-        /// The log.
-        /// </value>
+        /// <value>The log.</value>
         public TextWriter Log { get; set; }
 
         #endregion

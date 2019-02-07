@@ -37,20 +37,22 @@ namespace System
         /// <param name="lazy">The lazy.</param>
         /// <param name="valueFactory">The value factory.</param>
         /// <returns></returns>
-        public static Lazy<T> HookValueFactory<T>(this Lazy<T> lazy, Func<Func<T>, T> valueFactory) { LazyHelper<T>.HookValueFactory(lazy, valueFactory); return lazy; }
+        public static Lazy<T> HookValueFactory<T>(this Lazy<T> lazy, Func<Func<T>, T> valueFactory) =>
+            LazyHelper<T>.HookValueFactory(lazy, valueFactory);
 
         class LazyHelper<T>
         {
             static readonly object _lock = new object();
             static readonly FieldInfo _valueFactoryField = typeof(Lazy<T>).GetField("m_valueFactory", BindingFlags.NonPublic | BindingFlags.Instance);
 
-            public static void HookValueFactory(Lazy<T> lazy, Func<Func<T>, T> valueFactory)
+            public static Lazy<T> HookValueFactory(Lazy<T> lazy, Func<Func<T>, T> valueFactory)
             {
                 lock (_lock)
                 {
                     var hook = (Func<T>)_valueFactoryField.GetValue(lazy);
                     Func<T> newHook = () => valueFactory(hook);
                     _valueFactoryField.SetValue(lazy, newHook);
+                    return lazy;
                 }
             }
         }

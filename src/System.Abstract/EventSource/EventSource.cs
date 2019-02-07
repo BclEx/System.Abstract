@@ -67,7 +67,6 @@ namespace System.Abstract
             public static Func<Type, AggregateRoot> Factory = t => (AggregateRoot)Activator.CreateInstance(t);
         }
 
-        static EventSource() { EventSourceManager.EnsureRegistration(); }
         /// <summary>
         /// Initializes a new instance of the <see cref="EventSource" /> class.
         /// </summary>

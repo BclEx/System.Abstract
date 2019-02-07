@@ -6,6 +6,7 @@ namespace System.Abstract.Tests.ServiceLog.Integration
     [TestClass]
     public class EmptyServiceLogTest : AbstractServiceLogTest
     {
-        protected override IServiceLog CreateServiceLog() { return new ServiceLogManager.EmptyServiceLog(); }
+        protected override IServiceLog CreateServiceLog() =>
+            new ServiceLogManager.EmptyServiceLog();
     }
 }

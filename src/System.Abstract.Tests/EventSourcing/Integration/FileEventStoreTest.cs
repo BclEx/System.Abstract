@@ -8,9 +8,10 @@ namespace System.Abstract.Tests.EventSourcing.Integration
     [TestClass]
     public class FileEventStoreTest : AbstractEventStoreTest
     {
-		protected override IEventStore CreateEventStore() { return new FileEventStore(); }
+        protected override IEventStore CreateEventStore() =>
+            new FileEventStore();
 
         [TestMethod, TestCategory("EventSource: File")]
-        public override void CreateMessage_Should_Return_Valid_Instance() { base.CreateMessage_Should_Return_Valid_Instance(); }
+        public override void CreateMessage_Should_Return_Valid_Instance() => base.CreateMessage_Should_Return_Valid_Instance();
     }
 }

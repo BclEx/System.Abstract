@@ -29,10 +29,9 @@ namespace System.Abstract
     /// <summary>
     /// ServiceBusManager
     /// </summary>
-    public class ServiceBusManager : ServiceManagerBase<IServiceBus, ServiceBusManagerLogger>
+    public class ServiceBusManager : ServiceManagerBase<IServiceBus, ServiceBusManager, ServiceBusManagerLogger>
     {
-        static ServiceBusManager()
-        {
+        static ServiceBusManager() =>
             Registration = new ServiceRegistration
             {
                 OnSetup = (service, descriptor) =>
@@ -51,23 +50,12 @@ namespace System.Abstract
                 RegisterWithLocator = (service, locator, name) =>
                 {
                     RegisterInstance(service, name, locator);
-                    var publishingServiceBus = (service as IPublishingServiceBus);
-                    if (publishingServiceBus != null)
+                    if (service is IPublishingServiceBus publishingServiceBus)
                         RegisterInstance(publishingServiceBus, name, locator);
                     // specific registration
-                    var setupRegistration = (service as IRegisterWithLocator);
-                    if (setupRegistration != null)
+                    if (service is IRegisterWithLocator setupRegistration)
                         setupRegistration.RegisterWithLocator(locator, name);
                 },
             };
-            // default provider
-            if (Lazy == null && DefaultServiceProvider != null)
-                SetProvider(DefaultServiceProvider);
-        }
-
-        /// <summary>
-        /// Ensures the registration.
-        /// </summary>
-        public static void EnsureRegistration() { }
     }
 }

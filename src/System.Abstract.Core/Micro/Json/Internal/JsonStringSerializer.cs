@@ -23,9 +23,9 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 THE SOFTWARE.
 */
 #endregion
+
 using System.IO;
 using System.Text;
-using System;
 #if SANDBOX
 using JsonDeserializationException = System.Exception;
 #endif
@@ -45,7 +45,7 @@ namespace Contoso.Micro.Internal
                 return null;
             var c = JsonParserUtil.ReadNextChar(r, true);
             if (c != '"')
-                throw new JsonDeserializationException(string.Format("Expected '\"' at '{0}'", path));
+                throw new JsonDeserializationException($"Expected '\"' at '{path}'");
             var escape = false;
             c = JsonParserUtil.ReadNextChar(r, true);
             var b = new StringBuilder();
@@ -79,13 +79,12 @@ namespace Contoso.Micro.Internal
             {
                 if (string.IsNullOrEmpty(format))
                     format = DefaultFormat;
-                var serialized = (string.IsNullOrEmpty(format) ? string.Format("{0}", obj) : string.Format("{0:" + format + "}", obj));
+                var serialized = string.IsNullOrEmpty(format) ? string.Format("{0}", obj) : string.Format("{0:" + format + "}", obj);
                 w.Write('"');
                 w.Write(serialized.Replace(@"\", @"\\").Replace("\"", "\\\"").Replace("\r\n", "\\n").Replace("\n", "\\n"));
                 w.Write('"');
             }
-            else
-                w.Write("null");
+            else w.Write("null");
         }
     }
 }

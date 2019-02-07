@@ -23,16 +23,17 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 THE SOFTWARE.
 */
 #endregion
+
 using System;
 using System.Abstract;
 using System.Diagnostics;
-using System.Globalization;
 
 namespace Contoso.Abstract
 {
     /// <summary>
     /// IEventLogServiceLog
     /// </summary>
+    /// <seealso cref="System.Abstract.IServiceLog" />
     public interface IEventLogServiceLog : IServiceLog
     {
         /// <summary>
@@ -44,17 +45,18 @@ namespace Contoso.Abstract
     /// <summary>
     /// EventLogServiceLog
     /// </summary>
+    /// <seealso cref="Contoso.Abstract.IEventLogServiceLog" />
+    /// <seealso cref="System.IDisposable" />
     public class EventLogServiceLog : IEventLogServiceLog, IDisposable, ServiceLogManager.IRegisterWithLocator
     {
-        static EventLogServiceLog() { ServiceLogManager.EnsureRegistration(); }
         /// <summary>
-        /// Initializes a new instance of the <see cref="EventLogServiceLog"/> class.
+        /// Initializes a new instance of the <see cref="EventLogServiceLog" /> class.
         /// </summary>
         /// <param name="name">The name.</param>
         public EventLogServiceLog(string name)
             : this(name, "default") { }
         /// <summary>
-        /// Initializes a new instance of the <see cref="EventLogServiceLog"/> class.
+        /// Initializes a new instance of the <see cref="EventLogServiceLog" /> class.
         /// </summary>
         /// <param name="name">The name.</param>
         /// <param name="source">The source.</param>
@@ -66,7 +68,7 @@ namespace Contoso.Abstract
             Log = new EventLog(name) { Source = source };
         }
         /// <summary>
-        /// Initializes a new instance of the <see cref="EventLogServiceLog"/> class.
+        /// Initializes a new instance of the <see cref="EventLogServiceLog" /> class.
         /// </summary>
         /// <param name="name">The name.</param>
         /// <param name="machineName">Name of the machine.</param>
@@ -80,7 +82,7 @@ namespace Contoso.Abstract
         }
         /// <summary>
         /// Releases unmanaged resources and performs other cleanup operations before the
-        /// <see cref="EventLogServiceLog"/> is reclaimed by garbage collection.
+        /// <see cref="EventLogServiceLog" /> is reclaimed by garbage collection.
         /// </summary>
         ~EventLogServiceLog()
         {
@@ -108,38 +110,41 @@ namespace Contoso.Abstract
         /// Gets the service object of the specified type.
         /// </summary>
         /// <param name="serviceType">An object that specifies the type of service object to get.</param>
-        /// <returns>
-        /// A service object of type <paramref name="serviceType"/>.
+        /// <returns>A service object of type <paramref name="serviceType" />.
         /// -or-
-        /// null if there is no service object of type <paramref name="serviceType"/>.
-        /// </returns>
-        public object GetService(Type serviceType) { throw new NotImplementedException(); }
+        /// null if there is no service object of type <paramref name="serviceType" />.</returns>
+        /// <exception cref="System.NotImplementedException"></exception>
+        public object GetService(Type serviceType) => throw new NotImplementedException();
 
         // get
         /// <summary>
         /// Gets the name.
         /// </summary>
+        /// <value>The name.</value>
         public string Name { get; private set; }
+
         /// <summary>
         /// Gets the specified name.
         /// </summary>
         /// <param name="name">The name.</param>
-        /// <returns></returns>
+        /// <returns>IServiceLog.</returns>
+        /// <exception cref="System.ArgumentNullException">name</exception>
         public IServiceLog Get(string name)
         {
             if (string.IsNullOrEmpty(name))
-                throw new ArgumentNullException("name");
+                throw new ArgumentNullException(nameof(name));
             return new EventLogServiceLog(name);
         }
         /// <summary>
         /// Gets the specified name.
         /// </summary>
-        /// <param name="type"></param>
-        /// <returns></returns>
+        /// <param name="type">The type.</param>
+        /// <returns>IServiceLog.</returns>
+        /// <exception cref="System.ArgumentNullException">type</exception>
         public IServiceLog Get(Type type)
         {
             if (type == null)
-                throw new ArgumentNullException("type");
+                throw new ArgumentNullException(nameof(type));
             return new EventLogServiceLog(type.Name);
         }
 
@@ -150,15 +155,14 @@ namespace Contoso.Abstract
         /// <param name="level">The level.</param>
         /// <param name="ex">The ex.</param>
         /// <param name="s">The s.</param>
+        /// <exception cref="System.NullReferenceException">Log</exception>
         public void Write(ServiceLogLevel level, Exception ex, string s)
         {
             if (Log == null)
-                throw new NullReferenceException("Log");
-            string message;
-            if (ex == null)
-                message = string.Format(CultureInfo.CurrentCulture, "[{0}] '{1}' message: {2}", level.ToString(), Name, s);
-            else
-                message = string.Format(CultureInfo.CurrentCulture, "[{0}] '{1}' message: {2} exception: {3} {4} {5}", level.ToString(), Name, s, ex.GetType(), ex.Message, ex.StackTrace);
+                throw new NullReferenceException(nameof(Log));
+            var message =
+                ex == null ? $"[{level}] '{Name}' message: {s}" :
+                $"[{level}] '{Name}' message: {s} exception: {ex.GetType()} {ex.Message} {ex.StackTrace}";
             Log.WriteEntry(message, ToEventLogEntryType(level));
         }
 
@@ -167,21 +171,19 @@ namespace Contoso.Abstract
         /// <summary>
         /// Gets the log.
         /// </summary>
+        /// <value>The log.</value>
         public EventLog Log { get; private set; }
 
         #endregion
 
-        private static EventLogEntryType ToEventLogEntryType(ServiceLogLevel level)
+        static EventLogEntryType ToEventLogEntryType(ServiceLogLevel level)
         {
             switch (level)
             {
                 case ServiceLogLevel.Fatal:
-                case ServiceLogLevel.Error:
-                    return EventLogEntryType.Error;
-                case ServiceLogLevel.Warning:
-                    return EventLogEntryType.Warning;
-                default:
-                    return EventLogEntryType.Information;
+                case ServiceLogLevel.Error: return EventLogEntryType.Error;
+                case ServiceLogLevel.Warning: return EventLogEntryType.Warning;
+                default: return EventLogEntryType.Information;
             }
         }
     }

@@ -7,6 +7,7 @@ namespace System.Abstract.Tests.ServiceLog.Integration
     [TestClass]
     public class ConsoleServiceLogTest : AbstractServiceLogTest
     {
-        protected override IServiceLog CreateServiceLog() { return new ConsoleServiceLog("Default"); }
+        protected override IServiceLog CreateServiceLog() =>
+            new ConsoleServiceLog("Default");
     }
 }

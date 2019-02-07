@@ -23,10 +23,14 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 THE SOFTWARE.
 */
 #endregion
+
 using System;
 
 namespace Contoso.Abstract
 {
+    /// <summary>
+    /// Class AppServiceBusRegistration.
+    /// </summary>
     /// <remark>
     /// Holds the registration information for an application service message handler
     /// </remark>
@@ -35,16 +39,13 @@ namespace Contoso.Abstract
         /// <summary>
         /// Gets or sets the type of the message handler.
         /// </summary>
-        /// <value>
-        /// The type of the message handler.
-        /// </value>
+        /// <value>The type of the message handler.</value>
         public Type MessageHandlerType { get; set; }
+
         /// <summary>
         /// Gets or sets the type of the message.
         /// </summary>
-        /// <value>
-        /// The type of the message.
-        /// </value>
+        /// <value>The type of the message.</value>
         public Type MessageType { get; set; }
     }
 }

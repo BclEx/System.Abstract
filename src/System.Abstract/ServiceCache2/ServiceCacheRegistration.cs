@@ -36,7 +36,7 @@ namespace System.Abstract
     /// </summary>
     public class ServiceCacheRegistration
     {
-        internal readonly ReaderWriterLockSlim _rwLock = new ReaderWriterLockSlim(LockRecursionPolicy.SupportsRecursion);
+        //internal readonly ReaderWriterLockSlim _rwLock = new ReaderWriterLockSlim(LockRecursionPolicy.SupportsRecursion);
         /// <summary>
         /// Initializes a new instance of the <see cref="ServiceCacheRegistration"/> class.
         /// </summary>

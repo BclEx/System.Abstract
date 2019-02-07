@@ -36,22 +36,20 @@ namespace System.Abstract
     /// <summary>
     /// ServiceManagerBase
     /// </summary>
-    /// <typeparam name="TService">The type of the service.</typeparam>
+    /// <typeparam name="TService">The type of the service interface.</typeparam>
+    /// <typeparam name="TServiceManager">The type of the service.</typeparam>
     /// <typeparam name="TServiceManagerLogger">The type of the service manager logger.</typeparam>
-    public abstract partial class ServiceManagerBase<TService, TServiceManagerLogger>
+    public abstract partial class ServiceManagerBase<TService, TServiceManager, TServiceManagerLogger>
         where TService : class
+        where TServiceManager : class, new()
     {
         static readonly ConditionalWeakTable<Lazy<TService>, ISetupDescriptor> _setupDescriptors = new ConditionalWeakTable<Lazy<TService>, ISetupDescriptor>();
         static readonly object _lock = new object();
+        static ServiceRegistration _registration;
 
         // Force "precise" initialization
-        static ServiceManagerBase() { }
-
-        /// <summary>
-        /// Gets or sets the DefaultServiceProvider.
-        /// </summary>
-        /// <value>The DefaultServiceProvider.</value>
-        public static Func<TService> DefaultServiceProvider { get; set; }
+        static ServiceManagerBase() =>
+            new TServiceManager();
 
         /// <summary>
         /// Gets or sets the lazy.
@@ -87,7 +85,11 @@ namespace System.Abstract
         /// Gets or sets the registration.
         /// </summary>
         /// <value>The registration.</value>
-        protected static ServiceRegistration Registration { get; set; }
+        public static ServiceRegistration Registration
+        {
+            get => _registration ?? throw new InvalidOperationException("Registration Failed");
+            set => _registration = value;
+        }
 
         /// <summary>
         /// Sets the provider.
@@ -147,20 +149,35 @@ namespace System.Abstract
         /// <summary>
         /// ServiceRegistration
         /// </summary>
-        protected class ServiceRegistration
+        public class ServiceRegistration
         {
+            Func<TService> _defaultServiceProvider;
+
             /// <summary>
             /// Initializes a new instance of the <see cref="ServiceRegistration" /> class.
             /// </summary>
-            public ServiceRegistration()
-            {
+            public ServiceRegistration() =>
                 RegisterWithLocator = (service, locator, name) =>
                 {
                     //RegisterInstance(service, locator, name);
-                    var registerWithLocator = (service as IRegisterWithLocator);
-                    if (registerWithLocator != null)
+                    if (service is IRegisterWithLocator registerWithLocator)
                         registerWithLocator.RegisterWithLocator(locator, name);
                 };
+
+            /// <summary>
+            /// Gets or sets the DefaultServiceProvider.
+            /// </summary>
+            /// <value>The DefaultServiceProvider.</value>
+            public Func<TService> DefaultServiceProvider
+            {
+                get => _defaultServiceProvider;
+                set
+                {
+                    _defaultServiceProvider = value;
+                    // set default provider
+                    if (Lazy == null && value != null)
+                        SetProvider(value);
+                }
             }
 
             /// <summary>
@@ -195,10 +212,7 @@ namespace System.Abstract
                 throw new ArgumentNullException(nameof(service));
             if (newInstance == null)
                 throw new NullReferenceException(nameof(newInstance));
-            var registration = Registration;
-            if (registration == null)
-                throw new NullReferenceException(nameof(Registration));
-            var onSetup = registration.OnSetup;
+            var onSetup = Registration.OnSetup;
             if (onSetup == null)
                 return newInstance;
             // find descriptor
@@ -216,10 +230,7 @@ namespace System.Abstract
                 throw new ArgumentNullException(nameof(service));
             if (!service.IsValueCreated)
                 throw new InvalidOperationException("Service value has not been created yet.");
-            var registration = Registration;
-            if (registration == null)
-                throw new NullReferenceException(nameof(Registration));
-            registration.OnChange?.Invoke(service.Value, changeDescriptor);
+            Registration.OnChange?.Invoke(service.Value, changeDescriptor);
         }
 
         /// <summary>
@@ -246,7 +257,7 @@ namespace System.Abstract
             lock (_lock)
                 if (!_setupDescriptors.TryGetValue(service, out descriptor))
                 {
-                    descriptor = (firstDescriptor ?? new SetupDescriptor(Registration, null));
+                    descriptor = firstDescriptor ?? new SetupDescriptor(Registration, null);
                     _setupDescriptors.Add(service, descriptor);
                     service.HookValueFactory(valueFactory => ApplySetupDescriptor(service, InflightValue = valueFactory()));
                 }
@@ -261,8 +272,8 @@ namespace System.Abstract
         {
             if (service == null)
                 throw new ArgumentNullException(nameof(service));
-            if (name == null) locator.Registrar.RegisterInstance<T>(service);
-            else locator.Registrar.RegisterInstance<T>(service, name);
+            if (name == null) locator.Registrar.RegisterInstance(service);
+            else locator.Registrar.RegisterInstance(service, name);
         }
 
         /// <summary>

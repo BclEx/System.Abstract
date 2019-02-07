@@ -53,7 +53,7 @@ namespace System.Abstract
 		public ServiceCacheSettings()
         {
             RegionMarker = "@";
-            //RegistrationDispatcher = new DefaultServiceCacheRegistrationDispatcher();
+            //Dispatcher = new DefaultServiceCacheRegistrationDispatcher();
             Options = ServiceCacheOptions.UseDBNullWithRegistrations;
         }
         /// <summary>
@@ -87,25 +87,5 @@ namespace System.Abstract
         /// </summary>
         /// <value>The touchable.</value>
         public ITouchableCacheItem Touchable { get; set; }
-
-        /// <summary>
-        /// Tries to get the region.
-        /// </summary>
-        /// <param name="name">The name.</param>
-        /// <param name="regionName">Name of the region.</param>
-        /// <returns><c>true</c> if XXXX, <c>false</c> otherwise.</returns>
-        //public bool TryGetRegion(ref string name, out string regionName)
-        //{
-        //    var index = name.IndexOf(RegionMarker);
-        //    if (index == -1)
-        //    {
-        //        regionName = null;
-        //        return false;
-        //    }
-        //    var originalName = name;
-        //    regionName = originalName.Substring(0, index);
-        //    name = originalName.Substring(index + RegionMarker.Length);
-        //    return true;
-        //}
     }
 }

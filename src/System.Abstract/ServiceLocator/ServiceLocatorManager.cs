@@ -29,18 +29,16 @@ namespace System.Abstract
     /// <summary>
     /// ServiceLocatorManager
     /// </summary>
-    public class ServiceLocatorManager : ServiceManagerBase<IServiceLocator, ServiceLocatorManagerLogger>
+    public class ServiceLocatorManager : ServiceManagerBase<IServiceLocator, ServiceLocatorManager, ServiceLocatorManagerLogger>
     {
         readonly static Type _ignoreServiceLocatorType = typeof(IIgnoreServiceLocator);
 
-        static ServiceLocatorManager()
-        {
+        static ServiceLocatorManager() =>
             Registration = new ServiceRegistration
             {
                 OnSetup = (service, descriptor) =>
                 {
-                    var behavior = (service.Registrar as IServiceRegistrarBehaviorAccessor);
-                    if (behavior == null || behavior.RegisterInLocator)
+                    if (!(service.Registrar is IServiceRegistrarBehaviorAccessor behavior) || behavior.RegisterInLocator)
                         RegisterSelfInLocator(service);
                     if (descriptor != null)
                         foreach (var action in descriptor.Actions)
@@ -54,15 +52,6 @@ namespace System.Abstract
                             action(service);
                 },
             };
-            // default provider
-            if (Current == null && DefaultServiceProvider != null)
-                SetProvider(DefaultServiceProvider);
-        }
-
-        /// <summary>
-        /// Ensures the registration.
-        /// </summary>
-        public static void EnsureRegistration() { }
 
         static void RegisterSelfInLocator(IServiceLocator locator) =>
             locator.Registrar.RegisterInstance(locator);

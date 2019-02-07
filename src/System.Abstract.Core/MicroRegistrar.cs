@@ -23,7 +23,7 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 THE SOFTWARE.
 */
 #endregion
-using System;
+
 using System.Abstract;
 
 namespace Contoso.Abstract
@@ -35,10 +35,10 @@ namespace Contoso.Abstract
     {
         static MicroRegistrar()
         {
-            ServiceBusManager.DefaultServiceProvider = () => new AppServiceBus();
-            ServiceCacheManager.DefaultServiceProvider = () => new StaticServiceCache();
-            ServiceLocatorManager.DefaultServiceProvider = () => new MicroServiceLocator();
-            ServiceLogManager.DefaultServiceProvider = () => new ConsoleServiceLog("Default");
+            ServiceBusManager.Registration.DefaultServiceProvider = () => new AppServiceBus();
+            ServiceCacheManager.Registration.DefaultServiceProvider = () => new StaticServiceCache();
+            ServiceLocatorManager.Registration.DefaultServiceProvider = () => new MicroServiceLocator();
+            ServiceLogManager.Registration.DefaultServiceProvider = () => new ConsoleServiceLog("Default");
         }
 
         /// <summary>

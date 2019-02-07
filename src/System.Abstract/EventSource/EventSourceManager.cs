@@ -29,10 +29,9 @@ namespace System.Abstract
     /// <summary>
     /// EventSourceManager
     /// </summary>
-    public class EventSourceManager : ServiceManagerBase<IEventSource, EventSourceManagerLogger>
+    public class EventSourceManager : ServiceManagerBase<IEventSource, EventSourceManager, EventSourceManagerLogger>
     {
-        static EventSourceManager()
-        {
+        static EventSourceManager() =>
             Registration = new ServiceRegistration
             {
                 OnSetup = (service, descriptor) =>
@@ -49,14 +48,5 @@ namespace System.Abstract
                             action(service);
                 },
             };
-            // default provider
-            if (Lazy == null && DefaultServiceProvider != null)
-                SetProvider(DefaultServiceProvider);
-        }
-
-        /// <summary>
-        /// Ensures the registration.
-        /// </summary>
-        public static void EnsureRegistration() { }
     }
 }

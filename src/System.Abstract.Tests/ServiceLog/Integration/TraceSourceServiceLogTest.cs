@@ -7,6 +7,7 @@ namespace System.Abstract.Tests.ServiceLog.Integration
     [TestClass]
     public class TraceSourceServiceLogTest : AbstractServiceLogTest
     {
-        protected override IServiceLog CreateServiceLog() { return new TraceSourceServiceLog("Default"); }
+        protected override IServiceLog CreateServiceLog() =>
+            new TraceSourceServiceLog("Default");
     }
 }

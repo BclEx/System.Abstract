@@ -23,6 +23,7 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 THE SOFTWARE.
 */
 #endregion
+
 using System.Abstract;
 
 namespace Contoso.Abstract
@@ -31,6 +32,7 @@ namespace Contoso.Abstract
     /// An application service bus message handler interface
     /// </summary>
     /// <typeparam name="TMessage">The type of the message.</typeparam>
+    /// <seealso cref="System.Abstract.IServiceMessageHandler{TMessage}" />
     public interface IAppServiceMessageHandler<TMessage> : IServiceMessageHandler<TMessage>
         where TMessage : class { }
 }

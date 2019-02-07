@@ -35,9 +35,6 @@ namespace System.Abstract
     {
         IServiceLog _log = null;
 
-        static ServiceManagerLoggerBase() =>
-            ServiceLogManager.EnsureRegistration();
-
         /// <summary>
         /// Gets or sets the log.
         /// </summary>

@@ -23,6 +23,7 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 THE SOFTWARE.
 */
 #endregion
+
 using System;
 
 namespace Contoso.Micro
@@ -30,49 +31,43 @@ namespace Contoso.Micro
     /// <summary>
     /// JsonPropertyAttribute
     /// </summary>
+    /// <seealso cref="System.Attribute" />
     [AttributeUsage(AttributeTargets.Field | AttributeTargets.Property, Inherited = true)]
     public class JsonPropertyAttribute : Attribute
     {
         /// <summary>
-        /// Initializes a new instance of the <see cref="JsonPropertyAttribute"/> class.
+        /// Initializes a new instance of the <see cref="JsonPropertyAttribute" /> class.
         /// </summary>
         public JsonPropertyAttribute() { }
         /// <summary>
-        /// Initializes a new instance of the <see cref="JsonPropertyAttribute"/> class.
+        /// Initializes a new instance of the <see cref="JsonPropertyAttribute" /> class.
         /// </summary>
         /// <param name="name">The name.</param>
-        public JsonPropertyAttribute(string name)
-        {
+        public JsonPropertyAttribute(string name) =>
             Name = name;
-        }
 
         /// <summary>
         /// Gets or sets the name.
         /// </summary>
-        /// <value>
-        /// The name.
-        /// </value>
+        /// <value>The name.</value>
         public string Name { get; set; }
+
         /// <summary>
         /// Gets or sets the serialize as.
         /// </summary>
-        /// <value>
-        /// The serialize as.
-        /// </value>
+        /// <value>The serialize as.</value>
         public JsonValueType SerializeAs { get; set; }
+
         /// <summary>
         /// Gets or sets the format.
         /// </summary>
-        /// <value>
-        /// The format.
-        /// </value>
+        /// <value>The format.</value>
         public string Format { get; set; }
+
         /// <summary>
         /// Gets or sets the converter.
         /// </summary>
-        /// <value>
-        /// The converter.
-        /// </value>
+        /// <value>The converter.</value>
         public Type Converter { get; set; }
     }
 }

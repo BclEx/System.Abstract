@@ -23,6 +23,7 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 THE SOFTWARE.
 */
 #endregion
+
 using System;
 using System.IO;
 
@@ -38,9 +39,10 @@ namespace Contoso.Micro.Internal
         internal override object BaseDeserialize(TextReader r, string path)
         {
             var token = JsonParserUtil.GetNextToken(r);
-            return (token == string.Empty || token.Equals("null", StringComparison.OrdinalIgnoreCase) ? null : (object)bool.Parse(token));
+            return token == string.Empty || token.Equals("null", StringComparison.OrdinalIgnoreCase) ? null : (object)bool.Parse(token);
         }
 
-        internal override void BaseSerialize(TextWriter w, object obj, JsonOptions options, string format, int tabDepth) { w.Write(Convert.ToBoolean(obj).ToString().ToLower()); }
+        internal override void BaseSerialize(TextWriter w, object obj, JsonOptions options, string format, int tabDepth) =>
+            w.Write(Convert.ToBoolean(obj).ToString().ToLower());
     }
 }

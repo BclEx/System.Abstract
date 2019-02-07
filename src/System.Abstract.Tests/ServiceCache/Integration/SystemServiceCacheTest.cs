@@ -1,14 +1,15 @@
-﻿#if NET45
+﻿#if !NET35
 using Contoso.Abstract;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
-using System.Abstract.IntegationTests.ServiceCache;
+using System.Abstract.AbstractTests.ServiceCache;
 
-namespace Contoso.Abstract
+namespace System.Abstract.Tests.ServiceCache.Integration
 {
     [TestClass]
     public class SystemServiceCacheTest : AbstractServiceCacheTest
 	{
-        protected override IServiceCache CreateServiceCache() { return new SystemServiceCache((string)null); }
+        protected override IServiceCache CreateServiceCache() =>
+            new SystemServiceCache((string)null);
 	}
 }
 #endif

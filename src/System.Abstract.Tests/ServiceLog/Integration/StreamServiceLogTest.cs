@@ -8,12 +8,11 @@ namespace System.Abstract.Tests.ServiceLog.Integration
     [TestClass]
     public class StreamServiceLogTest : AbstractServiceLogTest
     {
-        public StreamServiceLogTest()
-        {
+        public StreamServiceLogTest() =>
             Stream = new MemoryStream();
-        }
 
         protected MemoryStream Stream { get; private set; }
-        protected override IServiceLog CreateServiceLog() { return new StreamServiceLog("Default", Stream); }
+        protected override IServiceLog CreateServiceLog() =>
+            new StreamServiceLog("Default", Stream);
     }
 }
