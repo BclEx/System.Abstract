@@ -5,6 +5,7 @@ properties {
   $tools_dir = "$parent_dir\tools"
   $sln_file = "$base_dir\ServiceCaches.sln"
   $run_tests = $false
+  $msbuild = "C:\Program Files (x86)\Microsoft Visual Studio\2017\Professional\MSBuild\15.0\Bin\MSBuild.exe"
 }
 Framework "4.0"
 	
@@ -19,9 +20,10 @@ task Init -depends Clean {
 }
 
 task Compile -depends Init {
-	msbuild $sln_file /target:Rebuild /p:"OutDir=$build_dir\3.5;Configuration=Debug;TargetFrameworkVersion=v3.5" /m
-	msbuild $sln_file /target:Rebuild /p:"OutDir=$build_dir\4.0;Configuration=Debug;TargetFrameworkVersion=v4.0" /m
-	msbuild $sln_file /target:Rebuild /p:"OutDir=$build_dir\4.5;Configuration=Debug;TargetFrameworkVersion=v4.5;TargetFrameworkProfile=" /m
+	& $msbuild $sln_file /target:Rebuild /p:"OutDir=$build_dir\3.5;Configuration=Debug;TargetFrameworkVersion=v3.5" /m
+	& $msbuild $sln_file /target:Rebuild /p:"OutDir=$build_dir\4.0;Configuration=Debug;TargetFrameworkVersion=v4.0" /m
+	& $msbuild $sln_file /target:Rebuild /p:"OutDir=$build_dir\4.5;Configuration=Debug;TargetFrameworkVersion=v4.5;TargetFrameworkProfile=" /m
+	& $msbuild $sln_file /target:Rebuild /p:"OutDir=$build_dir\4.6.1;Configuration=Debug;TargetFrameworkVersion=v4.6.1;TargetFrameworkProfile=" /m
 }
 
 task Test -depends Compile -precondition { return $run_tests } {

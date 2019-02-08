@@ -1,6 +1,7 @@
 #region Foreign-License
 // .Net40 Kludge
 #endregion
+
 #if NET35
 using System.Threading;
 using System.Diagnostics;

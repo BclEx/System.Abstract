@@ -13,7 +13,7 @@
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <RootNamespace>System</RootNamespace>
     <AssemblyName>System.Abstract</AssemblyName>
-    <TargetFrameworkVersion>v4.6.1</TargetFrameworkVersion>
+    <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <SignAssembly>true</SignAssembly>
     <TargetFrameworkProfile />
@@ -55,14 +55,8 @@
   <ItemGroup>
     <Compile Include="+Polyfill\CoreExtensions+Lazy.cs" />
     <Compile Include="+Polyfill\ExceptionExtensions.cs" />
-    <Compile Include="+Polyfill35\Lazy.cs" />
     <Compile Include="+Polyfill\Reflection\AssemblyExtensions.cs" />
-    <Compile Include="+Polyfill35\Runtime\Collections\HashHelpers.cs" />
-    <Compile Include="+Polyfill35\Runtime\CompilerServices\ConditionalWeakTable.cs" />
-    <Compile Include="+Polyfill35\Runtime\CompilerServices\DependentHandle.cs" />
     <Compile Include="+Polyfill\SR.cs" />
-    <Compile Include="+Polyfill35\System_LazyDebugView.cs" />
-    <Compile Include="+Polyfill35\Threading\LazyThreadSafetyMode.cs" />
     <Compile Include="EventSource\EventBus.cs" />
     <Compile Include="EventSource\EventSource.cs" />
     <Compile Include="EventSource\EventSourceManager.cs" />
