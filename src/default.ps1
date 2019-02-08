@@ -9,7 +9,7 @@ properties {
 }
 Framework "4.0"
 	
-task default -depends Compile
+task default -depends Package
 
 task Clean {
 	remove-item -force -recurse $build_dir -ErrorAction SilentlyContinue
@@ -21,9 +21,8 @@ task Init -depends Clean {
 
 task Compile -depends Init {
 	
-	& $msbuild $sln_file /target:Rebuild /p:"OutDir=$build_dir\2.0;Configuration=Debug;TargetFrameworkVersion=v2.0;TargetFrameworkProfile=" /m
-	#& $msbuild $sln_file /target:Rebuild /p:"OutDir=$build_dir\4.5;Configuration=Debug;TargetFrameworkVersion=v4.5;TargetFrameworkProfile=" /m
-	#& $msbuild $sln_file /target:Rebuild /p:"OutDir=$build_dir\4.6.1;Configuration=Debug;TargetFrameworkVersion=v4.6.1;TargetFrameworkProfile=" /m
+	& $msbuild $sln_file /target:Rebuild /p:"OutDir=$build_dir\4.5;Configuration=Debug;TargetFrameworkVersion=v4.5;TargetFrameworkProfile=" /m
+	& $msbuild $sln_file /target:Rebuild /p:"OutDir=$build_dir\4.6.1;Configuration=Debug;TargetFrameworkVersion=v4.6.1;TargetFrameworkProfile=" /m
 }
 
 task Test -depends Compile -precondition { return $run_tests } {

@@ -11,7 +11,7 @@
     <ProjectGuid>{A44E9D89-BFF2-41A4-AADC-3C2BDFDAEEB1}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>System</RootNamespace>
+    <RootNamespace>System.Abstract</RootNamespace>
     <AssemblyName>System.Abstract</AssemblyName>
     <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
