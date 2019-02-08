@@ -1,0 +1,27 @@
+<Project Sdk="Microsoft.NET.Sdk">
+  <PropertyGroup>
+    <TargetFramework>netstandard2.0</TargetFramework>
+    <AssemblyName>System.Abstract.Core</AssemblyName>
+    <RootNamespace>System.Abstract.Core</RootNamespace>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
+    <DefineConstants>TRACE;DEBUG</DefineConstants>
+  </PropertyGroup>
+  <ItemGroup>
+    <Compile Remove="Micro\ServiceBus\**" />
+    <Compile Remove="Web+Activation\**" />
+    <EmbeddedResource Remove="Micro\ServiceBus\**" />
+    <EmbeddedResource Remove="Web+Activation\**" />
+    <None Remove="Micro\ServiceBus\**" />
+    <None Remove="Web+Activation\**" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Remove="Properties\AssemblyInfo.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="Properties\" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\System.Abstract\System.Abstract.Portable.csproj" />
+  </ItemGroup>
+</Project>

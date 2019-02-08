@@ -35,7 +35,7 @@
     <DebugType>pdbonly</DebugType>
     <Optimize>true</Optimize>
     <OutputPath>bin\Release\</OutputPath>
-    <DefineConstants>TRACE;COREINTERNAL</DefineConstants>
+    <DefineConstants>TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
     <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
@@ -96,19 +96,6 @@
     <Compile Include="ServiceBus\ServiceBusManager.cs" />
     <Compile Include="ServiceBus\ServiceBusManagerLogger.cs" />
     <Compile Include="ServiceBus\ServiceBusMessageException.cs" />
-    <None Include="ServiceCache2\AbstractExtensions.cs" />
-    <None Include="ServiceCache2\CacheItemBuilder.cs" />
-    <None Include="ServiceCache2\CacheItemHeader.cs" />
-    <None Include="ServiceCache2\ServiceCache.cs" />
-    <None Include="ServiceCache2\ServiceCacheResult.cs" />
-    <None Include="ServiceCache2\CacheItemPolicyEx.cs" />
-    <None Include="ServiceCache2\ServiceCacheDispatcher.cs" />
-    <None Include="ServiceCache2\IDistributedServiceCache.cs" />
-    <None Include="ServiceCache2\IServiceCache.cs" />
-    <None Include="ServiceCache2\ITouchableCacheItem.cs" />
-    <None Include="ServiceCache2\ServiceCacheManager.cs" />
-    <None Include="ServiceCache2\ServiceCacheManagerLogger.cs" />
-    <None Include="ServiceCache2\ServiceCacheNamespaceBehaviorWrapper.cs" />
     <Compile Include="ServiceCache\AbstractExtensions.cs" />
     <Compile Include="ServiceCache\CacheEntryRemovedCallback.cs" />
     <Compile Include="ServiceCache\CacheEntryUpdateCallback.cs" />
@@ -117,7 +104,6 @@
     <Compile Include="ServiceCache\CacheItemHeader.cs" />
     <Compile Include="ServiceCache\CacheItemPolicy.cs" />
     <Compile Include="ServiceCache\CacheItemPriority.cs" />
-    <None Include="ServiceCache2\ServiceCacheRegistration.cs" />
     <Compile Include="ServiceCache\IDistributedServiceCache.cs" />
     <Compile Include="ServiceCache\IServiceCache.cs" />
     <Compile Include="ServiceCache\ITouchableCacheItem.cs" />
@@ -132,7 +118,6 @@
     <Compile Include="ServiceCache\ServiceCacheRegistrar.cs" />
     <Compile Include="ServiceCache\ServiceCacheRegistration.cs" />
     <Compile Include="ServiceCache\ServiceCacheSettings.cs" />
-    <None Include="ServiceCache2\ServiceCacheSettings.cs" />
     <Compile Include="ServiceLocator\AbstractExtensions.cs" />
     <Compile Include="ServiceLocator\IgnoreServiceLocatorAttribute.cs" />
     <Compile Include="ServiceLocator\IIgnoreServiceLocator.cs" />

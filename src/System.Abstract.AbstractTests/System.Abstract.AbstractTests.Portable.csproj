@@ -1,20 +1,12 @@
 <Project Sdk="Microsoft.NET.Sdk">
   <PropertyGroup>
     <TargetFramework>netstandard2.0</TargetFramework>
-    <AssemblyName>System.Abstract</AssemblyName>
-    <RootNamespace>System.Abstract</RootNamespace>
+    <AssemblyName>System.Abstract.AbstractTests</AssemblyName>
+    <RootNamespace>System.Abstract.Core</RootNamespace>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
     <DefineConstants>TRACE;DEBUG</DefineConstants>
   </PropertyGroup>
-  <ItemGroup>
-    <Compile Remove="+Polyfill35\**" />
-    <Compile Remove="ServiceCache2\**" />
-    <EmbeddedResource Remove="+Polyfill35\**" />
-    <EmbeddedResource Remove="ServiceCache2\**" />
-    <None Remove="+Polyfill35\**" />
-    <None Remove="ServiceCache2\**" />
-  </ItemGroup>
   <ItemGroup>
     <Compile Remove="Properties\AssemblyInfo.cs" />
   </ItemGroup>

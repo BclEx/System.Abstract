@@ -11,7 +11,7 @@
     <ProjectGuid>{67854C97-9DDA-44F3-B32B-20AAA69CEA99}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>System</RootNamespace>
+    <RootNamespace>System.Abstract</RootNamespace>
     <AssemblyName>System.Abstract.Core</AssemblyName>
     <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
@@ -102,9 +102,6 @@
       <Project>{a44e9d89-bff2-41a4-aadc-3c2bdfdaeeb1}</Project>
       <Name>System.Abstract</Name>
     </ProjectReference>
-  </ItemGroup>
-  <ItemGroup>
-    <Folder Include="Owin\" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
