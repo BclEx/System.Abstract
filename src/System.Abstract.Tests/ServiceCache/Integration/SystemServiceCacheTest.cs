@@ -1,4 +1,4 @@
-﻿#if !NET35
+﻿#if !NET35 && !PORTABLE
 using Contoso.Abstract;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using System.Abstract.AbstractTests.ServiceCache;

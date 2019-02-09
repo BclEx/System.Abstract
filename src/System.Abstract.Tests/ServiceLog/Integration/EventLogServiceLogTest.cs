@@ -1,4 +1,5 @@
-﻿using Contoso.Abstract;
+﻿#if !PORTABLE
+using Contoso.Abstract;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using System.Abstract.AbstractTests.ServiceLog;
 
@@ -11,3 +12,4 @@ namespace System.Abstract.Tests.ServiceLog.Integration
             new EventLogServiceLog("Default");
     }
 }
+#endif

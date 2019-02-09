@@ -142,8 +142,8 @@
     <Compile Include="ServiceLog\ServiceLogLevel.cs" />
     <Compile Include="ServiceLog\ServiceLogManager.cs" />
     <Compile Include="ServiceLog\ServiceLogManagerLogger.cs" />
-    <Compile Include="ServiceManagerBase.cs" />
-    <Compile Include="ServiceManagerLoggerBase.cs" />
+    <Compile Include="Internal\ServiceManagerBase.cs" />
+    <Compile Include="Internal\ServiceManagerLoggerBase.cs" />
     <Compile Include="Local.Designer.cs">
       <DependentUpon>Local.resx</DependentUpon>
       <AutoGen>True</AutoGen>

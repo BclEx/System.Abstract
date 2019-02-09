@@ -24,6 +24,8 @@ THE SOFTWARE.
 */
 #endregion
 
+using System.Abstract.Internal;
+
 namespace System.Abstract
 {
     /// <summary>
@@ -32,21 +34,6 @@ namespace System.Abstract
     public class EventSourceManager : ServiceManagerBase<IEventSource, EventSourceManager, EventSourceManagerLogger>
     {
         static EventSourceManager() =>
-            Registration = new ServiceRegistration
-            {
-                OnSetup = (service, descriptor) =>
-                {
-                    if (descriptor != null)
-                        foreach (var action in descriptor.Actions)
-                            action(service);
-                    return service;
-                },
-                OnChange = (service, descriptor) =>
-                {
-                    if (descriptor != null)
-                        foreach (var action in descriptor.Actions)
-                            action(service);
-                },
-            };
+            Registration = new ServiceRegistration { };
     }
 }

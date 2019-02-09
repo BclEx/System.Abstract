@@ -36,7 +36,7 @@ namespace System.Abstract
     /// EventBus
     /// </summary>
     /// <seealso cref="System.Abstract.IEventBus" />
-    public struct EventBus : IEventBus
+    public class EventBus : IEventBus
     {
         IServiceBus _parent;
 

@@ -31,7 +31,7 @@ using System.Runtime.CompilerServices;
 using System.Text;
 using System.Threading;
 
-namespace System.Abstract
+namespace System.Abstract.Internal
 {
     /// <summary>
     /// ServiceManagerBase
@@ -156,13 +156,28 @@ namespace System.Abstract
             /// <summary>
             /// Initializes a new instance of the <see cref="ServiceRegistration" /> class.
             /// </summary>
-            public ServiceRegistration() =>
+            public ServiceRegistration()
+            {
+                OnSetup = (service, descriptor) =>
+                {
+                    if (descriptor != null)
+                        foreach (var action in descriptor.Actions)
+                            action(service);
+                    return service;
+                };
+                OnChange = (service, descriptor) =>
+                {
+                    if (descriptor != null)
+                        foreach (var action in descriptor.Actions)
+                            action(service);
+                };
                 RegisterWithLocator = (service, locator, name) =>
                 {
                     //RegisterInstance(service, locator, name);
                     if (service is IRegisterWithLocator registerWithLocator)
                         registerWithLocator.RegisterWithLocator(locator, name);
                 };
+            }
 
             /// <summary>
             /// Gets or sets the DefaultServiceProvider.

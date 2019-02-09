@@ -24,6 +24,8 @@ THE SOFTWARE.
 */
 #endregion
 
+using System.Abstract.Internal;
+
 namespace System.Abstract
 {
     /// <summary>

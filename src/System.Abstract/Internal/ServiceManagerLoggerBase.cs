@@ -24,7 +24,7 @@ THE SOFTWARE.
 */
 #endregion
 
-namespace System.Abstract
+namespace System.Abstract.Internal
 {
     /// <summary>
     /// ServiceManagerLoggerBase

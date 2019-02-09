@@ -24,6 +24,8 @@ THE SOFTWARE.
 */
 #endregion
 
+using System.Abstract.Internal;
+
 namespace System.Abstract
 {
     /// <summary>
@@ -44,12 +46,6 @@ namespace System.Abstract
                         foreach (var action in descriptor.Actions)
                             action(service);
                     return service;
-                },
-                OnChange = (service, descriptor) =>
-                {
-                    if (descriptor != null)
-                        foreach (var action in descriptor.Actions)
-                            action(service);
                 },
             };
 
