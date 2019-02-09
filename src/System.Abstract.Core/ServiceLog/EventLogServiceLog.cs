@@ -24,6 +24,7 @@ THE SOFTWARE.
 */
 #endregion
 
+#if !PORTABLE
 using System;
 using System.Abstract;
 using System.Diagnostics;
@@ -166,7 +167,7 @@ namespace Contoso.Abstract
             Log.WriteEntry(message, ToEventLogEntryType(level));
         }
 
-        #region Domain-specific
+#region Domain-specific
 
         /// <summary>
         /// Gets the log.
@@ -174,7 +175,7 @@ namespace Contoso.Abstract
         /// <value>The log.</value>
         public EventLog Log { get; private set; }
 
-        #endregion
+#endregion
 
         static EventLogEntryType ToEventLogEntryType(ServiceLogLevel level)
         {
@@ -188,3 +189,4 @@ namespace Contoso.Abstract
         }
     }
 }
+#endif

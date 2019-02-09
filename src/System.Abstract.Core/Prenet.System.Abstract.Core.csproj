@@ -1,0 +1,114 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="12.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup Label="UserMacros">
+    <NETVER Condition="'$(NETVER)'==''">v4.0</NETVER>
+  </PropertyGroup>
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProductVersion>9.0.30729</ProductVersion>
+    <SchemaVersion>2.0</SchemaVersion>
+    <ProjectGuid>{67854C97-9DDA-44F3-B32B-20AAA69CEA99}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>System.Abstract</RootNamespace>
+    <AssemblyName>System.Abstract.Core</AssemblyName>
+    <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+    <SignAssembly>true</SignAssembly>
+    <TargetFrameworkProfile />
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>TRACE;DEBUG</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
+    <AssemblyOriginatorKeyFile>BclEx.snk</AssemblyOriginatorKeyFile>
+    <DocumentationFile>bin\Debug\System.Abstract.Core.XML</DocumentationFile>
+    <Prefer32Bit>false</Prefer32Bit>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
+    <DocumentationFile>bin\Release\System.Abstract.Core.XML</DocumentationFile>
+    <AssemblyOriginatorKeyFile>BclEx.snk</AssemblyOriginatorKeyFile>
+    <Prefer32Bit>false</Prefer32Bit>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(TargetFrameworkVersion)'=='v3.5'">
+    <DefineConstants>NET35</DefineConstants>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="System" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.Runtime.Caching" />
+    <Reference Include="System.Runtime.Serialization" />
+    <Reference Include="System.Web" />
+    <Reference Include="System.XML" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="BinarySerDes.cs" />
+    <Compile Include="MicroJsonSerDes.cs" />
+    <Compile Include="ServiceBus\AppServiceBus.cs" />
+    <Compile Include="ServiceBus\AppServiceBusRegistration.cs" />
+    <Compile Include="ServiceBus\IAppServiceMessageHandler.cs" />
+    <Compile Include="ServiceCache\EmptyServiceCache.cs" />
+    <Compile Include="ServiceCache\StaticServiceCache.cs" />
+    <Compile Include="ServiceCache\SystemServiceCache.cs" />
+    <Compile Include="ServiceLocator\MicroServiceLocator.cs" />
+    <Compile Include="ServiceLocator\MicroServiceRegistrar.cs" />
+    <Compile Include="ServiceLog\ConsoleServiceLog.cs" />
+    <Compile Include="ServiceLog\EventLogServiceLog.cs" />
+    <Compile Include="ServiceLog\StreamServiceLog.cs" />
+    <Compile Include="ServiceLog\TraceSourceServiceLog.cs" />
+    <Compile Include="EventSourcing\FileAggregateRootSnapshotStore.cs" />
+    <Compile Include="EventSourcing\FileEventStore.cs" />
+    <Compile Include="EventSourcing\MemoryAggregateRootSnapshotStore.cs" />
+    <Compile Include="EventSourcing\MemoryEventStore.cs" />
+    <Compile Include="MicroRegistrar.cs" />
+    <Compile Include="Micro\Json\Internal\JsonArraySerializer.cs" />
+    <Compile Include="Micro\Json\Internal\JsonBooleanSerializer.cs" />
+    <Compile Include="Micro\Json\Internal\JsonGenericSerializerAdapter.cs" />
+    <Compile Include="Micro\Json\Internal\JsonMemberSerializationInfo.cs" />
+    <Compile Include="Micro\Json\Internal\JsonNumberSerializer.cs" />
+    <Compile Include="Micro\Json\Internal\JsonParserUtil.cs" />
+    <Compile Include="Micro\Json\Internal\JsonStringSerializer.cs" />
+    <Compile Include="Micro\Json\JsonDeserializationException.cs" />
+    <Compile Include="Micro\Json\JsonOptions.cs" />
+    <Compile Include="Micro\Json\JsonPropertyAttribute.cs" />
+    <Compile Include="Micro\Json\JsonSerializableAttribute.cs" />
+    <Compile Include="Micro\Json\JsonSerializationException.cs" />
+    <Compile Include="Micro\Json\JsonSerializer.cs" />
+    <Compile Include="Micro\Json\JsonSerializer2.cs" />
+    <Compile Include="Micro\Json\JsonValueType.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="+Polyfill\IO\WrapTextReader.cs" />
+    <Compile Include="WcfSerDes.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="BclEx.snk" />
+    <None Include="System.Abstract.Core.nuspec" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\System.Abstract\Prenet.System.Abstract.csproj">
+      <Project>{a44e9d89-bff2-41a4-aadc-3c2bdfdaeeb1}</Project>
+      <Name>Prenet.System.Abstract</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+</Project>

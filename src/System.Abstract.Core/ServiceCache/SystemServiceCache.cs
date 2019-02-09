@@ -24,7 +24,7 @@ THE SOFTWARE.
 */
 #endregion
 
-#if !NET35
+#if !NET35 && !PORTABLE
 using System;
 using System.Abstract;
 using System.Collections.Generic;

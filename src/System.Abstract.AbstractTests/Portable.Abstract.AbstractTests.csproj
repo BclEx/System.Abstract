@@ -1,20 +1,12 @@
 <Project Sdk="Microsoft.NET.Sdk">
   <PropertyGroup>
     <TargetFramework>netstandard2.0</TargetFramework>
-    <AssemblyName>System.Abstract.Core</AssemblyName>
+    <AssemblyName>System.Abstract.AbstractTests</AssemblyName>
     <RootNamespace>System.Abstract.Core</RootNamespace>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
     <DefineConstants>TRACE;DEBUG</DefineConstants>
   </PropertyGroup>
-  <ItemGroup>
-    <Compile Remove="Micro\ServiceBus\**" />
-    <Compile Remove="Web+Activation\**" />
-    <EmbeddedResource Remove="Micro\ServiceBus\**" />
-    <EmbeddedResource Remove="Web+Activation\**" />
-    <None Remove="Micro\ServiceBus\**" />
-    <None Remove="Web+Activation\**" />
-  </ItemGroup>
   <ItemGroup>
     <Compile Remove="Properties\AssemblyInfo.cs" />
   </ItemGroup>
@@ -22,6 +14,10 @@
     <Folder Include="Properties\" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\System.Abstract\System.Abstract.Portable.csproj" />
+    <PackageReference Include="Microsoft.NET.Test.Sdk" Version="15.9.0" />
+    <PackageReference Include="MSTest.TestFramework" Version="1.4.0" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\System.Abstract\Portable.System.Abstract.csproj" />
   </ItemGroup>
 </Project>
